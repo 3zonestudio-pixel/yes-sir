@@ -6,9 +6,10 @@ import '../models/mission.dart';
 import 'database_helper.dart';
 import 'token_manager.dart';
 
-/// AI Service - Private LongCat
+/// Enhanced AI Service - LongCat AI
 /// Powered by LongCat AI API (https://longcat.chat/platform/docs)
-/// Falls back to offline mode when API is unavailable.
+/// Features: Smart prioritization, task breakdown, proactive suggestions,
+/// templates, gamification, productivity insights.
 class AIService {
   final TokenManager tokenManager;
   final DatabaseHelper _db = DatabaseHelper.instance;
@@ -19,54 +20,62 @@ class AIService {
   static const String _model = 'LongCat-Flash-Chat';
 
   static const String _systemPrompt = '''
-You are Private LongCat, an AI military assistant in the "Yes Sir" app.
-You serve the user as their Commander. You respond with military discipline, precision, and respect.
+You are an AI productivity advisor in the "Yes Sir" app. 
+You help users plan, organize, and accomplish their missions (tasks).
 
 Your personality:
-- Address the user as "Commander" or "Sir"
-- Use military terminology (missions, objectives, operations, deploy, execute)
-- Be efficient, clear, and motivating
-- Start responses with "Yes Sir!" or "Sir," when appropriate
-- Give structured, actionable responses
-- Use military report format when giving status updates
+- Friendly but efficient — like a supportive coach
+- Use clear, actionable language
+- Be motivating and positive
+- Address the user warmly, sometimes saying "Commander" as a fun app reference
+- Keep a professional yet approachable tone
 
 Your capabilities:
-- Convert natural language commands into tasks/missions
-- Plan and prioritize the Commander's day
-- Provide status reports on missions
-- Break big missions into sub-missions
-- Provide motivation and encouragement
-- Set reminders
+1. **Task Management**: Create missions, set priorities, organize tasks
+2. **Smart Planning**: Plan daily/weekly schedules based on priorities and deadlines
+3. **Task Breakdown**: Split complex tasks into manageable sub-steps
+4. **Prioritization**: Rank tasks by urgency, importance, and deadlines
+5. **Templates**: Suggest pre-built mission templates for common workflows
+6. **Productivity Tips**: Offer insights based on work patterns
+7. **Motivation**: Provide encouragement and celebrate wins
+8. **Reminders**: Help set smart reminders before deadlines
 
-When the Commander asks to create a task or mission, respond confirming the mission and include the task title clearly.
-When asked for a plan, organize tasks by priority (CRITICAL > HIGH > MEDIUM > LOW).
-When asked for status, give a structured after-action report.
+Response style:
+- Use bullet points and structure for clarity
+- Keep responses concise but thorough
+- Use emojis sparingly for visual warmth (✅, 📋, 🎯, 💡, 🔥)
+- Give actionable advice, not just information
+- When creating tasks, clearly state the title
 
-Keep responses concise but thorough. Use emojis sparingly for visual structure.
-End key responses with "Standing by for orders." or similar military sign-off.
+Priority levels: CRITICAL > HIGH > MEDIUM > LOW
+Task statuses: Pending, In Progress, Completed
+
+When asked to break down a task, provide 3-7 clear sub-steps.
+When planning a day, organize by time blocks and priority.
+When giving templates, provide ready-to-use mission structures.
 ''';
 
   AIService({required this.tokenManager});
 
-  /// Process a command from the Commander via LongCat AI API
+  /// Process a command with enhanced AI capabilities
   Future<AIResponse> processCommand(String command) async {
     if (!tokenManager.hasTokens) {
       return AIResponse(
         message:
-            "Sir, daily token reserves depleted. Tokens reset at 0000 hours local time. Standing by.",
+            "You've used all your tokens for today! They'll reset at midnight. See you tomorrow! 🌙",
         tokensUsed: 0,
         actions: [],
       );
     }
 
-    // Save commander message
+    // Save user message
     await _db.insertChatMessage(ChatMessage(
       role: ChatRole.commander,
       content: command,
       tokensUsed: 0,
     ));
 
-    // Build context with recent chat history
+    // Build context
     final recentMessages = await _db.getRecentChatMessages(limit: 8);
     final missionContext = await _buildMissionContext();
 
@@ -75,15 +84,14 @@ End key responses with "Standing by for orders." or similar military sign-off.
     List<AIAction> actions = [];
 
     try {
-      // Call LongCat AI API
       final apiResult =
           await _callLongCatAPI(command, recentMessages, missionContext);
       response = apiResult['message'] as String;
       tokensUsed = apiResult['tokensUsed'] as int;
     } catch (e) {
-      // Fallback to offline mode
-      final offlineResult = _handleOffline(command);
-      response = await offlineResult['response'] as String;
+      // Fallback to enhanced offline mode
+      final offlineResult = await _handleOffline(command);
+      response = offlineResult;
       tokensUsed = tokenManager.estimateTokens(response);
     }
 
@@ -92,13 +100,13 @@ End key responses with "Standing by for orders." or similar military sign-off.
     if (!consumed) {
       return AIResponse(
         message:
-            "Sir, insufficient tokens for this operation. ${tokenManager.tokensRemaining} tokens remaining today.",
+            "Not enough tokens for this request. ${tokenManager.tokensRemaining} tokens remaining today.",
         tokensUsed: 0,
         actions: [],
       );
     }
 
-    // Parse AI actions from the command (task creation, reminders)
+    // Parse actions
     actions = _parseActionsFromCommand(command);
 
     // Save AI response
@@ -115,7 +123,7 @@ End key responses with "Standing by for orders." or similar military sign-off.
     );
   }
 
-  /// Call the LongCat AI API (OpenAI-compatible format)
+  /// Call the LongCat AI API
   Future<Map<String, dynamic>> _callLongCatAPI(
     String command,
     List<ChatMessage> history,
@@ -123,13 +131,11 @@ End key responses with "Standing by for orders." or similar military sign-off.
   ) async {
     final messages = <Map<String, String>>[];
 
-    // System prompt with live mission context
     messages.add({
       'role': 'system',
-      'content': '$_systemPrompt\n\nCurrent mission status:\n$missionContext',
+      'content': '$_systemPrompt\n\nCurrent workspace:\n$missionContext',
     });
 
-    // Add recent chat history for conversational context
     for (var msg in history) {
       messages.add({
         'role': msg.role == ChatRole.commander ? 'user' : 'assistant',
@@ -137,7 +143,6 @@ End key responses with "Standing by for orders." or similar military sign-off.
       });
     }
 
-    // Current command
     messages.add({'role': 'user', 'content': command});
 
     final body = jsonEncode({
@@ -170,7 +175,7 @@ End key responses with "Standing by for orders." or similar military sign-off.
     } else if (httpResponse.statusCode == 429) {
       return {
         'message':
-            'Sir, AI systems are under heavy load. Rate limit reached. Please retry shortly.',
+            'AI is under heavy load right now. Please try again in a moment! 😊',
         'tokensUsed': 10,
       };
     } else {
@@ -178,31 +183,34 @@ End key responses with "Standing by for orders." or similar military sign-off.
     }
   }
 
-  /// Build live mission context for the AI
+  /// Build mission context for AI
   Future<String> _buildMissionContext() async {
     final stats = await _db.getMissionStats();
     final pending = await _db.getMissionsByStatus(MissionStatus.pending);
     final inProgress = await _db.getMissionsByStatus(MissionStatus.inProgress);
 
-    String context = 'Total: ${stats['total'] ?? 0}, '
-        'Completed: ${stats['completed'] ?? 0}, '
-        'In Progress: ${stats['inProgress'] ?? 0}, '
-        'Pending: ${stats['pending'] ?? 0}\n'
-        'Tokens left today: ${tokenManager.tokensRemaining}/${tokenManager.tokenLimit}\n';
+    String context = 'Missions: ${stats['total'] ?? 0} total, '
+        '${stats['completed'] ?? 0} done, '
+        '${stats['inProgress'] ?? 0} active, '
+        '${stats['pending'] ?? 0} pending\n'
+        'Tokens: ${tokenManager.tokensRemaining}/${tokenManager.tokenLimit} remaining\n';
 
     if (inProgress.isNotEmpty) {
-      context += 'Active missions: ';
+      context += 'Active: ';
       context += inProgress.take(5).map((m) => '[${m.priorityLabel}] ${m.title}').join(', ');
       context += '\n';
     }
     if (pending.isNotEmpty) {
-      context += 'Pending missions: ';
-      context += pending.take(5).map((m) => '[${m.priorityLabel}] ${m.title}').join(', ');
+      context += 'Pending: ';
+      context += pending.take(5).map((m) {
+        final due = m.dueDate != null ? ' (due ${m.dueDate!.day}/${m.dueDate!.month})' : '';
+        return '[${m.priorityLabel}] ${m.title}$due';
+      }).join(', ');
     }
     return context;
   }
 
-  /// Parse task/reminder actions from user command
+  /// Parse actions from command
   List<AIAction> _parseActionsFromCommand(String command) {
     final actions = <AIAction>[];
     final lowerCmd = command.toLowerCase();
@@ -217,31 +225,33 @@ End key responses with "Standing by for orders." or similar military sign-off.
     return actions;
   }
 
-  /// Offline fallback when API is unavailable
-  Map<String, Future<String>> _handleOffline(String command) {
+  /// Enhanced offline fallback with all features
+  Future<String> _handleOffline(String command) async {
     final lowerCommand = command.toLowerCase().trim();
 
     if (_isGreeting(lowerCommand)) {
-      return {'response': Future.value(_generateGreeting())};
+      return _generateGreeting();
     } else if (_isStatusRequest(lowerCommand)) {
-      return {'response': _generateStatusReport()};
+      return await _generateStatusReport();
     } else if (_isTaskCreation(lowerCommand)) {
       final parsed = _parseTaskFromCommand(command);
-      return {
-        'response': Future.value(
-            "Yes Sir! Mission created: \"${parsed['title']}\". (Offline mode)")
-      };
+      return "✅ Mission created: \"${parsed['title']}\"\nPriority: ${(parsed['priority'] as MissionPriority).name.toUpperCase()}\n\nReady for your next order!";
     } else if (_isPlanRequest(lowerCommand)) {
-      return {'response': _generateDailyPlan()};
+      return await _generateDailyPlan();
+    } else if (_isBreakdownRequest(lowerCommand)) {
+      return _generateBreakdownSuggestion(command);
+    } else if (_isTemplateRequest(lowerCommand)) {
+      return _generateTemplates();
+    } else if (_isPrioritizeRequest(lowerCommand)) {
+      return await _generatePrioritization();
+    } else if (_isTipsRequest(lowerCommand)) {
+      return _generateProductivityTips();
     } else if (_isHelpRequest(lowerCommand)) {
-      return {'response': Future.value(_generateHelp())};
+      return _generateHelp();
     } else if (_isMotivation(lowerCommand)) {
-      return {'response': Future.value(_generateMotivation())};
+      return _generateMotivation();
     }
-    return {
-      'response': Future.value(
-          "Sir, AI comms temporarily offline. Basic commands still operational. Standing by for reconnection.")
-    };
+    return "I'm currently in offline mode, but I can still help with basic commands! Try:\n\n📋 \"Plan my day\"\n🧩 \"Break down [task]\"\n📊 \"Status report\"\n📝 \"Show templates\"\n💡 \"Give me tips\"";
   }
 
   // ===== INTENT DETECTION =====
@@ -252,29 +262,32 @@ End key responses with "Standing by for orders." or similar military sign-off.
   }
 
   bool _isStatusRequest(String cmd) {
-    return cmd.contains('status') ||
-        cmd.contains('report') ||
-        cmd.contains('how am i') ||
-        cmd.contains('progress') ||
-        cmd.contains('summary');
+    return cmd.contains('status') || cmd.contains('report') ||
+        cmd.contains('how am i') || cmd.contains('progress') || cmd.contains('summary');
   }
 
   bool _isTaskCreation(String cmd) {
-    return cmd.startsWith('add ') ||
-        cmd.startsWith('create ') ||
-        cmd.startsWith('new ') ||
-        cmd.startsWith('make ') ||
-        cmd.contains('add task') ||
-        cmd.contains('add mission') ||
-        cmd.contains('create task') ||
-        cmd.contains('create mission');
+    return cmd.startsWith('add ') || cmd.startsWith('create ') ||
+        cmd.startsWith('new ') || cmd.startsWith('make ') ||
+        cmd.contains('add task') || cmd.contains('add mission') ||
+        cmd.contains('create task') || cmd.contains('create mission');
   }
 
   bool _isPlanRequest(String cmd) {
-    return cmd.contains('plan') ||
-        cmd.contains('schedule') ||
-        cmd.contains('organize my day') ||
-        cmd.contains('what should i do');
+    return cmd.contains('plan') || cmd.contains('schedule') ||
+        cmd.contains('organize my day') || cmd.contains('what should i do');
+  }
+
+  bool _isBreakdownRequest(String cmd) {
+    return cmd.contains('break down') || cmd.contains('breakdown') ||
+        cmd.contains('split') || cmd.contains('break into') ||
+        cmd.contains('sub-task') || cmd.contains('subtask') ||
+        cmd.contains('smaller step');
+  }
+
+  bool _isTemplateRequest(String cmd) {
+    return cmd.contains('template') || cmd.contains('preset') ||
+        cmd.contains('workflow') || cmd.contains('routine');
   }
 
   bool _isReminderRequest(String cmd) {
@@ -282,7 +295,14 @@ End key responses with "Standing by for orders." or similar military sign-off.
   }
 
   bool _isPrioritizeRequest(String cmd) {
-    return cmd.contains('prioriti') || cmd.contains('rank') || cmd.contains('sort') || cmd.contains('important');
+    return cmd.contains('prioriti') || cmd.contains('rank') ||
+        cmd.contains('sort') || cmd.contains('important');
+  }
+
+  bool _isTipsRequest(String cmd) {
+    return cmd.contains('tip') || cmd.contains('advice') ||
+        cmd.contains('productivity') || cmd.contains('suggestion') ||
+        cmd.contains('recommend');
   }
 
   bool _isHelpRequest(String cmd) {
@@ -296,11 +316,21 @@ End key responses with "Standing by for orders." or similar military sign-off.
   // ===== RESPONSE GENERATORS =====
 
   String _generateGreeting() {
+    final hour = DateTime.now().hour;
+    String greeting;
+    if (hour < 12) {
+      greeting = "Good morning";
+    } else if (hour < 17) {
+      greeting = "Good afternoon";
+    } else {
+      greeting = "Good evening";
+    }
+
     final greetings = [
-      "Private LongCat reporting for duty, Commander! All systems operational. Awaiting orders.",
-      "Sir, yes Sir! Ready to execute. What's the mission?",
-      "Commander on deck! Private LongCat standing by. State your orders.",
-      "Good to have you back, Commander. Your missions await. What's the play?",
+      "$greeting! Ready to help you conquer today's missions 🎯",
+      "$greeting, Commander! What's on the agenda today?",
+      "$greeting! Let's make today productive. What can I help with?",
+      "$greeting! Your AI advisor is ready. Fire away! 💪",
     ];
     return greetings[Random().nextInt(greetings.length)];
   }
@@ -313,35 +343,32 @@ End key responses with "Standing by for orders." or similar military sign-off.
     final inProgress = stats['inProgress'] ?? 0;
 
     if (total == 0) {
-      return "Sir, no missions in the system. Battlefield is clear. Ready to accept new orders.";
+      return "You don't have any missions yet! Tap + to create your first one, or tell me what you're working on 🎯";
     }
 
     final completionRate = total > 0 ? ((completed / total) * 100).toStringAsFixed(0) : '0';
 
-    return """📊 AFTER-ACTION REPORT, Commander:
+    return """📊 Your Progress Report
 
-═══════════════════════════
-  Total Missions:    $total
-  Completed:         $completed ✅
-  In Progress:       $inProgress 🔄
-  Pending:           $pending ⏳
-  Completion Rate:   $completionRate%
-═══════════════════════════
+✅ Completed: $completed
+🔄 Active: $inProgress
+⏳ Pending: $pending
+📈 Completion Rate: $completionRate%
 
 ${_getStatusComment(completed, pending, inProgress)}
 
-${tokenManager.tokensRemaining} tokens remaining today. Standing by for orders.""";
+${tokenManager.tokensRemaining} AI tokens remaining today.""";
   }
 
   String _getStatusComment(int completed, int pending, int inProgress) {
     if (pending == 0 && inProgress == 0) {
-      return "All clear, Commander! Every mission accomplished. Outstanding performance.";
+      return "🎉 Everything done! You're on fire!";
     } else if (completed > pending) {
-      return "Strong progress, Commander. Keep pushing forward.";
+      return "💪 Great momentum! Keep it up!";
     } else if (pending > completed * 2) {
-      return "Multiple missions pending, Sir. Recommend focusing on high-priority targets.";
+      return "🎯 Focus on the high-priority items first — you've got this!";
     }
-    return "Operations proceeding as planned, Commander.";
+    return "📋 Steady progress! Take it one mission at a time.";
   }
 
   Future<String> _generateDailyPlan() async {
@@ -349,29 +376,31 @@ ${tokenManager.tokensRemaining} tokens remaining today. Standing by for orders."
     final inProgress = await _db.getMissionsByStatus(MissionStatus.inProgress);
 
     if (missions.isEmpty && inProgress.isEmpty) {
-      return "Sir, no pending missions detected. Your schedule is clear.\n\nRecommendation: Set new objectives to maintain momentum. A Commander without missions is a ship without sails.";
+      return "Your schedule is clear! 🌟\n\nThis is a great time to:\n• Plan your week\n• Set new goals\n• Review past accomplishments\n\nWant me to suggest some mission templates?";
     }
 
-    String plan = "🗺️ DAILY MISSION PLAN, Commander:\n\n";
+    String plan = "📋 Today's Game Plan\n\n";
 
     if (inProgress.isNotEmpty) {
-      plan += "▶ ACTIVE MISSIONS (Continue these first):\n";
+      plan += "🔄 Continue These (in progress):\n";
       for (int i = 0; i < inProgress.length && i < 5; i++) {
-        plan += "  ${i + 1}. [${inProgress[i].priorityLabel}] ${inProgress[i].title}\n";
+        plan += "  ${i + 1}. ${inProgress[i].title} [${inProgress[i].priorityLabel}]\n";
       }
       plan += "\n";
     }
 
     if (missions.isNotEmpty) {
-      // Sort by priority
       missions.sort((a, b) => b.priority.index.compareTo(a.priority.index));
-      plan += "📋 PENDING MISSIONS (Sorted by priority):\n";
+      plan += "📌 Up Next (by priority):\n";
       for (int i = 0; i < missions.length && i < 10; i++) {
-        plan += "  ${i + 1}. [${missions[i].priorityLabel}] ${missions[i].title}\n";
+        final dueText = missions[i].dueDate != null
+            ? ' — Due ${missions[i].dueDate!.day}/${missions[i].dueDate!.month}'
+            : '';
+        plan += "  ${i + 1}. ${missions[i].title} [${missions[i].priorityLabel}]$dueText\n";
       }
     }
 
-    plan += "\nRecommendation: Tackle CRITICAL and HIGH priority missions first. Report back when complete.";
+    plan += "\n💡 Tip: Tackle critical & high priority items during your peak energy hours!";
     return plan;
   }
 
@@ -379,12 +408,12 @@ ${tokenManager.tokensRemaining} tokens remaining today. Standing by for orders."
     final missions = await _db.getMissionsByStatus(MissionStatus.pending);
 
     if (missions.isEmpty) {
-      return "Sir, no pending missions to prioritize. All clear.";
+      return "No pending missions to prioritize! All clear ✅";
     }
 
     missions.sort((a, b) => b.priority.index.compareTo(a.priority.index));
 
-    String result = "⚡ PRIORITY ASSESSMENT, Commander:\n\n";
+    String result = "🎯 Priority Ranking\n\n";
 
     final critical = missions.where((m) => m.priority == MissionPriority.critical).toList();
     final high = missions.where((m) => m.priority == MissionPriority.high).toList();
@@ -392,68 +421,169 @@ ${tokenManager.tokensRemaining} tokens remaining today. Standing by for orders."
     final low = missions.where((m) => m.priority == MissionPriority.low).toList();
 
     if (critical.isNotEmpty) {
-      result += "🔴 CRITICAL (Execute immediately):\n";
-      for (var m in critical) {
-        result += "  • ${m.title}\n";
-      }
+      result += "🔴 CRITICAL — Do these NOW:\n";
+      for (var m in critical) result += "  • ${m.title}\n";
       result += "\n";
     }
 
     if (high.isNotEmpty) {
-      result += "🟠 HIGH (Execute today):\n";
-      for (var m in high) {
-        result += "  • ${m.title}\n";
-      }
+      result += "🟠 HIGH — Today's targets:\n";
+      for (var m in high) result += "  • ${m.title}\n";
       result += "\n";
     }
 
     if (medium.isNotEmpty) {
-      result += "🟡 MEDIUM (Schedule this week):\n";
-      for (var m in medium) {
-        result += "  • ${m.title}\n";
-      }
+      result += "🔵 MEDIUM — This week:\n";
+      for (var m in medium) result += "  • ${m.title}\n";
       result += "\n";
     }
 
     if (low.isNotEmpty) {
-      result += "🟢 LOW (When time allows):\n";
-      for (var m in low) {
-        result += "  • ${m.title}\n";
-      }
+      result += "🟢 LOW — When you have time:\n";
+      for (var m in low) result += "  • ${m.title}\n";
     }
 
     return result;
   }
 
+  String _generateBreakdownSuggestion(String command) {
+    // Extract the task name from the command
+    String task = command
+        .replaceAll(RegExp(r'break\s*down', caseSensitive: false), '')
+        .replaceAll(RegExp(r'split|into\s+steps?|smaller', caseSensitive: false), '')
+        .replaceAll(RegExp(r'^\s*:?\s*'), '')
+        .trim();
+
+    if (task.isEmpty) {
+      task = 'your task';
+    }
+
+    return """🧩 Breaking Down: "$task"
+
+Here's a suggested breakdown:
+
+1. 📋 Research & Planning
+   Define scope and requirements
+
+2. 🎯 Setup & Preparation
+   Gather resources and tools needed
+
+3. 🔨 Core Implementation
+   Work on the main deliverable
+
+4. ✅ Review & Test
+   Verify quality and completeness
+
+5. 📦 Finalize & Deliver
+   Wrap up and mark complete
+
+💡 Tip: Create each step as a sub-mission for better tracking!
+
+Want me to create these as missions? Just say "create subtasks".""";
+  }
+
+  String _generateTemplates() {
+    return """📝 Mission Templates
+
+Choose a template to get started:
+
+🏋️ **Morning Routine**
+• Wake up & stretch (Low)
+• Exercise 30min (Medium)
+• Plan the day (High)
+• Healthy breakfast (Low)
+
+💻 **Work Sprint**
+• Review priorities (High)
+• Focus block: 2 hours (Critical)
+• Check & respond to messages (Medium)
+• Progress review (Medium)
+
+📚 **Study Session**
+• Review previous material (Medium)
+• Learn new concepts (High)
+• Practice exercises (High)
+• Summary notes (Medium)
+
+🏠 **Weekly Home Tasks**
+• Grocery shopping (Medium)
+• Clean common areas (Medium)
+• Laundry (Low)
+• Meal prep (Medium)
+
+🚀 **Project Launch**
+• Finalize requirements (Critical)
+• Complete development (Critical)
+• Testing & QA (High)
+• Documentation (Medium)
+• Deploy (Critical)
+
+Tell me which template you want and I'll create the missions for you!""";
+  }
+
+  String _generateProductivityTips() {
+    final tips = [
+      """💡 Productivity Tips
+
+1. **2-Minute Rule**: If a task takes less than 2 minutes, do it immediately
+2. **Time Blocking**: Dedicate specific hours to specific types of work
+3. **Eat the Frog**: Do your hardest/most important task first
+4. **Pomodoro Technique**: Work 25 min, break 5 min, repeat
+5. **Review & Reflect**: End each day reviewing what you accomplished
+
+🎯 Start with the tip that resonates most with you!""",
+      """💡 Focus & Energy Tips
+
+1. **Peak Hours**: Schedule important work during your highest energy times
+2. **Batch Similar Tasks**: Group emails, calls, and similar work together
+3. **Minimize Context Switching**: Focus on one thing at a time
+4. **Take Real Breaks**: Step away from your workspace
+5. **Celebrate Small Wins**: Acknowledge each completed mission!
+
+✨ Remember: Progress > Perfection""",
+      """💡 Planning Tips
+
+1. **Plan Tomorrow Tonight**: Spend 5 min each evening planning tomorrow
+2. **3 Key Tasks**: Pick 3 most important tasks each day
+3. **Weekly Review**: Review and adjust priorities every Sunday
+4. **Buffer Time**: Leave 20% of your day unscheduled for unexpected tasks
+5. **Say No**: Protect your time — not every request is urgent
+
+📋 Shall I help you plan your day right now?""",
+    ];
+    return tips[Random().nextInt(tips.length)];
+  }
+
   String _generateHelp() {
-    return """📖 COMMAND MANUAL, Commander:
+    return """🤖 What I Can Help With
 
-I respond to the following orders:
-
-🔹 "Plan my day" — Get a prioritized daily plan
-🔹 "Add [task]" — Create a new mission
-🔹 "Status report" — See your mission stats
-🔹 "Remind me to [task] at [time]" — Set a reminder
-🔹 "Prioritize my tasks" — Rank missions by importance
-🔹 "Motivate me" — Get a boost from Private LongCat
+📋 **Plan my day** — Get a prioritized daily schedule
+➕ **Add [task]** — Create a new mission
+📊 **Status report** — See your progress overview
+🎯 **Prioritize my tasks** — Rank by importance
+🧩 **Break down [task]** — Split into sub-steps
+📝 **Show templates** — Ready-made mission templates
+💡 **Give me tips** — Productivity advice
+💪 **Motivate me** — Get some encouragement
+⏰ **Remind me to [task]** — Set a reminder
 
 Pro tips:
-• Be specific with orders for best results
-• Mention priority: "Add urgent: Fix the bug"
-• I learn from your patterns over time
+• Add priority: "Add urgent: Fix the bug"
+• Be specific for better results
+• Use templates for quick setup
 
-Tokens remaining today: ${tokenManager.tokensRemaining}
-Private LongCat, at your service! 🫡""";
+${tokenManager.tokensRemaining} tokens remaining today ⚡""";
   }
 
   String _generateMotivation() {
     final quotes = [
-      "Commander, every great victory starts with a single order. You've got this. Move out! 💪",
-      "Discipline is doing what needs to be done, even when you don't feel like it. You're built for this, Sir.",
-      "The mission doesn't care about your mood. But I do. Let's crush it together, Commander! 🔥",
-      "A true Commander doesn't wait for the perfect moment — they create it. What's the next move?",
-      "Sir, you've survived 100% of your hardest days. That's an undefeated record. Keep going!",
-      "Pressure makes diamonds, Commander. Every challenge is shaping you. Now let's execute! ⚡",
+      "You've got this! Every great achievement started with a single step. Take that step now 💪",
+      "Discipline beats motivation every time. But hey, why not have both? Let's go! 🔥",
+      "You've survived 100% of your toughest days. That's an undefeated record. Keep going! ⭐",
+      "The best time to start was yesterday. The second best time is NOW. What's the first task? 🎯",
+      "Pressure makes diamonds. Every challenge is shaping you into something amazing ✨",
+      "Small progress is still progress. Don't compare your chapter 1 to someone's chapter 20 📚",
+      "Success is the sum of small efforts repeated day after day. You're building something great! 🏗️",
     ];
     return quotes[Random().nextInt(quotes.length)];
   }
@@ -464,7 +594,6 @@ Private LongCat, at your service! 🫡""";
     String title = command;
     MissionPriority priority = MissionPriority.medium;
 
-    // Remove action words
     final prefixes = ['add ', 'create ', 'new ', 'make ', 'add task ', 'add mission ', 'create task ', 'create mission ', 'todo '];
     for (var prefix in prefixes) {
       if (title.toLowerCase().startsWith(prefix)) {
@@ -473,7 +602,6 @@ Private LongCat, at your service! 🫡""";
       }
     }
 
-    // Detect priority keywords
     final lowerTitle = title.toLowerCase();
     if (lowerTitle.contains('urgent') || lowerTitle.contains('critical') || lowerTitle.contains('asap')) {
       priority = MissionPriority.critical;
@@ -499,11 +627,9 @@ Private LongCat, at your service! 🫡""";
     String title = command;
     DateTime? reminderTime;
 
-    // Remove prefix
     title = title.replaceAll(RegExp(r'^remind me to\s+', caseSensitive: false), '');
     title = title.replaceAll(RegExp(r'^remind me\s+', caseSensitive: false), '');
 
-    // Try to extract time
     final timeRegex = RegExp(r'at (\d{1,2})\s*(am|pm|AM|PM)?', caseSensitive: false);
     final match = timeRegex.firstMatch(title);
     if (match != null) {
@@ -531,13 +657,64 @@ Private LongCat, at your service! 🫡""";
     };
   }
 
-  /// Generate daily commander report
+  /// Generate daily briefing for proactive suggestions
+  Future<String> generateDailyBriefing() async {
+    final stats = await _db.getMissionStats();
+    final pending = await _db.getMissionsByStatus(MissionStatus.pending);
+    final completed = stats['completed'] ?? 0;
+    final total = stats['total'] ?? 0;
+
+    // Find overdue/due-soon missions
+    final now = DateTime.now();
+    final dueSoon = pending.where((m) {
+      if (m.dueDate == null) return false;
+      return m.dueDate!.difference(now).inHours < 24 && m.dueDate!.isAfter(now);
+    }).toList();
+
+    final overdue = pending.where((m) {
+      if (m.dueDate == null) return false;
+      return m.dueDate!.isBefore(now);
+    }).toList();
+
+    String briefing = "☀️ Daily Briefing\n\n";
+
+    if (overdue.isNotEmpty) {
+      briefing += "⚠️ Overdue (${overdue.length}):\n";
+      for (var m in overdue) {
+        briefing += "  • ${m.title}\n";
+      }
+      briefing += "\n";
+    }
+
+    if (dueSoon.isNotEmpty) {
+      briefing += "⏰ Due soon (${dueSoon.length}):\n";
+      for (var m in dueSoon) {
+        briefing += "  • ${m.title}\n";
+      }
+      briefing += "\n";
+    }
+
+    briefing += "📊 Overall: $completed/$total completed";
+    if (total > 0) {
+      briefing += " (${((completed / total) * 100).toStringAsFixed(0)}%)";
+    }
+
+    if (pending.isEmpty && overdue.isEmpty) {
+      briefing += "\n\n🎉 Nothing pending — great job!";
+    } else {
+      briefing += "\n\n💡 Focus on the most important task first!";
+    }
+
+    return briefing;
+  }
+
+  /// Generate daily report
   Future<String> generateDailyReport() async {
     final stats = await _db.getMissionStats();
     final completed = stats['completed'] ?? 0;
     final pending = stats['pending'] ?? 0;
 
-    return "Yes Sir. $completed missions completed. $pending pending. ${tokenManager.tokensRemaining} AI tokens remaining today.";
+    return "$completed missions completed, $pending pending. ${tokenManager.tokensRemaining} AI tokens remaining.";
   }
 }
 

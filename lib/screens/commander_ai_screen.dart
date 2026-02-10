@@ -72,7 +72,6 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
     try {
       final response = await _aiService.processCommand(command);
 
-      // Handle AI actions (like creating missions)
       for (var action in response.actions) {
         if (action.type == AIActionType.createMission ||
             action.type == AIActionType.createReminder) {
@@ -100,7 +99,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
       setState(() {
         _messages.add(ChatMessage(
           role: ChatRole.soldier,
-          content: "Sir, encountered an error during execution. Please retry your order.",
+          content: "Oops! Something went wrong. Please try again 😊",
           tokensUsed: 0,
         ));
         _isProcessing = false;
@@ -117,20 +116,13 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
     return Scaffold(
       body: Column(
         children: [
-          // Top bar with token counter
           _buildTopBar(tokenManager),
-
-          // Chat messages
           Expanded(
             child: _messages.isEmpty
                 ? _buildWelcomeScreen()
                 : _buildMessageList(),
           ),
-
-          // Quick commands
           _buildQuickCommands(),
-
-          // Input area
           _buildInputArea(),
         ],
       ),
@@ -139,47 +131,68 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
 
   Widget _buildTopBar(TokenManager tokenManager) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      decoration: const BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+      decoration: BoxDecoration(
         color: MilitaryTheme.cardBackground,
-        border: Border(
-          bottom: BorderSide(color: MilitaryTheme.surfaceLight, width: 0.5),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: MilitaryTheme.militaryGreen.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                colors: [
+                  MilitaryTheme.accentGreen.withOpacity(0.2),
+                  MilitaryTheme.militaryGreen.withOpacity(0.1),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.military_tech, color: MilitaryTheme.goldAccent, size: 20),
+            child: const Icon(Icons.smart_toy_rounded, color: MilitaryTheme.accentGreen, size: 22),
           ),
-          const SizedBox(width: 10),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'PVT. LONGCAT',
-                style: TextStyle(
-                  color: MilitaryTheme.goldAccent,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'AI Advisor',
+                  style: TextStyle(
+                    color: MilitaryTheme.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Text(
-                'READY FOR ORDERS',
-                style: TextStyle(
-                  color: MilitaryTheme.accentGreen,
-                  fontSize: 10,
-                  letterSpacing: 0.5,
+                Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                        color: MilitaryTheme.accentGreen,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Online — Ready to help',
+                      style: TextStyle(
+                        color: MilitaryTheme.accentGreen,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
           TokenCounter(
             tokensRemaining: tokenManager.tokensRemaining,
             tokenLimit: tokenManager.tokenLimit,
@@ -204,51 +217,79 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    MilitaryTheme.militaryGreen.withOpacity(0.3),
-                    MilitaryTheme.darkGreen.withOpacity(0.3),
+                    MilitaryTheme.accentGreen.withOpacity(0.15),
+                    MilitaryTheme.militaryGreen.withOpacity(0.08),
                   ],
-                ),
-                border: Border.all(
-                  color: MilitaryTheme.goldAccent.withOpacity(0.3),
-                  width: 2,
                 ),
               ),
               child: const Icon(
-                Icons.military_tech,
-                color: MilitaryTheme.goldAccent,
-                size: 50,
+                Icons.smart_toy_rounded,
+                color: MilitaryTheme.accentGreen,
+                size: 48,
               ),
             ),
             const SizedBox(height: 24),
             const Text(
-              'YES SIR',
+              'Your AI Advisor 🫡',
               style: TextStyle(
-                color: MilitaryTheme.goldAccent,
-                fontSize: 28,
+                color: MilitaryTheme.textPrimary,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 4,
               ),
             ),
             const SizedBox(height: 8),
             const Text(
-              'YOUR ORDER. EXECUTED.',
+              'Smart planning • Task breakdown • Insights',
               style: TextStyle(
                 color: MilitaryTheme.textSecondary,
-                fontSize: 14,
-                letterSpacing: 2,
+                fontSize: 13,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
             const Text(
-              'Private LongCat reporting for duty.\nGive your first order, Commander.',
+              'Ask me to plan your day, break down\nbig tasks, or get productivity tips!',
               style: TextStyle(
                 color: MilitaryTheme.textMuted,
                 fontSize: 14,
-                height: 1.5,
+                height: 1.6,
               ),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 28),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: [
+                _buildSuggestionChip('📋 Plan my day'),
+                _buildSuggestionChip('🔥 Break down a big task'),
+                _buildSuggestionChip('📊 How am I doing?'),
+                _buildSuggestionChip('💡 Give me tips'),
+              ],
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSuggestionChip(String label) {
+    return InkWell(
+      onTap: () {
+        _inputController.text = label.replaceAll(RegExp(r'[^\w\s]'), '').trim();
+        _sendCommand();
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: MilitaryTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: MilitaryTheme.surfaceLight),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(color: MilitaryTheme.textSecondary, fontSize: 13),
         ),
       ),
     );
@@ -277,28 +318,29 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.82,
         ),
-        margin: const EdgeInsets.symmetric(vertical: 4),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isCommander
-              ? MilitaryTheme.militaryGreen.withOpacity(0.3)
-              : MilitaryTheme.surfaceDark,
+              ? MilitaryTheme.accentGreen.withOpacity(0.15)
+              : MilitaryTheme.cardBackground,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
+            topLeft: const Radius.circular(18),
+            topRight: const Radius.circular(18),
             bottomLeft: isCommander
-                ? const Radius.circular(16)
+                ? const Radius.circular(18)
                 : const Radius.circular(4),
             bottomRight: isCommander
                 ? const Radius.circular(4)
-                : const Radius.circular(16),
+                : const Radius.circular(18),
           ),
-          border: Border.all(
-            color: isCommander
-                ? MilitaryTheme.accentGreen.withOpacity(0.2)
-                : MilitaryTheme.surfaceLight,
-            width: 0.5,
-          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,7 +349,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  isCommander ? Icons.person : Icons.military_tech,
+                  isCommander ? Icons.person_rounded : Icons.smart_toy_rounded,
                   size: 14,
                   color: isCommander
                       ? MilitaryTheme.accentGreen
@@ -315,14 +357,13 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  isCommander ? 'COMMANDER' : 'PVT. LONGCAT',
+                  isCommander ? 'You' : 'AI Advisor',
                   style: TextStyle(
                     color: isCommander
                         ? MilitaryTheme.accentGreen
                         : MilitaryTheme.goldAccent,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -333,7 +374,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               style: const TextStyle(
                 color: MilitaryTheme.textPrimary,
                 fontSize: 14,
-                height: 1.4,
+                height: 1.5,
               ),
             ),
             if (message.tokensUsed > 0)
@@ -357,21 +398,32 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(14),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
-          color: MilitaryTheme.surfaceDark,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: MilitaryTheme.surfaceLight, width: 0.5),
+          color: MilitaryTheme.cardBackground,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.military_tech, size: 14, color: MilitaryTheme.goldAccent),
-            const SizedBox(width: 8),
+            const Icon(Icons.smart_toy_rounded, size: 14, color: MilitaryTheme.goldAccent),
+            const SizedBox(width: 10),
             SizedBox(
               width: 40,
               child: _TypingDots(),
+            ),
+            const SizedBox(width: 4),
+            const Text(
+              'Thinking...',
+              style: TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
             ),
           ],
         ),
@@ -382,19 +434,22 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   Widget _buildQuickCommands() {
     final commands = [
       ('📊 Status', 'Status report'),
-      ('📋 Plan', 'Plan my day'),
-      ('⚡ Priority', 'Prioritize my tasks'),
+      ('📋 Plan Day', 'Plan my day'),
+      ('🔥 Prioritize', 'Prioritize my tasks'),
+      ('🧩 Break Down', 'Break down my tasks into smaller steps'),
+      ('💡 Tips', 'Give me productivity tips'),
+      ('📝 Templates', 'Show me mission templates'),
       ('💪 Motivate', 'Motivate me'),
     ];
 
     return Container(
-      height: 42,
+      height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: commands.map((cmd) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
             child: InkWell(
               onTap: () {
                 _inputController.text = cmd.$2;
@@ -402,13 +457,11 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               },
               borderRadius: BorderRadius.circular(20),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
                   color: MilitaryTheme.surfaceDark,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: MilitaryTheme.surfaceLight,
-                  ),
+                  border: Border.all(color: MilitaryTheme.surfaceLight),
                 ),
                 child: Text(
                   cmd.$1,
@@ -428,11 +481,15 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   Widget _buildInputArea() {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: MilitaryTheme.cardBackground,
-        border: Border(
-          top: BorderSide(color: MilitaryTheme.surfaceLight, width: 0.5),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+          ),
+        ],
       ),
       child: SafeArea(
         child: Row(
@@ -443,7 +500,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 focusNode: _focusNode,
                 style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 15),
                 decoration: InputDecoration(
-                  hintText: 'Give your order, Commander...',
+                  hintText: 'Ask anything...',
                   hintStyle: TextStyle(
                     color: MilitaryTheme.textMuted.withOpacity(0.6),
                   ),
@@ -465,15 +522,26 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
             const SizedBox(width: 8),
             Container(
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [MilitaryTheme.darkGreen, MilitaryTheme.militaryGreen],
+                gradient: LinearGradient(
+                  colors: [
+                    MilitaryTheme.accentGreen,
+                    MilitaryTheme.militaryGreen,
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: MilitaryTheme.accentGreen.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: IconButton(
                 icon: Icon(
-                  _isProcessing ? Icons.hourglass_top : Icons.send_rounded,
-                  color: MilitaryTheme.goldAccent,
+                  _isProcessing ? Icons.hourglass_top_rounded : Icons.send_rounded,
+                  color: Colors.white,
+                  size: 22,
                 ),
                 onPressed: _isProcessing ? null : _sendCommand,
               ),
@@ -527,10 +595,10 @@ class _TypingDotsState extends State<_TypingDots>
               child: Opacity(
                 opacity: opacity.clamp(0.2, 1.0),
                 child: Container(
-                  width: 6,
-                  height: 6,
-                  decoration: const BoxDecoration(
-                    color: MilitaryTheme.goldAccent,
+                  width: 7,
+                  height: 7,
+                  decoration: BoxDecoration(
+                    color: MilitaryTheme.accentGreen,
                     shape: BoxShape.circle,
                   ),
                 ),

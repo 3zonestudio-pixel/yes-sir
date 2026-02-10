@@ -38,7 +38,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateMissionDialog(context),
-        child: const Icon(Icons.add, size: 28),
+        backgroundColor: MilitaryTheme.accentGreen,
+        child: const Icon(Icons.add_rounded, size: 28, color: Colors.white),
       ),
     );
   }
@@ -47,12 +48,16 @@ class _MissionsScreenState extends State<MissionsScreen> {
     final provider = context.watch<MissionProvider>();
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      decoration: const BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+      decoration: BoxDecoration(
         color: MilitaryTheme.cardBackground,
-        border: Border(
-          bottom: BorderSide(color: MilitaryTheme.surfaceLight, width: 0.5),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -62,52 +67,57 @@ class _MissionsScreenState extends State<MissionsScreen> {
             style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 14),
             decoration: InputDecoration(
               hintText: 'Search missions...',
-              prefixIcon: const Icon(Icons.search, color: MilitaryTheme.textMuted, size: 20),
+              prefixIcon: const Icon(Icons.search_rounded, color: MilitaryTheme.textMuted, size: 20),
               filled: true,
               fillColor: MilitaryTheme.surfaceDark,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           // Filter chips
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
                 _buildFilterChip(
-                  'ALL',
+                  'All',
+                  Icons.apps_rounded,
                   provider.statusFilter == null && !provider.showStarredOnly,
                   () => provider.clearFilters(),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 8),
                 _buildFilterChip(
-                  '⭐ STARRED',
+                  'Starred',
+                  Icons.star_rounded,
                   provider.showStarredOnly,
                   () => provider.setStarredOnly(!provider.showStarredOnly),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 8),
                 _buildFilterChip(
-                  '⏳ PENDING',
+                  'Pending',
+                  Icons.schedule_rounded,
                   provider.statusFilter == MissionStatus.pending,
                   () => provider.setStatusFilter(
                     provider.statusFilter == MissionStatus.pending ? null : MissionStatus.pending,
                   ),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 8),
                 _buildFilterChip(
-                  '🔄 ACTIVE',
+                  'Active',
+                  Icons.play_circle_rounded,
                   provider.statusFilter == MissionStatus.inProgress,
                   () => provider.setStatusFilter(
                     provider.statusFilter == MissionStatus.inProgress ? null : MissionStatus.inProgress,
                   ),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 8),
                 _buildFilterChip(
-                  '✅ DONE',
+                  'Done',
+                  Icons.check_circle_rounded,
                   provider.statusFilter == MissionStatus.completed,
                   () => provider.setStatusFilter(
                     provider.statusFilter == MissionStatus.completed ? null : MissionStatus.completed,
@@ -121,29 +131,38 @@ class _MissionsScreenState extends State<MissionsScreen> {
     );
   }
 
-  Widget _buildFilterChip(String label, bool selected, VoidCallback onTap) {
+  Widget _buildFilterChip(String label, IconData icon, bool selected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: selected
-              ? MilitaryTheme.militaryGreen.withOpacity(0.3)
+              ? MilitaryTheme.accentGreen.withOpacity(0.15)
               : MilitaryTheme.surfaceDark,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selected
                 ? MilitaryTheme.accentGreen
-                : MilitaryTheme.surfaceLight,
+                : Colors.transparent,
+            width: 1.5,
           ),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? MilitaryTheme.accentGreen : MilitaryTheme.textSecondary,
-            fontSize: 12,
-            fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: selected ? MilitaryTheme.accentGreen : MilitaryTheme.textMuted),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: selected ? MilitaryTheme.accentGreen : MilitaryTheme.textSecondary,
+                fontSize: 13,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -154,18 +173,46 @@ class _MissionsScreenState extends State<MissionsScreen> {
     final missions = provider.missions;
 
     if (missions.isEmpty) {
-      return const EmptyStateWidget(
-        title: 'No Missions',
-        subtitle: 'Create your first mission to get started, Commander.',
-        icon: Icons.assignment_outlined,
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: MilitaryTheme.surfaceDark,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.assignment_outlined, color: MilitaryTheme.textMuted, size: 40),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'No Missions Yet',
+                style: TextStyle(
+                  color: MilitaryTheme.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Tap + to create your first mission!',
+                style: TextStyle(color: MilitaryTheme.textMuted, fontSize: 14),
+              ),
+            ],
+          ),
+        ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: _loadMissions,
-      color: MilitaryTheme.goldAccent,
+      color: MilitaryTheme.accentGreen,
       child: ListView.builder(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         itemCount: missions.length,
         itemBuilder: (context, index) {
           return _buildMissionCard(missions[index]);
@@ -176,6 +223,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
 
   Widget _buildMissionCard(Mission mission) {
     final isCompleted = mission.status == MissionStatus.completed;
+    final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
 
     return Dismissible(
       key: Key(mission.id),
@@ -183,27 +231,27 @@ class _MissionsScreenState extends State<MissionsScreen> {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        margin: const EdgeInsets.symmetric(vertical: 4),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          color: MilitaryTheme.commandRed.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
+          color: MilitaryTheme.commandRed.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(16),
         ),
-        child: const Icon(Icons.delete_outline, color: MilitaryTheme.commandRed),
+        child: const Icon(Icons.delete_rounded, color: MilitaryTheme.commandRed),
       ),
       confirmDismiss: (direction) async {
         return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('DELETE MISSION', style: TextStyle(color: MilitaryTheme.goldAccent)),
-            content: Text('Abort mission "${mission.title}"?'),
+            title: const Text('Delete Mission?', style: TextStyle(color: MilitaryTheme.textPrimary, fontSize: 18)),
+            content: Text('Remove "${mission.title}"?'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('CANCEL', style: TextStyle(color: MilitaryTheme.textSecondary)),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('DELETE', style: TextStyle(color: MilitaryTheme.commandRed)),
+                child: const Text('Delete', style: TextStyle(color: MilitaryTheme.commandRed)),
               ),
             ],
           ),
@@ -218,136 +266,157 @@ class _MissionsScreenState extends State<MissionsScreen> {
       child: GestureDetector(
         onTap: () => _showMissionDetails(mission),
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          padding: const EdgeInsets.all(14),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: MilitaryTheme.cardBackground,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isCompleted
-                  ? MilitaryTheme.accentGreen.withOpacity(0.2)
-                  : MilitaryTheme.surfaceLight,
-              width: 0.5,
-            ),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
-          child: Row(
-            children: [
-              // Status toggle
-              GestureDetector(
-                onTap: () => _toggleMissionStatus(mission),
-                child: Container(
-                  width: 28,
-                  height: 28,
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                // Priority stripe
+                Container(
+                  width: 5,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isCompleted
-                        ? MilitaryTheme.accentGreen.withOpacity(0.2)
-                        : Colors.transparent,
-                    border: Border.all(
-                      color: isCompleted
-                          ? MilitaryTheme.accentGreen
-                          : MilitaryTheme.textMuted,
-                      width: 2,
+                    color: priorityColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
                     ),
                   ),
-                  child: isCompleted
-                      ? const Icon(Icons.check, color: MilitaryTheme.accentGreen, size: 16)
-                      : null,
                 ),
-              ),
-              const SizedBox(width: 12),
-
-              // Mission details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                // Content
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            mission.title,
-                            style: TextStyle(
+                        // Status toggle
+                        GestureDetector(
+                          onTap: () => _toggleMissionStatus(mission),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                               color: isCompleted
-                                  ? MilitaryTheme.textMuted
-                                  : MilitaryTheme.textPrimary,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              decoration: isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : null,
+                                  ? MilitaryTheme.accentGreen.withOpacity(0.2)
+                                  : Colors.transparent,
+                              border: Border.all(
+                                color: isCompleted
+                                    ? MilitaryTheme.accentGreen
+                                    : MilitaryTheme.textMuted,
+                                width: 2,
+                              ),
                             ),
+                            child: isCompleted
+                                ? const Icon(Icons.check_rounded, color: MilitaryTheme.accentGreen, size: 16)
+                                : null,
                           ),
                         ),
-                        PriorityBadge(
-                          priorityIndex: mission.priority.index,
-                          compact: true,
-                        ),
-                      ],
-                    ),
-                    if (mission.description.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          mission.description,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: MilitaryTheme.textMuted,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        StatusBadge(statusIndex: mission.status.index),
-                        const Spacer(),
-                        if (mission.dueDate != null)
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
+                        const SizedBox(width: 12),
+                        // Mission details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(Icons.schedule, size: 12, color: MilitaryTheme.textMuted),
-                              const SizedBox(width: 4),
-                              Text(
-                                _formatDate(mission.dueDate!),
-                                style: const TextStyle(
-                                  color: MilitaryTheme.textMuted,
-                                  fontSize: 11,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      mission.title,
+                                      style: TextStyle(
+                                        color: isCompleted
+                                            ? MilitaryTheme.textMuted
+                                            : MilitaryTheme.textPrimary,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        decoration: isCompleted
+                                            ? TextDecoration.lineThrough
+                                            : null,
+                                      ),
+                                    ),
+                                  ),
+                                  PriorityBadge(priorityIndex: mission.priority.index, compact: true),
+                                ],
+                              ),
+                              if (mission.description.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    mission.description,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: MilitaryTheme.textMuted,
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  StatusBadge(statusIndex: mission.status.index),
+                                  const Spacer(),
+                                  if (mission.dueDate != null)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.schedule_rounded, size: 13, color: MilitaryTheme.textMuted),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          _formatDate(mission.dueDate!),
+                                          style: TextStyle(
+                                            color: _isDueSoon(mission.dueDate!)
+                                                ? MilitaryTheme.warningOrange
+                                                : MilitaryTheme.textMuted,
+                                            fontSize: 12,
+                                            fontWeight: _isDueSoon(mission.dueDate!) ? FontWeight.w600 : FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
                               ),
                             ],
                           ),
+                        ),
+                        const SizedBox(width: 8),
+                        // Star
+                        GestureDetector(
+                          onTap: () => _toggleStar(mission),
+                          child: Icon(
+                            mission.isStarred ? Icons.star_rounded : Icons.star_border_rounded,
+                            color: mission.isStarred
+                                ? MilitaryTheme.goldAccent
+                                : MilitaryTheme.textMuted,
+                            size: 24,
+                          ),
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-
-              // Star
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () => _toggleStar(mission),
-                child: Icon(
-                  mission.isStarred ? Icons.star : Icons.star_border,
-                  color: mission.isStarred
-                      ? MilitaryTheme.goldAccent
-                      : MilitaryTheme.textMuted,
-                  size: 22,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  bool _isDueSoon(DateTime dueDate) {
+    final now = DateTime.now();
+    final diff = dueDate.difference(now);
+    return diff.inHours < 24 && diff.inHours >= 0;
   }
 
   String _formatDate(DateTime date) {
@@ -392,7 +461,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
       isScrollControlled: true,
       backgroundColor: MilitaryTheme.cardBackground,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) => _MissionDetailSheet(
         mission: mission,
@@ -424,7 +493,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
       isScrollControlled: true,
       backgroundColor: MilitaryTheme.cardBackground,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
         return StatefulBuilder(
@@ -440,85 +509,89 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
+                  // Handle bar
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: MilitaryTheme.surfaceLight,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Icon(Icons.add_task, color: MilitaryTheme.goldAccent),
+                      const Icon(Icons.add_task_rounded, color: MilitaryTheme.accentGreen, size: 24),
                       const SizedBox(width: 10),
                       const Text(
-                        'NEW MISSION',
+                        'New Mission',
                         style: TextStyle(
-                          color: MilitaryTheme.goldAccent,
-                          fontSize: 18,
+                          color: MilitaryTheme.textPrimary,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
                         ),
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.close, color: MilitaryTheme.textMuted),
+                        icon: const Icon(Icons.close_rounded, color: MilitaryTheme.textMuted),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Title
                   TextField(
                     controller: titleController,
                     autofocus: true,
                     style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 16),
                     decoration: const InputDecoration(
-                      hintText: 'Mission objective...',
-                      labelText: 'MISSION TITLE',
-                      labelStyle: TextStyle(color: MilitaryTheme.goldAccent, fontSize: 12, letterSpacing: 1),
+                      hintText: 'What do you need to do?',
+                      labelText: 'Mission Title',
+                      labelStyle: TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13),
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Description
                   TextField(
                     controller: descController,
                     style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 14),
                     maxLines: 2,
                     decoration: const InputDecoration(
-                      hintText: 'Mission details (optional)...',
-                      labelText: 'DETAILS',
-                      labelStyle: TextStyle(color: MilitaryTheme.goldAccent, fontSize: 12, letterSpacing: 1),
+                      hintText: 'Add details (optional)...',
+                      labelText: 'Details',
+                      labelStyle: TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13),
                     ),
                   ),
-                  const SizedBox(height: 16),
-
-                  // Priority selector
+                  const SizedBox(height: 18),
                   const Text(
-                    'PRIORITY LEVEL',
+                    'Priority',
                     style: TextStyle(
-                      color: MilitaryTheme.goldAccent,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                      color: MilitaryTheme.textPrimary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Row(
                     children: MissionPriority.values.map((priority) {
                       final selected = selectedPriority == priority;
                       final color = MilitaryTheme.getPriorityColor(priority.index);
-                      final labels = ['LOW', 'MED', 'HIGH', 'CRIT'];
+                      final labels = ['Low', 'Med', 'High', 'Critical'];
                       return Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => selectedPriority = priority),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
                             margin: const EdgeInsets.symmetric(horizontal: 3),
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
                               color: selected
-                                  ? color.withOpacity(0.2)
+                                  ? color.withOpacity(0.15)
                                   : MilitaryTheme.surfaceDark,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: selected ? color : MilitaryTheme.surfaceLight,
-                                width: selected ? 1.5 : 0.5,
+                                color: selected ? color : Colors.transparent,
+                                width: 1.5,
                               ),
                             ),
                             child: Center(
@@ -527,7 +600,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                 style: TextStyle(
                                   color: selected ? color : MilitaryTheme.textMuted,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
@@ -537,8 +610,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-
-                  // Date picker
                   GestureDetector(
                     onTap: () async {
                       final date = await showDatePicker(
@@ -566,12 +637,15 @@ class _MissionsScreenState extends State<MissionsScreen> {
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: MilitaryTheme.surfaceDark,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: MilitaryTheme.surfaceLight),
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.calendar_today, color: MilitaryTheme.textMuted, size: 18),
+                          Icon(
+                            Icons.calendar_today_rounded,
+                            color: selectedDate != null ? MilitaryTheme.accentGreen : MilitaryTheme.textMuted,
+                            size: 20,
+                          ),
                           const SizedBox(width: 10),
                           Text(
                             selectedDate != null
@@ -589,8 +663,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // Create button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -610,10 +682,11 @@ class _MissionsScreenState extends State<MissionsScreen> {
                           Navigator.pop(context);
                         }
                       },
-                      icon: const Icon(Icons.rocket_launch, size: 18),
-                      label: const Text('DEPLOY MISSION'),
+                      icon: const Icon(Icons.rocket_launch_rounded, size: 20),
+                      label: const Text('Create Mission'),
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
                     ),
                   ),
@@ -659,34 +732,42 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
+          // Handle bar
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: MilitaryTheme.surfaceLight,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           Row(
             children: [
-              const Icon(Icons.assignment, color: MilitaryTheme.goldAccent),
+              const Icon(Icons.assignment_rounded, color: MilitaryTheme.accentGreen, size: 24),
               const SizedBox(width: 10),
               const Text(
-                'MISSION DETAILS',
+                'Mission Details',
                 style: TextStyle(
-                  color: MilitaryTheme.goldAccent,
-                  fontSize: 16,
+                  color: MilitaryTheme.textPrimary,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5,
                 ),
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.delete_outline, color: MilitaryTheme.commandRed, size: 22),
+                icon: const Icon(Icons.delete_outline_rounded, color: MilitaryTheme.commandRed, size: 22),
                 onPressed: widget.onDelete,
               ),
               IconButton(
-                icon: const Icon(Icons.close, color: MilitaryTheme.textMuted),
+                icon: const Icon(Icons.close_rounded, color: MilitaryTheme.textMuted),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
           ),
           const SizedBox(height: 16),
-
-          // Title
           Text(
             _mission.title,
             style: const TextStyle(
@@ -695,21 +776,14 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           if (_mission.description.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
               _mission.description,
-              style: const TextStyle(
-                color: MilitaryTheme.textSecondary,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: MilitaryTheme.textSecondary, fontSize: 14, height: 1.5),
             ),
           ],
-
           const SizedBox(height: 16),
-
-          // Status & Priority
           Row(
             children: [
               PriorityBadge(priorityIndex: _mission.priority.index),
@@ -717,33 +791,28 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
               StatusBadge(statusIndex: _mission.status.index),
               const Spacer(),
               if (_mission.isStarred)
-                const Icon(Icons.star, color: MilitaryTheme.goldAccent, size: 20),
+                const Icon(Icons.star_rounded, color: MilitaryTheme.goldAccent, size: 22),
             ],
           ),
-
           const SizedBox(height: 20),
-
-          // Status update buttons
           const Text(
-            'UPDATE STATUS',
+            'Update Status',
             style: TextStyle(
-              color: MilitaryTheme.goldAccent,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1,
+              color: MilitaryTheme.textPrimary,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Row(
             children: [
-              _buildStatusButton('PENDING', MissionStatus.pending, MilitaryTheme.statusPending),
-              const SizedBox(width: 6),
-              _buildStatusButton('ACTIVE', MissionStatus.inProgress, MilitaryTheme.statusInProgress),
-              const SizedBox(width: 6),
-              _buildStatusButton('DONE', MissionStatus.completed, MilitaryTheme.statusCompleted),
+              _buildStatusButton('Pending', MissionStatus.pending, MilitaryTheme.statusPending),
+              const SizedBox(width: 8),
+              _buildStatusButton('Active', MissionStatus.inProgress, MilitaryTheme.statusInProgress),
+              const SizedBox(width: 8),
+              _buildStatusButton('Done', MissionStatus.completed, MilitaryTheme.statusCompleted),
             ],
           ),
-
           const SizedBox(height: 20),
         ],
       ),
@@ -763,14 +832,15 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
           });
           widget.onUpdate(_mission);
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: selected ? color.withOpacity(0.2) : MilitaryTheme.surfaceDark,
-            borderRadius: BorderRadius.circular(8),
+            color: selected ? color.withOpacity(0.15) : MilitaryTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: selected ? color : MilitaryTheme.surfaceLight,
-              width: selected ? 1.5 : 0.5,
+              color: selected ? color : Colors.transparent,
+              width: 1.5,
             ),
           ),
           child: Center(
@@ -778,8 +848,8 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
               label,
               style: TextStyle(
                 color: selected ? color : MilitaryTheme.textMuted,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),

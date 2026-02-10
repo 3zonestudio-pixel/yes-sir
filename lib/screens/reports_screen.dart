@@ -32,7 +32,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
       totalTokens += usage.tokensUsed;
     }
 
-    // Calculate streak (days with at least 1 completed mission)
     int streak = 0;
     final now = DateTime.now();
     for (int i = 0; i < 30; i++) {
@@ -61,7 +60,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _loadStats,
-        color: MilitaryTheme.goldAccent,
+        color: MilitaryTheme.accentGreen,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -85,34 +84,34 @@ class _ReportsScreenState extends State<ReportsScreen> {
   Widget _buildHeader() {
     return Row(
       children: [
-        const Icon(Icons.analytics, color: MilitaryTheme.goldAccent, size: 22),
-        const SizedBox(width: 10),
-        const Text(
-          'AFTER-ACTION REPORT',
-          style: TextStyle(
-            color: MilitaryTheme.goldAccent,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
-        ),
-        const Spacer(),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: MilitaryTheme.surfaceDark,
+            color: MilitaryTheme.accentGreen.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: MilitaryTheme.surfaceLight),
           ),
-          child: Text(
-            'TODAY',
-            style: TextStyle(
-              color: MilitaryTheme.accentGreen.withOpacity(0.8),
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1,
+          child: const Icon(Icons.analytics_rounded, color: MilitaryTheme.accentGreen, size: 22),
+        ),
+        const SizedBox(width: 12),
+        const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Reports',
+              style: TextStyle(
+                color: MilitaryTheme.textPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
+            Text(
+              'Your productivity overview',
+              style: TextStyle(
+                color: MilitaryTheme.textMuted,
+                fontSize: 12,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -130,18 +129,18 @@ class _ReportsScreenState extends State<ReportsScreen> {
           children: [
             Expanded(
               child: _buildStatCard(
-                'TOTAL',
+                'Total',
                 total.toString(),
-                Icons.assignment,
+                Icons.assignment_rounded,
                 MilitaryTheme.infoBlue,
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: _buildStatCard(
-                'COMPLETED',
+                'Completed',
                 completed.toString(),
-                Icons.check_circle,
+                Icons.check_circle_rounded,
                 MilitaryTheme.accentGreen,
               ),
             ),
@@ -152,18 +151,18 @@ class _ReportsScreenState extends State<ReportsScreen> {
           children: [
             Expanded(
               child: _buildStatCard(
-                'IN PROGRESS',
+                'Active',
                 inProgress.toString(),
-                Icons.play_circle_filled,
+                Icons.play_circle_rounded,
                 MilitaryTheme.warningOrange,
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: _buildStatCard(
-                'PENDING',
+                'Pending',
                 pending.toString(),
-                Icons.schedule,
+                Icons.schedule_rounded,
                 MilitaryTheme.statusPending,
               ),
             ),
@@ -173,44 +172,45 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildStatCard(
-      String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: MilitaryTheme.cardBackground,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 0.5,
-        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: color, size: 18),
-              const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  color: color.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
-                  ),
+                child: Icon(icon, color: color, size: 18),
+              ),
+              const Spacer(),
+              Text(
+                label,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(
@@ -231,34 +231,50 @@ class _ReportsScreenState extends State<ReportsScreen> {
     final total = completed + pending + inProgress;
 
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: MilitaryTheme.militaryCardDecoration,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: MilitaryTheme.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.pie_chart, color: MilitaryTheme.goldAccent, size: 18),
-              SizedBox(width: 8),
-              Text(
-                'MISSION DISTRIBUTION',
+              const Icon(Icons.pie_chart_rounded, color: MilitaryTheme.accentGreen, size: 20),
+              const SizedBox(width: 8),
+              const Text(
+                'Mission Distribution',
                 style: TextStyle(
-                  color: MilitaryTheme.goldAccent,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  color: MilitaryTheme.textPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
           total == 0
-              ? const Center(
+              ? Center(
                   child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      'No mission data yet',
-                      style: TextStyle(color: MilitaryTheme.textMuted),
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      children: [
+                        Icon(Icons.pie_chart_outline_rounded,
+                            color: MilitaryTheme.textMuted.withOpacity(0.3), size: 48),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'No data yet',
+                          style: TextStyle(color: MilitaryTheme.textMuted),
+                        ),
+                      ],
                     ),
                   ),
                 )
@@ -304,20 +320,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                 radius: 50,
                               ),
                             ],
-                            sectionsSpace: 2,
-                            centerSpaceRadius: 30,
+                            sectionsSpace: 3,
+                            centerSpaceRadius: 35,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 24),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildLegendItem('Completed', MilitaryTheme.accentGreen),
-                          const SizedBox(height: 8),
-                          _buildLegendItem('In Progress', MilitaryTheme.warningOrange),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
+                          _buildLegendItem('Active', MilitaryTheme.warningOrange),
+                          const SizedBox(height: 10),
                           _buildLegendItem('Pending', MilitaryTheme.statusPending),
                         ],
                       ),
@@ -338,7 +354,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           height: 12,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(3),
+            borderRadius: BorderRadius.circular(4),
           ),
         ),
         const SizedBox(width: 8),
@@ -346,7 +362,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           label,
           style: const TextStyle(
             color: MilitaryTheme.textSecondary,
-            fontSize: 12,
+            fontSize: 13,
           ),
         ),
       ],
@@ -355,28 +371,37 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Widget _buildTokenUsageCard(TokenManager tokenManager) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: MilitaryTheme.militaryCardDecoration,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: MilitaryTheme.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.bolt, color: MilitaryTheme.goldAccent, size: 18),
+              const Icon(Icons.bolt_rounded, color: MilitaryTheme.goldAccent, size: 20),
               const SizedBox(width: 8),
               const Text(
-                'AI TOKEN USAGE',
+                'AI Token Usage',
                 style: TextStyle(
-                  color: MilitaryTheme.goldAccent,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  color: MilitaryTheme.textPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const Spacer(),
               if (tokenManager.isPremium)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [MilitaryTheme.goldDark, MilitaryTheme.goldAccent],
@@ -384,19 +409,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
-                    'PREMIUM',
+                    'Premium',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 9,
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 16),
-
-          // Today's usage bar
+          const SizedBox(height: 18),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -414,9 +437,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               value: tokenManager.usagePercent.clamp(0.0, 1.0),
               minHeight: 10,
@@ -430,9 +453,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
-
-          // Week total
+          const SizedBox(height: 14),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -456,8 +477,19 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Widget _buildStreakCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: MilitaryTheme.goldenAccentCard,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            MilitaryTheme.goldAccent.withOpacity(0.08),
+            MilitaryTheme.goldAccent.withOpacity(0.03),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: MilitaryTheme.goldAccent.withOpacity(0.15)),
+      ),
       child: Row(
         children: [
           Container(
@@ -465,12 +497,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  MilitaryTheme.goldDark.withOpacity(0.3),
-                  MilitaryTheme.goldAccent.withOpacity(0.1),
-                ],
-              ),
+              color: MilitaryTheme.goldAccent.withOpacity(0.1),
             ),
             child: Center(
               child: Text(
@@ -489,28 +516,27 @@ class _ReportsScreenState extends State<ReportsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'MISSION STREAK',
+                  'Day Streak 🔥',
                   style: TextStyle(
                     color: MilitaryTheme.goldAccent,
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   _streak > 0
-                      ? '$_streak day${_streak != 1 ? 's' : ''} of consecutive mission completion!'
+                      ? '$_streak day${_streak != 1 ? 's' : ''} of consecutive completion!'
                       : 'Complete a mission to start your streak!',
                   style: const TextStyle(
                     color: MilitaryTheme.textSecondary,
-                    fontSize: 12,
+                    fontSize: 13,
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.local_fire_department, color: MilitaryTheme.warningOrange, size: 28),
+          const Icon(Icons.local_fire_department_rounded, color: MilitaryTheme.warningOrange, size: 30),
         ],
       ),
     );
@@ -525,39 +551,48 @@ class _ReportsScreenState extends State<ReportsScreen> {
     IconData icon;
 
     if (rate >= 80) {
-      message = "Outstanding performance, Commander! You're a true leader.";
-      icon = Icons.military_tech;
+      message = "Outstanding! You're crushing it 💪";
+      icon = Icons.emoji_events_rounded;
     } else if (rate >= 50) {
-      message = "Good progress, Commander. Keep pushing forward.";
-      icon = Icons.trending_up;
+      message = "Great progress! Keep the momentum going 🚀";
+      icon = Icons.trending_up_rounded;
     } else if (rate > 0) {
-      message = "Room for improvement, Commander. Focus on high-priority targets.";
-      icon = Icons.flag;
+      message = "You've got this! Focus on what matters most ✨";
+      icon = Icons.flag_rounded;
     } else {
-      message = "Welcome, Commander. Create your first mission to begin.";
-      icon = Icons.rocket_launch;
+      message = "Welcome! Create your first mission to begin 🎯";
+      icon = Icons.rocket_launch_rounded;
     }
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: MilitaryTheme.militaryGreen.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: MilitaryTheme.accentGreen.withOpacity(0.2),
+        gradient: LinearGradient(
+          colors: [
+            MilitaryTheme.accentGreen.withOpacity(0.08),
+            MilitaryTheme.accentGreen.withOpacity(0.02),
+          ],
         ),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Icon(icon, color: MilitaryTheme.accentGreen, size: 24),
-          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: MilitaryTheme.accentGreen.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: MilitaryTheme.accentGreen, size: 24),
+          ),
+          const SizedBox(width: 14),
           Expanded(
             child: Text(
               message,
               style: const TextStyle(
                 color: MilitaryTheme.textSecondary,
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
+                fontSize: 14,
+                height: 1.4,
               ),
             ),
           ),

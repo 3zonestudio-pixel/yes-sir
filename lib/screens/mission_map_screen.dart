@@ -41,7 +41,7 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
       body: Column(
         children: [
           _buildCalendar(provider),
-          const Divider(height: 1, color: MilitaryTheme.surfaceLight),
+          const SizedBox(height: 4),
           _buildDayHeader(),
           Expanded(child: _buildDayMissions()),
         ],
@@ -51,87 +51,105 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
 
   Widget _buildCalendar(MissionProvider provider) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: TableCalendar(
-        firstDay: DateTime.utc(2024, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-          _loadMissionsForDay(selectedDay);
-        },
-        onFormatChanged: (format) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        },
-        eventLoader: (day) {
-          return provider.getMissionsForDate(day);
-        },
-        calendarStyle: CalendarStyle(
-          defaultTextStyle: const TextStyle(color: MilitaryTheme.textPrimary),
-          weekendTextStyle: const TextStyle(color: MilitaryTheme.textSecondary),
-          outsideTextStyle: const TextStyle(color: MilitaryTheme.textMuted),
-          todayDecoration: BoxDecoration(
-            color: MilitaryTheme.militaryGreen.withOpacity(0.3),
-            shape: BoxShape.circle,
-            border: Border.all(color: MilitaryTheme.accentGreen, width: 1),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: MilitaryTheme.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-          todayTextStyle: const TextStyle(
-            color: MilitaryTheme.accentGreen,
-            fontWeight: FontWeight.bold,
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: TableCalendar(
+          firstDay: DateTime.utc(2024, 1, 1),
+          lastDay: DateTime.utc(2030, 12, 31),
+          focusedDay: _focusedDay,
+          calendarFormat: _calendarFormat,
+          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+            _loadMissionsForDay(selectedDay);
+          },
+          onFormatChanged: (format) {
+            setState(() {
+              _calendarFormat = format;
+            });
+          },
+          eventLoader: (day) {
+            return provider.getMissionsForDate(day);
+          },
+          calendarStyle: CalendarStyle(
+            defaultTextStyle: const TextStyle(color: MilitaryTheme.textPrimary),
+            weekendTextStyle: const TextStyle(color: MilitaryTheme.textSecondary),
+            outsideTextStyle: const TextStyle(color: MilitaryTheme.textMuted),
+            todayDecoration: BoxDecoration(
+              color: MilitaryTheme.accentGreen.withOpacity(0.15),
+              shape: BoxShape.circle,
+              border: Border.all(color: MilitaryTheme.accentGreen, width: 1.5),
+            ),
+            todayTextStyle: const TextStyle(
+              color: MilitaryTheme.accentGreen,
+              fontWeight: FontWeight.bold,
+            ),
+            selectedDecoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [MilitaryTheme.militaryGreen, MilitaryTheme.accentGreen],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+            selectedTextStyle: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            markerDecoration: BoxDecoration(
+              color: MilitaryTheme.goldAccent,
+              shape: BoxShape.circle,
+            ),
+            markerSize: 6,
+            markersMaxCount: 3,
+            cellMargin: const EdgeInsets.all(4),
           ),
-          selectedDecoration: const BoxDecoration(
-            color: MilitaryTheme.militaryGreen,
-            shape: BoxShape.circle,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: true,
+            formatButtonDecoration: BoxDecoration(
+              color: MilitaryTheme.accentGreen.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            formatButtonTextStyle: const TextStyle(
+              color: MilitaryTheme.accentGreen,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+            titleCentered: true,
+            titleTextStyle: const TextStyle(
+              color: MilitaryTheme.textPrimary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+            leftChevronIcon: Icon(Icons.chevron_left_rounded, color: MilitaryTheme.accentGreen),
+            rightChevronIcon: Icon(Icons.chevron_right_rounded, color: MilitaryTheme.accentGreen),
           ),
-          selectedTextStyle: const TextStyle(
-            color: MilitaryTheme.goldAccent,
-            fontWeight: FontWeight.bold,
-          ),
-          markerDecoration: const BoxDecoration(
-            color: MilitaryTheme.goldAccent,
-            shape: BoxShape.circle,
-          ),
-          markerSize: 6,
-          markersMaxCount: 3,
-          cellMargin: const EdgeInsets.all(4),
-        ),
-        headerStyle: HeaderStyle(
-          formatButtonVisible: true,
-          formatButtonDecoration: BoxDecoration(
-            border: Border.all(color: MilitaryTheme.goldAccent),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          formatButtonTextStyle: const TextStyle(
-            color: MilitaryTheme.goldAccent,
-            fontSize: 12,
-          ),
-          titleCentered: true,
-          titleTextStyle: const TextStyle(
-            color: MilitaryTheme.goldAccent,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
-          ),
-          leftChevronIcon: const Icon(Icons.chevron_left, color: MilitaryTheme.goldAccent),
-          rightChevronIcon: const Icon(Icons.chevron_right, color: MilitaryTheme.goldAccent),
-        ),
-        daysOfWeekStyle: const DaysOfWeekStyle(
-          weekdayStyle: TextStyle(
-            color: MilitaryTheme.textMuted,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-          weekendStyle: TextStyle(
-            color: MilitaryTheme.textMuted,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+          daysOfWeekStyle: const DaysOfWeekStyle(
+            weekdayStyle: TextStyle(
+              color: MilitaryTheme.textMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+            weekendStyle: TextStyle(
+              color: MilitaryTheme.textMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -146,35 +164,42 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
-          Icon(
-            isToday ? Icons.today : Icons.calendar_today,
-            color: MilitaryTheme.goldAccent,
-            size: 18,
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: MilitaryTheme.accentGreen.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              isToday ? Icons.today_rounded : Icons.calendar_today_rounded,
+              color: MilitaryTheme.accentGreen,
+              size: 18,
+            ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Text(
             isToday
-                ? 'TODAY\'S MISSIONS'
+                ? "Today's Missions"
                 : '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
             style: const TextStyle(
-              color: MilitaryTheme.goldAccent,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1,
+              color: MilitaryTheme.textPrimary,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const Spacer(),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: MilitaryTheme.surfaceDark,
+              color: MilitaryTheme.accentGreen.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               '${_selectedDayMissions.length} mission${_selectedDayMissions.length != 1 ? 's' : ''}',
               style: const TextStyle(
-                color: MilitaryTheme.textSecondary,
+                color: MilitaryTheme.accentGreen,
                 fontSize: 12,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -187,8 +212,8 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
     if (_selectedDayMissions.isEmpty) {
       return const EmptyStateWidget(
         title: 'No Missions Scheduled',
-        subtitle: 'This day is clear. Assign missions from the Missions tab.',
-        icon: Icons.event_available,
+        subtitle: 'This day is clear. Add missions with due dates to see them here.',
+        icon: Icons.event_available_rounded,
       );
     }
 
@@ -204,35 +229,48 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
 
   Widget _buildMissionTimelineCard(Mission mission, int index) {
     final isCompleted = mission.status == MissionStatus.completed;
+    final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
 
     return IntrinsicHeight(
       child: Row(
         children: [
-          // Timeline line
+          // Timeline
           SizedBox(
             width: 30,
             child: Column(
               children: [
                 Container(
-                  width: 12,
-                  height: 12,
+                  width: 14,
+                  height: 14,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isCompleted
                         ? MilitaryTheme.accentGreen
-                        : MilitaryTheme.getPriorityColor(mission.priority.index),
+                        : priorityColor.withOpacity(0.2),
                     border: Border.all(
                       color: isCompleted
                           ? MilitaryTheme.accentGreen
-                          : MilitaryTheme.getPriorityColor(mission.priority.index),
+                          : priorityColor,
                       width: 2,
                     ),
                   ),
+                  child: isCompleted
+                      ? const Icon(Icons.check, color: Colors.white, size: 8)
+                      : null,
                 ),
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: MilitaryTheme.surfaceLight,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          priorityColor.withOpacity(0.3),
+                          priorityColor.withOpacity(0.05),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -243,8 +281,18 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(bottom: 12, left: 8),
-              padding: const EdgeInsets.all(12),
-              decoration: MilitaryTheme.militaryCardDecoration,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: MilitaryTheme.cardBackground,
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.12),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -271,7 +319,7 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   StatusBadge(statusIndex: mission.status.index),
                 ],
               ),

@@ -28,13 +28,15 @@ class TokenCounter extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: MilitaryTheme.surfaceDark,
+        color: MilitaryTheme.cardBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isPremium
-              ? MilitaryTheme.goldAccent.withOpacity(0.5)
-              : MilitaryTheme.surfaceLight,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 6,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -42,9 +44,9 @@ class TokenCounter extends StatelessWidget {
           if (isPremium)
             const Padding(
               padding: EdgeInsets.only(right: 4),
-              child: Icon(Icons.star, color: MilitaryTheme.goldAccent, size: 14),
+              child: Icon(Icons.star_rounded, color: MilitaryTheme.goldAccent, size: 14),
             ),
-          Icon(Icons.bolt, color: tokenColor, size: 16),
+          Icon(Icons.bolt_rounded, color: tokenColor, size: 16),
           const SizedBox(width: 4),
           Text(
             '$tokensRemaining',
@@ -89,25 +91,25 @@ class MilitaryButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: isSmall ? 12 : 20,
-            vertical: isSmall ? 8 : 14,
+            horizontal: isSmall ? 14 : 22,
+            vertical: isSmall ? 10 : 14,
           ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isGold
                   ? [MilitaryTheme.goldDark, MilitaryTheme.goldAccent]
-                  : [MilitaryTheme.darkGreen, MilitaryTheme.militaryGreen],
+                  : [MilitaryTheme.militaryGreen, MilitaryTheme.accentGreen],
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
                 color: (isGold ? MilitaryTheme.goldAccent : MilitaryTheme.accentGreen)
-                    .withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                    .withOpacity(0.25),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -117,18 +119,17 @@ class MilitaryButton extends StatelessWidget {
               if (icon != null) ...[
                 Icon(
                   icon,
-                  color: isGold ? Colors.black : Colors.white,
+                  color: isGold ? Colors.black87 : Colors.white,
                   size: isSmall ? 16 : 20,
                 ),
                 const SizedBox(width: 8),
               ],
               Text(
-                label.toUpperCase(),
+                label,
                 style: TextStyle(
-                  color: isGold ? Colors.black : Colors.white,
-                  fontWeight: FontWeight.bold,
+                  color: isGold ? Colors.black87 : Colors.white,
+                  fontWeight: FontWeight.w600,
                   fontSize: isSmall ? 12 : 14,
-                  letterSpacing: 1,
                 ),
               ),
             ],
@@ -151,18 +152,17 @@ class PriorityBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labels = ['LOW', 'MED', 'HIGH', 'CRIT'];
+    final labels = ['Low', 'Med', 'High', 'Crit'];
     final color = MilitaryTheme.getPriorityColor(priorityIndex);
 
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: compact ? 6 : 10,
-        vertical: compact ? 2 : 4,
+        vertical: compact ? 3 : 5,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.4)),
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -179,8 +179,7 @@ class PriorityBadge extends StatelessWidget {
               style: TextStyle(
                 color: color,
                 fontSize: compact ? 9 : 11,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -197,29 +196,27 @@ class StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labels = ['PENDING', 'IN PROGRESS', 'COMPLETED', 'FAILED'];
-    final icons = [Icons.schedule, Icons.play_arrow, Icons.check_circle, Icons.cancel];
+    final labels = ['Pending', 'In Progress', 'Completed', 'Failed'];
+    final icons = [Icons.schedule_rounded, Icons.play_circle_outline_rounded, Icons.check_circle_rounded, Icons.cancel_rounded];
     final color = MilitaryTheme.getStatusColor(statusIndex);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icons[statusIndex], color: color, size: 12),
+          Icon(icons[statusIndex], color: color, size: 13),
           const SizedBox(width: 4),
           Text(
             labels[statusIndex],
             style: TextStyle(
               color: color,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -228,12 +225,12 @@ class StatusBadge extends StatelessWidget {
   }
 }
 
-class MilitarySectionHeader extends StatelessWidget {
+class SectionHeader extends StatelessWidget {
   final String title;
   final IconData icon;
   final Widget? trailing;
 
-  const MilitarySectionHeader({
+  const SectionHeader({
     super.key,
     required this.title,
     required this.icon,
@@ -246,15 +243,21 @@ class MilitarySectionHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Icon(icon, color: MilitaryTheme.goldAccent, size: 20),
-          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: MilitaryTheme.accentGreen.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: MilitaryTheme.accentGreen, size: 18),
+          ),
+          const SizedBox(width: 10),
           Text(
-            title.toUpperCase(),
+            title,
             style: const TextStyle(
-              color: MilitaryTheme.goldAccent,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
+              color: MilitaryTheme.textPrimary,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const Spacer(),
@@ -285,15 +288,21 @@ class EmptyStateWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: MilitaryTheme.textMuted, size: 64),
-            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: MilitaryTheme.accentGreen.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: MilitaryTheme.textMuted, size: 48),
+            ),
+            const SizedBox(height: 20),
             Text(
-              title.toUpperCase(),
+              title,
               style: const TextStyle(
-                color: MilitaryTheme.textSecondary,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
+                color: MilitaryTheme.textPrimary,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
             ),
