@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../models/mission.dart';
 import '../providers/mission_provider.dart';
 import '../services/database_helper.dart';
@@ -66,7 +67,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
             onChanged: (value) => provider.setSearchQuery(value),
             style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 14),
             decoration: InputDecoration(
-              hintText: 'Search missions...',
+              hintText: AppLocalizations.of(context).get('searchTasks'),
               prefixIcon: const Icon(Icons.search_rounded, color: MilitaryTheme.textMuted, size: 20),
               filled: true,
               fillColor: MilitaryTheme.surfaceDark,
@@ -83,46 +84,61 @@ class _MissionsScreenState extends State<MissionsScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildFilterChip(
-                  'All',
-                  Icons.apps_rounded,
-                  provider.statusFilter == null && !provider.showStarredOnly,
-                  () => provider.clearFilters(),
-                ),
+                Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx);
+                  return _buildFilterChip(
+                    l.get('all'),
+                    Icons.apps_rounded,
+                    provider.statusFilter == null && !provider.showStarredOnly,
+                    () => provider.clearFilters(),
+                  );
+                }),
                 const SizedBox(width: 8),
-                _buildFilterChip(
-                  'Starred',
-                  Icons.star_rounded,
-                  provider.showStarredOnly,
-                  () => provider.setStarredOnly(!provider.showStarredOnly),
-                ),
+                Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx);
+                  return _buildFilterChip(
+                    l.get('starred'),
+                    Icons.star_rounded,
+                    provider.showStarredOnly,
+                    () => provider.setStarredOnly(!provider.showStarredOnly),
+                  );
+                }),
                 const SizedBox(width: 8),
-                _buildFilterChip(
-                  'Pending',
-                  Icons.schedule_rounded,
-                  provider.statusFilter == MissionStatus.pending,
-                  () => provider.setStatusFilter(
-                    provider.statusFilter == MissionStatus.pending ? null : MissionStatus.pending,
-                  ),
-                ),
+                Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx);
+                  return _buildFilterChip(
+                    l.get('pending'),
+                    Icons.schedule_rounded,
+                    provider.statusFilter == MissionStatus.pending,
+                    () => provider.setStatusFilter(
+                      provider.statusFilter == MissionStatus.pending ? null : MissionStatus.pending,
+                    ),
+                  );
+                }),
                 const SizedBox(width: 8),
-                _buildFilterChip(
-                  'Active',
-                  Icons.play_circle_rounded,
-                  provider.statusFilter == MissionStatus.inProgress,
-                  () => provider.setStatusFilter(
-                    provider.statusFilter == MissionStatus.inProgress ? null : MissionStatus.inProgress,
-                  ),
-                ),
+                Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx);
+                  return _buildFilterChip(
+                    l.get('active'),
+                    Icons.play_circle_rounded,
+                    provider.statusFilter == MissionStatus.inProgress,
+                    () => provider.setStatusFilter(
+                      provider.statusFilter == MissionStatus.inProgress ? null : MissionStatus.inProgress,
+                    ),
+                  );
+                }),
                 const SizedBox(width: 8),
-                _buildFilterChip(
-                  'Done',
-                  Icons.check_circle_rounded,
-                  provider.statusFilter == MissionStatus.completed,
-                  () => provider.setStatusFilter(
-                    provider.statusFilter == MissionStatus.completed ? null : MissionStatus.completed,
-                  ),
-                ),
+                Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx);
+                  return _buildFilterChip(
+                    l.get('done'),
+                    Icons.check_circle_rounded,
+                    provider.statusFilter == MissionStatus.completed,
+                    () => provider.setStatusFilter(
+                      provider.statusFilter == MissionStatus.completed ? null : MissionStatus.completed,
+                    ),
+                  );
+                }),
               ],
             ),
           ),
@@ -189,18 +205,18 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 child: const Icon(Icons.assignment_outlined, color: MilitaryTheme.textMuted, size: 40),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'No Missions Yet',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context).get('noTasks'),
+                style: const TextStyle(
                   color: MilitaryTheme.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Tap + to create your first mission!',
-                style: TextStyle(color: MilitaryTheme.textMuted, fontSize: 14),
+              Text(
+                AppLocalizations.of(context).get('createFirst'),
+                style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 14),
               ),
             ],
           ),
@@ -242,16 +258,16 @@ class _MissionsScreenState extends State<MissionsScreen> {
         return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Delete Mission?', style: TextStyle(color: MilitaryTheme.textPrimary, fontSize: 18)),
-            content: Text('Remove "${mission.title}"?'),
+            title: Text(AppLocalizations.of(context).get('deleteTask'), style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 18)),
+            content: Text('${AppLocalizations.of(context).get('deleteTaskConfirm')}'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context).get('cancel')),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Delete', style: TextStyle(color: MilitaryTheme.commandRed)),
+                child: Text(AppLocalizations.of(context).get('delete'), style: const TextStyle(color: MilitaryTheme.commandRed)),
               ),
             ],
           ),
@@ -424,9 +440,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
     final today = DateTime(now.year, now.month, now.day);
     final dateOnly = DateTime(date.year, date.month, date.day);
 
-    if (dateOnly == today) return 'Today';
-    if (dateOnly == today.add(const Duration(days: 1))) return 'Tomorrow';
-    if (dateOnly == today.subtract(const Duration(days: 1))) return 'Yesterday';
+    if (dateOnly == today) return 'today';
+    if (dateOnly == today.add(const Duration(days: 1))) return 'tomorrow';
+    if (dateOnly == today.subtract(const Duration(days: 1))) return 'yesterday';
 
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -525,9 +541,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     children: [
                       const Icon(Icons.add_task_rounded, color: MilitaryTheme.accentGreen, size: 24),
                       const SizedBox(width: 10),
-                      const Text(
-                        'New Mission',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).get('newTaskTitle'),
+                        style: const TextStyle(
                           color: MilitaryTheme.textPrimary,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -545,9 +561,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     controller: titleController,
                     autofocus: true,
                     style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 16),
-                    decoration: const InputDecoration(
-                      hintText: 'What do you need to do?',
-                      labelText: 'Mission Title',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context).get('taskObjective'),
+                      labelText: AppLocalizations.of(context).get('taskTitle'),
                       labelStyle: TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13),
                     ),
                   ),
@@ -556,16 +572,16 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     controller: descController,
                     style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 14),
                     maxLines: 2,
-                    decoration: const InputDecoration(
-                      hintText: 'Add details (optional)...',
-                      labelText: 'Details',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context).get('taskDetailsHint'),
+                      labelText: AppLocalizations.of(context).get('taskDetails'),
                       labelStyle: TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13),
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    'Priority',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context).get('priorityLevel'),
+                    style: const TextStyle(
                       color: MilitaryTheme.textPrimary,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -576,7 +592,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     children: MissionPriority.values.map((priority) {
                       final selected = selectedPriority == priority;
                       final color = MilitaryTheme.getPriorityColor(priority.index);
-                      final labels = ['Low', 'Med', 'High', 'Critical'];
+                      final l = AppLocalizations.of(context);
+                      final labels = [l.get('low'), l.get('med'), l.get('high'), l.get('critical')];
                       return Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => selectedPriority = priority),
@@ -650,7 +667,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                           Text(
                             selectedDate != null
                                 ? 'Due: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                                : 'Set due date (optional)',
+                                : AppLocalizations.of(context).get('setDueDate'),
                             style: TextStyle(
                               color: selectedDate != null
                                   ? MilitaryTheme.textPrimary
@@ -683,7 +700,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                         }
                       },
                       icon: const Icon(Icons.rocket_launch_rounded, size: 20),
-                      label: const Text('Create Mission'),
+                      label: Text(AppLocalizations.of(context).get('createTask')),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -748,9 +765,9 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
             children: [
               const Icon(Icons.assignment_rounded, color: MilitaryTheme.accentGreen, size: 24),
               const SizedBox(width: 10),
-              const Text(
-                'Mission Details',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context).get('taskDetailsTitle'),
+                style: const TextStyle(
                   color: MilitaryTheme.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -795,24 +812,30 @@ class _MissionDetailSheetState extends State<_MissionDetailSheet> {
             ],
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Update Status',
-            style: TextStyle(
-              color: MilitaryTheme.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Builder(builder: (ctx) {
+            final l = AppLocalizations.of(ctx);
+            return Text(
+              l.get('updateStatus'),
+              style: const TextStyle(
+                color: MilitaryTheme.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            );
+          }),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              _buildStatusButton('Pending', MissionStatus.pending, MilitaryTheme.statusPending),
-              const SizedBox(width: 8),
-              _buildStatusButton('Active', MissionStatus.inProgress, MilitaryTheme.statusInProgress),
-              const SizedBox(width: 8),
-              _buildStatusButton('Done', MissionStatus.completed, MilitaryTheme.statusCompleted),
-            ],
-          ),
+          Builder(builder: (ctx) {
+            final l = AppLocalizations.of(ctx);
+            return Row(
+              children: [
+                _buildStatusButton(l.get('pending'), MissionStatus.pending, MilitaryTheme.statusPending),
+                const SizedBox(width: 8),
+                _buildStatusButton(l.get('active'), MissionStatus.inProgress, MilitaryTheme.statusInProgress),
+                const SizedBox(width: 8),
+                _buildStatusButton(l.get('done'), MissionStatus.completed, MilitaryTheme.statusCompleted),
+              ],
+            );
+          }),
           const SizedBox(height: 20),
         ],
       ),

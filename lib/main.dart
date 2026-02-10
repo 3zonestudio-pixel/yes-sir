@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/military_theme.dart';
 import 'services/token_manager.dart';
 import 'providers/mission_provider.dart';
+import 'providers/theme_provider.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
+import 'screens/pin_lock_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,17 +34,33 @@ void main() async {
   final localeProvider = LocaleProvider();
   await localeProvider.initialize();
 
-  runApp(YesSirApp(tokenManager: tokenManager, localeProvider: localeProvider));
+  final themeProvider = ThemeProvider();
+  await themeProvider.initialize();
+
+  // Check if PIN lock is enabled
+  final prefs = await SharedPreferences.getInstance();
+  final hasPin = prefs.getString('app_pin') != null;
+
+  runApp(YesSirApp(
+    tokenManager: tokenManager,
+    localeProvider: localeProvider,
+    themeProvider: themeProvider,
+    requirePin: hasPin,
+  ));
 }
 
 class YesSirApp extends StatelessWidget {
   final TokenManager tokenManager;
   final LocaleProvider localeProvider;
+  final ThemeProvider themeProvider;
+  final bool requirePin;
 
   const YesSirApp({
     super.key,
     required this.tokenManager,
     required this.localeProvider,
+    required this.themeProvider,
+    this.requirePin = false,
   });
 
   @override
@@ -51,13 +70,16 @@ class YesSirApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: tokenManager),
         ChangeNotifierProvider(create: (_) => MissionProvider()),
         ChangeNotifierProvider.value(value: localeProvider),
+        ChangeNotifierProvider.value(value: themeProvider),
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, locale, _) {
+      child: Consumer2<LocaleProvider, ThemeProvider>(
+        builder: (context, locale, theme, _) {
           return MaterialApp(
             title: 'Yes Sir',
             debugShowCheckedModeBanner: false,
-            theme: MilitaryTheme.darkTheme,
+            theme: MilitaryTheme.lightTheme,
+            darkTheme: MilitaryTheme.darkTheme,
+            themeMode: theme.themeMode,
             locale: locale.locale,
             supportedLocales: AppLocalizations.supportedLocales
                 .map((l) => Locale(l.code))
@@ -68,7 +90,9 @@ class YesSirApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            home: const SplashScreen(),
+            home: requirePin
+                ? PinLockScreen(onSuccess: () {})
+                : const SplashScreen(),
           );
         },
       ),

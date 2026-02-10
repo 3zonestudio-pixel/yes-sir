@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Soldier helmet logo
+                      // Custom logo image
                       Container(
                         width: 140,
                         height: 140,
@@ -86,39 +86,44 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                         child: Center(
-                          child: Container(
-                            width: 110,
-                            height: 110,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: MilitaryTheme.surfaceDark,
-                              border: Border.all(
-                                color: MilitaryTheme.goldAccent.withOpacity(0.4),
-                                width: 2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: MilitaryTheme.goldAccent.withOpacity(0.1),
-                                  blurRadius: 30,
-                                  spreadRadius: 5,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.shield_rounded,
-                                  color: MilitaryTheme.goldAccent,
-                                  size: 44,
-                                ),
-                                const SizedBox(height: 2),
-                                Icon(
-                                  Icons.checklist_rounded,
-                                  color: MilitaryTheme.accentGreen,
-                                  size: 22,
-                                ),
-                              ],
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(55),
+                            child: Image.asset(
+                              'assets/images/app_logo.png',
+                              width: 110,
+                              height: 110,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Fallback to icon if image not found
+                                return Container(
+                                  width: 110,
+                                  height: 110,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: MilitaryTheme.surfaceDark,
+                                    border: Border.all(
+                                      color: MilitaryTheme.goldAccent.withOpacity(0.4),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.shield_rounded,
+                                        color: MilitaryTheme.goldAccent,
+                                        size: 44,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Icon(
+                                        Icons.checklist_rounded,
+                                        color: MilitaryTheme.accentGreen,
+                                        size: 22,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),

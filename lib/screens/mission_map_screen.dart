@@ -6,6 +6,7 @@ import '../providers/mission_provider.dart';
 import '../services/database_helper.dart';
 import '../theme/military_theme.dart';
 import '../widgets/military_widgets.dart';
+import '../l10n/app_localizations.dart';
 
 class MissionMapScreen extends StatefulWidget {
   const MissionMapScreen({super.key});
@@ -177,15 +178,20 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
             ),
           ),
           const SizedBox(width: 10),
-          Text(
-            isToday
-                ? "Today's Missions"
-                : '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
-            style: const TextStyle(
-              color: MilitaryTheme.textPrimary,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+          Builder(
+            builder: (context) {
+              final l = AppLocalizations.of(context);
+              return Text(
+                isToday
+                    ? l.get('todayTasks')
+                    : '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
+                style: const TextStyle(
+                  color: MilitaryTheme.textPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              );
+            },
           ),
           const Spacer(),
           Container(
@@ -194,13 +200,18 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
               color: MilitaryTheme.accentGreen.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Text(
-              '${_selectedDayMissions.length} mission${_selectedDayMissions.length != 1 ? 's' : ''}',
-              style: const TextStyle(
-                color: MilitaryTheme.accentGreen,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+            child: Builder(
+              builder: (context) {
+                final l = AppLocalizations.of(context);
+                return Text(
+                  '${_selectedDayMissions.length} ${_selectedDayMissions.length != 1 ? l.get('tasks') : l.get('task')}',
+                  style: const TextStyle(
+                    color: MilitaryTheme.accentGreen,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -210,9 +221,10 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
 
   Widget _buildDayMissions() {
     if (_selectedDayMissions.isEmpty) {
-      return const EmptyStateWidget(
-        title: 'No Missions Scheduled',
-        subtitle: 'This day is clear. Add missions with due dates to see them here.',
+      final l = AppLocalizations.of(context);
+      return EmptyStateWidget(
+        title: l.get('noTasksScheduled2'),
+        subtitle: l.get('noTasksScheduledSub'),
         icon: Icons.event_available_rounded,
       );
     }

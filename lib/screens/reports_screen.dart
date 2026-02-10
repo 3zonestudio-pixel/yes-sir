@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../services/database_helper.dart';
 import '../services/token_manager.dart';
 import '../theme/military_theme.dart';
@@ -55,6 +56,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final tokenManager = context.watch<TokenManager>();
 
     return Scaffold(
@@ -64,24 +66,24 @@ class _ReportsScreenState extends State<ReportsScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _buildHeader(),
+            _buildHeader(l),
             const SizedBox(height: 16),
-            _buildOverviewCards(),
+            _buildOverviewCards(l),
             const SizedBox(height: 20),
-            _buildMissionPieChart(),
+            _buildMissionPieChart(l),
             const SizedBox(height: 20),
-            _buildTokenUsageCard(tokenManager),
+            _buildTokenUsageCard(tokenManager, l),
             const SizedBox(height: 20),
-            _buildStreakCard(),
+            _buildStreakCard(l),
             const SizedBox(height: 20),
-            _buildMotivationalCard(),
+            _buildMotivationalCard(l),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l) {
     return Row(
       children: [
         Container(
@@ -93,20 +95,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
           child: const Icon(Icons.analytics_rounded, color: MilitaryTheme.accentGreen, size: 22),
         ),
         const SizedBox(width: 12),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Reports',
-              style: TextStyle(
+              l.get('reports'),
+              style: const TextStyle(
                 color: MilitaryTheme.textPrimary,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'Your productivity overview',
-              style: TextStyle(
+              l.get('productivityOverview'),
+              style: const TextStyle(
                 color: MilitaryTheme.textMuted,
                 fontSize: 12,
               ),
@@ -117,7 +119,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildOverviewCards() {
+  Widget _buildOverviewCards(AppLocalizations l) {
     final total = _stats['total'] ?? 0;
     final completed = _stats['completed'] ?? 0;
     final pending = _stats['pending'] ?? 0;
@@ -129,7 +131,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           children: [
             Expanded(
               child: _buildStatCard(
-                'Total',
+                l.get('total'),
                 total.toString(),
                 Icons.assignment_rounded,
                 MilitaryTheme.infoBlue,
@@ -138,7 +140,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: _buildStatCard(
-                'Completed',
+                l.get('completed'),
                 completed.toString(),
                 Icons.check_circle_rounded,
                 MilitaryTheme.accentGreen,
@@ -151,7 +153,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           children: [
             Expanded(
               child: _buildStatCard(
-                'Active',
+                l.get('active'),
                 inProgress.toString(),
                 Icons.play_circle_rounded,
                 MilitaryTheme.warningOrange,
@@ -160,7 +162,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: _buildStatCard(
-                'Pending',
+                l.get('pending'),
                 pending.toString(),
                 Icons.schedule_rounded,
                 MilitaryTheme.statusPending,
@@ -224,7 +226,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildMissionPieChart() {
+  Widget _buildMissionPieChart(AppLocalizations l) {
     final completed = (_stats['completed'] ?? 0).toDouble();
     final pending = (_stats['pending'] ?? 0).toDouble();
     final inProgress = (_stats['inProgress'] ?? 0).toDouble();
@@ -250,9 +252,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             children: [
               const Icon(Icons.pie_chart_rounded, color: MilitaryTheme.accentGreen, size: 20),
               const SizedBox(width: 8),
-              const Text(
-                'Mission Distribution',
-                style: TextStyle(
+              Text(
+                l.get('taskDistribution'),
+                style: const TextStyle(
                   color: MilitaryTheme.textPrimary,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -270,9 +272,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         Icon(Icons.pie_chart_outline_rounded,
                             color: MilitaryTheme.textMuted.withOpacity(0.3), size: 48),
                         const SizedBox(height: 8),
-                        const Text(
-                          'No data yet',
-                          style: TextStyle(color: MilitaryTheme.textMuted),
+                        Text(
+                          l.get('noDataYet'),
+                          style: const TextStyle(color: MilitaryTheme.textMuted),
                         ),
                       ],
                     ),
@@ -330,11 +332,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildLegendItem('Completed', MilitaryTheme.accentGreen),
+                          _buildLegendItem(l.get('completed'), MilitaryTheme.accentGreen),
                           const SizedBox(height: 10),
-                          _buildLegendItem('Active', MilitaryTheme.warningOrange),
+                          _buildLegendItem(l.get('active'), MilitaryTheme.warningOrange),
                           const SizedBox(height: 10),
-                          _buildLegendItem('Pending', MilitaryTheme.statusPending),
+                          _buildLegendItem(l.get('pending'), MilitaryTheme.statusPending),
                         ],
                       ),
                     ],
@@ -369,7 +371,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildTokenUsageCard(TokenManager tokenManager) {
+  Widget _buildTokenUsageCard(TokenManager tokenManager, AppLocalizations l) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -390,9 +392,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             children: [
               const Icon(Icons.bolt_rounded, color: MilitaryTheme.goldAccent, size: 20),
               const SizedBox(width: 8),
-              const Text(
-                'AI Token Usage',
-                style: TextStyle(
+              Text(
+                l.get('aiTokenUsage'),
+                style: const TextStyle(
                   color: MilitaryTheme.textPrimary,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -408,9 +410,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    'Premium',
-                    style: TextStyle(
+                  child: Text(
+                    l.get('premium'),
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -423,9 +425,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Today',
-                style: TextStyle(color: MilitaryTheme.textSecondary, fontSize: 13),
+              Text(
+                l.get('today'),
+                style: const TextStyle(color: MilitaryTheme.textSecondary, fontSize: 13),
               ),
               Text(
                 '${tokenManager.tokensUsed} / ${tokenManager.tokenLimit}',
@@ -457,12 +459,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'This week total',
-                style: TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
+              Text(
+                l.get('thisWeekTotal'),
+                style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
               ),
               Text(
-                '$_totalTokensUsedWeek tokens',
+                '$_totalTokensUsedWeek ${l.get('tokensUsed')}',
                 style: const TextStyle(
                   color: MilitaryTheme.textSecondary,
                   fontSize: 12,
@@ -475,7 +477,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildStreakCard() {
+  Widget _buildStreakCard(AppLocalizations l) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -515,9 +517,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Day Streak 🔥',
-                  style: TextStyle(
+                Text(
+                  l.get('dayStreak'),
+                  style: const TextStyle(
                     color: MilitaryTheme.goldAccent,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -526,8 +528,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 const SizedBox(height: 4),
                 Text(
                   _streak > 0
-                      ? '$_streak day${_streak != 1 ? 's' : ''} of consecutive completion!'
-                      : 'Complete a mission to start your streak!',
+                      ? '$_streak ${l.get('daysConsecutive')}'
+                      : l.get('startStreak'),
                   style: const TextStyle(
                     color: MilitaryTheme.textSecondary,
                     fontSize: 13,
@@ -542,7 +544,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildMotivationalCard() {
+  Widget _buildMotivationalCard(AppLocalizations l) {
     final completed = _stats['completed'] ?? 0;
     final total = _stats['total'] ?? 1;
     final rate = total > 0 ? (completed / total * 100) : 0;
@@ -551,16 +553,16 @@ class _ReportsScreenState extends State<ReportsScreen> {
     IconData icon;
 
     if (rate >= 80) {
-      message = "Outstanding! You're crushing it 💪";
+      message = l.get('outstanding');
       icon = Icons.emoji_events_rounded;
     } else if (rate >= 50) {
-      message = "Great progress! Keep the momentum going 🚀";
+      message = l.get('greatProgress');
       icon = Icons.trending_up_rounded;
     } else if (rate > 0) {
-      message = "You've got this! Focus on what matters most ✨";
+      message = l.get('youGotThis');
       icon = Icons.flag_rounded;
     } else {
-      message = "Welcome! Create your first mission to begin 🎯";
+      message = l.get('welcomeCreate');
       icon = Icons.rocket_launch_rounded;
     }
 

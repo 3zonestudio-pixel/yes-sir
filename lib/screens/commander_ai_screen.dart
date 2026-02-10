@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../models/chat_message.dart';
 import '../models/mission.dart';
 import '../services/ai_service.dart';
@@ -96,10 +97,11 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
         _isProcessing = false;
       });
     } catch (e) {
+      final l = AppLocalizations.of(context);
       setState(() {
         _messages.add(ChatMessage(
           role: ChatRole.soldier,
-          content: "Oops! Something went wrong. Please try again 😊",
+          content: l.get('somethingWrong'),
           tokensUsed: 0,
         ));
         _isProcessing = false;
@@ -130,6 +132,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   }
 
   Widget _buildTopBar(TokenManager tokenManager) {
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       decoration: BoxDecoration(
@@ -162,9 +165,9 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'AI Advisor',
-                  style: TextStyle(
+                Text(
+                  l.get('aiTitle'),
+                  style: const TextStyle(
                     color: MilitaryTheme.textPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -181,9 +184,9 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                       ),
                     ),
                     const SizedBox(width: 5),
-                    const Text(
-                      'Online — Ready to help',
-                      style: TextStyle(
+                    Text(
+                      l.get('onlineReady'),
+                      style: const TextStyle(
                         color: MilitaryTheme.accentGreen,
                         fontSize: 11,
                       ),
@@ -204,6 +207,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   }
 
   Widget _buildWelcomeScreen() {
+    final l = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -229,26 +233,26 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Your AI Advisor 🫡',
-              style: TextStyle(
+            Text(
+              l.get('yourAIAdvisor'),
+              style: const TextStyle(
                 color: MilitaryTheme.textPrimary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Smart planning • Task breakdown • Insights',
-              style: TextStyle(
+            Text(
+              l.get('aiSubtitle'),
+              style: const TextStyle(
                 color: MilitaryTheme.textSecondary,
                 fontSize: 13,
               ),
             ),
             const SizedBox(height: 28),
-            const Text(
-              'Ask me to plan your day, break down\nbig tasks, or get productivity tips!',
-              style: TextStyle(
+            Text(
+              l.get('aiDescription'),
+              style: const TextStyle(
                 color: MilitaryTheme.textMuted,
                 fontSize: 14,
                 height: 1.6,
@@ -261,10 +265,10 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               runSpacing: 8,
               alignment: WrapAlignment.center,
               children: [
-                _buildSuggestionChip('📋 Plan my day'),
-                _buildSuggestionChip('🔥 Break down a big task'),
-                _buildSuggestionChip('📊 How am I doing?'),
-                _buildSuggestionChip('💡 Give me tips'),
+                _buildSuggestionChip('📋 ${l.get('suggestPlanDay')}'),
+                _buildSuggestionChip('🔥 ${l.get('suggestBreakDown')}'),
+                _buildSuggestionChip('📊 ${l.get('suggestHowAmI')}'),
+                _buildSuggestionChip('💡 ${l.get('suggestTips')}'),
               ],
             ),
           ],
@@ -311,6 +315,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
 
   Widget _buildMessageBubble(ChatMessage message) {
     final isCommander = message.role == ChatRole.commander;
+    final l = AppLocalizations.of(context);
 
     return Align(
       alignment: isCommander ? Alignment.centerRight : Alignment.centerLeft,
@@ -357,7 +362,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  isCommander ? 'You' : 'AI Advisor',
+                  isCommander ? l.get('you') : l.get('aiTitle'),
                   style: TextStyle(
                     color: isCommander
                         ? MilitaryTheme.accentGreen
@@ -381,7 +386,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
-                  '⚡ ${message.tokensUsed} tokens',
+                  '⚡ ${message.tokensUsed} ${l.get('tokens')}',
                   style: const TextStyle(
                     color: MilitaryTheme.textMuted,
                     fontSize: 10,
@@ -395,6 +400,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   }
 
   Widget _buildTypingIndicator() {
+    final l = AppLocalizations.of(context);
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -421,9 +427,9 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               child: _TypingDots(),
             ),
             const SizedBox(width: 4),
-            const Text(
-              'Thinking...',
-              style: TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
+            Text(
+              l.get('thinking'),
+              style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
             ),
           ],
         ),
@@ -432,14 +438,15 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   }
 
   Widget _buildQuickCommands() {
+    final l = AppLocalizations.of(context);
     final commands = [
-      ('📊 Status', 'Status report'),
-      ('📋 Plan Day', 'Plan my day'),
-      ('🔥 Prioritize', 'Prioritize my tasks'),
-      ('🧩 Break Down', 'Break down my tasks into smaller steps'),
-      ('💡 Tips', 'Give me productivity tips'),
-      ('📝 Templates', 'Show me mission templates'),
-      ('💪 Motivate', 'Motivate me'),
+      ('📊 ${l.get('status')}', l.get('statusReport')),
+      ('📋 ${l.get('planDay')}', l.get('planMyDay')),
+      ('🔥 ${l.get('prioritize')}', l.get('prioritizeMyTasks')),
+      ('🧩 ${l.get('breakDownBtn')}', l.get('breakDownMyTasks')),
+      ('💡 ${l.get('tips')}', l.get('giveTips')),
+      ('📝 ${l.get('templates')}', l.get('showTemplates')),
+      ('💪 ${l.get('motivate')}', l.get('motivateMe')),
     ];
 
     return Container(
@@ -479,6 +486,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
   }
 
   Widget _buildInputArea() {
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
       decoration: BoxDecoration(
@@ -500,7 +508,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 focusNode: _focusNode,
                 style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 15),
                 decoration: InputDecoration(
-                  hintText: 'Ask anything...',
+                  hintText: l.get('askAnything'),
                   hintStyle: TextStyle(
                     color: MilitaryTheme.textMuted.withOpacity(0.6),
                   ),

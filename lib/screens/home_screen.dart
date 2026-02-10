@@ -80,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(0, Icons.home_rounded, Icons.home_outlined, l.get('navHome')),
-              _buildNavItem(1, Icons.rocket_launch_rounded, Icons.rocket_launch_outlined, l.get('navMissions')),
+              _buildNavItem(1, Icons.rocket_launch_rounded, Icons.rocket_launch_outlined, l.get('navTasks')),
               _buildNavItem(2, Icons.calendar_month_rounded, Icons.calendar_month_outlined, l.get('navCalendar')),
-              _buildNavItem(3, Icons.smart_toy_rounded, Icons.smart_toy_outlined, 'AI'),
+              _buildNavItem(3, Icons.smart_toy_rounded, Icons.smart_toy_outlined, l.get('navAI')),
               _buildNavItem(4, Icons.bar_chart_rounded, Icons.bar_chart_outlined, l.get('navReports')),
             ],
           ),
@@ -240,8 +240,8 @@ class _DashboardTab extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // Today's missions
-                  _buildSectionHeader(l.get('todayMissions'), Icons.today_rounded, () => onNavigateToMissions()),
+                  // Today's tasks
+                  _buildSectionHeader(l.get('todayTasks'), Icons.today_rounded, () => onNavigateToMissions()),
 
                   const SizedBox(height: 10),
 
@@ -254,7 +254,7 @@ class _DashboardTab extends StatelessWidget {
 
                   // Upcoming missions (next 7 days)
                   if (pendingMissions.isNotEmpty) ...[
-                    _buildSectionHeader(l.get('upcomingMissions'), Icons.upcoming_rounded, () => onNavigateToMissions()),
+                    _buildSectionHeader(l.get('upcomingTasks'), Icons.upcoming_rounded, () => onNavigateToMissions()),
                     const SizedBox(height: 10),
                     ...pendingMissions.take(5).map((m) => _buildMissionTile(context, m)).toList(),
                   ],
@@ -332,25 +332,35 @@ class _DashboardTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Today\'s Progress',
-                  style: TextStyle(
-                    color: MilitaryTheme.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  total == 0
-                      ? 'No missions scheduled for today'
-                      : completedToday == total
-                          ? 'All missions completed! Great work! 🎖️'
-                          : '${total - completedToday} missions remaining',
-                  style: const TextStyle(
-                    color: MilitaryTheme.textSecondary,
-                    fontSize: 13,
-                  ),
+                Builder(
+                  builder: (context) {
+                    final l = AppLocalizations.of(context);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l.get('todayProgress'),
+                          style: const TextStyle(
+                            color: MilitaryTheme.textPrimary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          total == 0
+                              ? l.get('noTasksScheduled')
+                              : completedToday == total
+                                  ? l.get('allTasksDone')
+                                  : '${total - completedToday} ${l.get('tasksRemaining')}',
+                          style: const TextStyle(
+                            color: MilitaryTheme.textSecondary,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -366,7 +376,7 @@ class _DashboardTab extends StatelessWidget {
         Expanded(
           child: _buildActionButton(
             icon: Icons.add_task_rounded,
-            label: l.get('newMission'),
+            label: l.get('newTask'),
             color: MilitaryTheme.accentGreen,
             onTap: onNavigateToMissions,
           ),
@@ -441,9 +451,14 @@ class _DashboardTab extends StatelessWidget {
         const Spacer(),
         GestureDetector(
           onTap: onViewAll,
-          child: const Text(
-            'View All →',
-            style: TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13, fontWeight: FontWeight.w500),
+          child: Builder(
+            builder: (context) {
+              final l = AppLocalizations.of(context);
+              return Text(
+                '${l.get('viewAll')} →',
+                style: const TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13, fontWeight: FontWeight.w500),
+              );
+            },
           ),
         ),
       ],
@@ -544,12 +559,12 @@ class _DashboardTab extends StatelessWidget {
           Icon(Icons.wb_sunny_rounded, color: MilitaryTheme.goldAccent.withOpacity(0.5), size: 40),
           const SizedBox(height: 12),
           Text(
-            l.get('noMissionsToday'),
+            l.get('noTasksToday'),
             style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 15, fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 4),
           Text(
-            l.get('noMissionsTodaySub'),
+            l.get('noTasksTodaySub'),
             style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 13),
           ),
         ],

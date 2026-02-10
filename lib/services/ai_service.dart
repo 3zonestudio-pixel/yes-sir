@@ -6,8 +6,8 @@ import '../models/mission.dart';
 import 'database_helper.dart';
 import 'token_manager.dart';
 
-/// Enhanced AI Service - LongCat AI
-/// Powered by LongCat AI API (https://longcat.chat/platform/docs)
+/// Enhanced AI Service
+/// Powered by AI API
 /// Features: Smart prioritization, task breakdown, proactive suggestions,
 /// templates, gamification, productivity insights.
 class AIService {
@@ -148,7 +148,7 @@ When giving templates, provide ready-to-use mission structures.
     final body = jsonEncode({
       'model': _model,
       'messages': messages,
-      'max_tokens': 1000,
+      'max_tokens': 600,
       'temperature': 0.7,
     });
 
