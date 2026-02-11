@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MilitaryTheme {
-  // ===== COLORS - Warm, comfortable military palette =====
-  static const Color darkBackground = Color(0xFF111318);
-  static const Color cardBackground = Color(0xFF1B1E25);
-  static const Color surfaceDark = Color(0xFF22262F);
-  static const Color surfaceLight = Color(0xFF2D3340);
+  // ===== COLORS - Modern Blue palette =====
+  static const Color darkBackground = Color(0xFF0F1118);
+  static const Color cardBackground = Color(0xFF181C27);
+  static const Color surfaceDark = Color(0xFF1F2535);
+  static const Color surfaceLight = Color(0xFF283045);
 
-  static const Color militaryGreen = Color(0xFF2D6A4F);
-  static const Color accentGreen = Color(0xFF52B788);
-  static const Color brightGreen = Color(0xFF74C69D);
-  static const Color darkGreen = Color(0xFF1B4332);
-  static const Color softGreen = Color(0xFF95D5B2);
+  static const Color militaryGreen = Color(0xFF1565C0);
+  static const Color accentGreen = Color(0xFF42A5F5);
+  static const Color brightGreen = Color(0xFF64B5F6);
+  static const Color darkGreen = Color(0xFF0D47A1);
+  static const Color softGreen = Color(0xFF90CAF9);
 
-  static const Color goldAccent = Color(0xFFFFD166);
-  static const Color goldLight = Color(0xFFFFE08A);
-  static const Color goldDark = Color(0xFFE6B800);
+  static const Color goldAccent = Color(0xFF5C9CE6);
+  static const Color goldLight = Color(0xFF82B1FF);
+  static const Color goldDark = Color(0xFF1976D2);
 
   static const Color commandRed = Color(0xFFEF476F);
   static const Color warningOrange = Color(0xFFFF9F1C);
   static const Color infoBlue = Color(0xFF4CC9F0);
-  static const Color softPurple = Color(0xFFB5838D);
+  static const Color softPurple = Color(0xFF7E57C2);
 
   static const Color textPrimary = Color(0xFFEDF2F4);
   static const Color textSecondary = Color(0xFFB0B8C1);
@@ -30,13 +30,13 @@ class MilitaryTheme {
   // Priority Colors
   static const Color priorityCritical = Color(0xFFEF476F);
   static const Color priorityHigh = Color(0xFFFF9F1C);
-  static const Color priorityMedium = Color(0xFF4CC9F0);
-  static const Color priorityLow = Color(0xFF74C69D);
+  static const Color priorityMedium = Color(0xFF42A5F5);
+  static const Color priorityLow = Color(0xFF66BB6A);
 
   // Status Colors
   static const Color statusPending = Color(0xFF8D99AE);
-  static const Color statusInProgress = Color(0xFFFFB703);
-  static const Color statusCompleted = Color(0xFF52B788);
+  static const Color statusInProgress = Color(0xFF42A5F5);
+  static const Color statusCompleted = Color(0xFF66BB6A);
   static const Color statusFailed = Color(0xFFEF476F);
 
   // ===== THEME DATA =====
@@ -50,8 +50,8 @@ class MilitaryTheme {
         secondary: goldAccent,
         surface: cardBackground,
         error: commandRed,
-        onPrimary: Colors.black,
-        onSecondary: Colors.black,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
         onSurface: textPrimary,
         onError: Colors.white,
       ),
@@ -59,7 +59,7 @@ class MilitaryTheme {
         const TextTheme(
           displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: textPrimary, letterSpacing: 1),
           displayMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textPrimary),
-          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: goldAccent, letterSpacing: 1),
+          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: accentGreen, letterSpacing: 1),
           headlineMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary),
           titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary),
           titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: textPrimary),
@@ -78,7 +78,7 @@ class MilitaryTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: cardBackground,
-        selectedItemColor: goldAccent,
+        selectedItemColor: accentGreen,
         unselectedItemColor: textMuted,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
@@ -202,10 +202,10 @@ class MilitaryTheme {
   }
 
   // ===== LIGHT THEME =====
-  static const Color lightBackground = Color(0xFFF5F7FA);
+  static const Color lightBackground = Color(0xFFF0F4FA);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightSurface = Color(0xFFEEF1F6);
-  static const Color lightSurfaceAlt = Color(0xFFE3E8EF);
+  static const Color lightSurface = Color(0xFFE8EDF5);
+  static const Color lightSurfaceAlt = Color(0xFFD6E0F0);
   static const Color lightTextPrimary = Color(0xFF1A1D26);
   static const Color lightTextSecondary = Color(0xFF4A5568);
   static const Color lightTextMuted = Color(0xFF9CA3AF);

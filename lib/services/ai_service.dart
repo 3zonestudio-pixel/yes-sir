@@ -90,9 +90,14 @@ When giving templates, provide ready-to-use mission structures.
       tokensUsed = apiResult['tokensUsed'] as int;
     } catch (e) {
       // Fallback to enhanced offline mode
-      final offlineResult = await _handleOffline(command);
-      response = offlineResult;
-      tokensUsed = tokenManager.estimateTokens(response);
+      try {
+        final offlineResult = await _handleOffline(command);
+        response = offlineResult;
+        tokensUsed = tokenManager.estimateTokens(response);
+      } catch (_) {
+        response = "I can help with basic commands! Try:\n\n📋 \"Plan my day\"\n📊 \"Status report\"\n💡 \"Give me tips\"";
+        tokensUsed = tokenManager.estimateTokens(response);
+      }
     }
 
     // Consume tokens
@@ -136,7 +141,9 @@ When giving templates, provide ready-to-use mission structures.
       'content': '$_systemPrompt\n\nCurrent workspace:\n$missionContext',
     });
 
-    for (var msg in history) {
+    // Only include last 4 messages to reduce payload
+    final recentHistory = history.length > 4 ? history.sublist(history.length - 4) : history;
+    for (var msg in recentHistory) {
       messages.add({
         'role': msg.role == ChatRole.commander ? 'user' : 'assistant',
         'content': msg.content,
@@ -152,34 +159,44 @@ When giving templates, provide ready-to-use mission structures.
       'temperature': 0.7,
     });
 
-    final httpResponse = await http
-        .post(
-          Uri.parse(_apiUrl),
-          headers: {
-            'Authorization': 'Bearer $_apiKey',
-            'Content-Type': 'application/json',
-          },
-          body: body,
-        )
-        .timeout(const Duration(seconds: 30));
+    try {
+      final httpResponse = await http
+          .post(
+            Uri.parse(_apiUrl),
+            headers: {
+              'Authorization': 'Bearer $_apiKey',
+              'Content-Type': 'application/json',
+            },
+            body: body,
+          )
+          .timeout(const Duration(seconds: 60));
 
-    if (httpResponse.statusCode == 200) {
-      final data = jsonDecode(httpResponse.body);
-      final content =
-          data['choices'][0]['message']['content'] as String? ?? '';
-      final usage = data['usage'] as Map<String, dynamic>?;
-      final totalTokens =
-          usage?['total_tokens'] as int? ?? tokenManager.estimateTokens(content);
+      if (httpResponse.statusCode == 200) {
+        final data = jsonDecode(httpResponse.body);
+        final choices = data['choices'] as List?;
+        if (choices == null || choices.isEmpty) {
+          throw Exception('No choices in API response');
+        }
+        final content =
+            choices[0]['message']['content'] as String? ?? '';
+        final usage = data['usage'] as Map<String, dynamic>?;
+        final totalTokens =
+            usage?['total_tokens'] as int? ?? tokenManager.estimateTokens(content);
 
-      return {'message': content, 'tokensUsed': totalTokens};
-    } else if (httpResponse.statusCode == 429) {
+        return {'message': content, 'tokensUsed': totalTokens};
+      } else if (httpResponse.statusCode == 429) {
+        // Rate limited — use offline
+        throw Exception('Rate limited');
+      } else {
+        throw Exception('API error: ${httpResponse.statusCode}');
+      }
+    } catch (e) {
+      // Any error (timeout, network, API) → use offline fallback
+      final offlineResponse = await _handleOffline(command);
       return {
-        'message':
-            'AI is under heavy load right now. Please try again in a moment! 😊',
-        'tokensUsed': 10,
+        'message': offlineResponse,
+        'tokensUsed': tokenManager.estimateTokens(offlineResponse),
       };
-    } else {
-      throw Exception('API error: ${httpResponse.statusCode}');
     }
   }
 

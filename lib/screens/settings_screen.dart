@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/token_manager.dart';
 import '../services/database_helper.dart';
+import '../services/purchase_service.dart';
 import '../theme/military_theme.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/theme_provider.dart';
@@ -636,6 +637,8 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildPremiumCard(BuildContext context, TokenManager tokenManager, AppLocalizations l) {
+    final purchaseService = context.watch<PurchaseService>();
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -675,27 +678,52 @@ class SettingsScreen extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 6),
+          Text(
+            '\$1.00 / month',
+            style: TextStyle(
+              color: MilitaryTheme.accentGreen,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () {
-                // Instant free upgrade — no payment required
-                tokenManager.upgradeToPremium();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(l.get('premiumWelcome')),
-                    backgroundColor: MilitaryTheme.accentGreen,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.rocket_launch_rounded, size: 20),
-              label: Text(l.get('upgradeNow')),
+              onPressed: purchaseService.isPurchasing
+                  ? null
+                  : () async {
+                      if (!purchaseService.isAvailable) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Store not available. Please try again later.'),
+                            backgroundColor: MilitaryTheme.commandRed,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                        );
+                        return;
+                      }
+                      final success = await purchaseService.buyPremium();
+                      if (!success && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Purchase could not be started. Please try again.'),
+                            backgroundColor: MilitaryTheme.commandRed,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                        );
+                      }
+                    },
+              icon: purchaseService.isPurchasing
+                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.rocket_launch_rounded, size: 20),
+              label: Text(purchaseService.isPurchasing ? 'Processing...' : l.get('upgradeNow')),
               style: ElevatedButton.styleFrom(
                 backgroundColor: MilitaryTheme.goldAccent,
-                foregroundColor: Colors.black,
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -707,6 +735,8 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildPremiumActiveCard(BuildContext context, TokenManager tokenManager, AppLocalizations l) {
+    final purchaseService = context.watch<PurchaseService>();
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: MilitaryTheme.goldenAccentCard,
@@ -735,11 +765,32 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 12),
           TextButton(
             onPressed: () {
-              tokenManager.downgradeToFree();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l.get('premiumDowngraded')),
-                  backgroundColor: MilitaryTheme.surfaceDark,
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text(l.get('cancelPremium'), style: const TextStyle(fontSize: 18)),
+                  content: Text('Are you sure you want to cancel your premium subscription?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Text(l.get('cancel')),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await purchaseService.cancelSubscription();
+                        if (ctx.mounted) Navigator.pop(ctx);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l.get('premiumDowngraded')),
+                              backgroundColor: MilitaryTheme.surfaceDark,
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(l.get('cancelPremium'), style: const TextStyle(color: MilitaryTheme.commandRed)),
+                    ),
+                  ],
                 ),
               );
             },

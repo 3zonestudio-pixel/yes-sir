@@ -46,6 +46,10 @@ class TokenManager extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     _isPremium = true;
     await prefs.setBool('isPremium', true);
+    // Update current day's token limit to premium
+    if (_todayUsage != null) {
+      await DatabaseHelper.instance.updateTokenLimit(_todayUsage!.date, 10000);
+    }
     await _loadTodayUsage();
   }
 
@@ -53,6 +57,10 @@ class TokenManager extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     _isPremium = false;
     await prefs.setBool('isPremium', false);
+    // Update current day's token limit to free
+    if (_todayUsage != null) {
+      await DatabaseHelper.instance.updateTokenLimit(_todayUsage!.date, 5000);
+    }
     await _loadTodayUsage();
   }
 }
