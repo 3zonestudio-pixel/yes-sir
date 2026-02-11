@@ -114,6 +114,11 @@ class DatabaseHelper {
     return await _platformDb.updateTokenUsage(date, tokensUsed);
   }
 
+  Future<void> updateTokenLimit(String date, int tokenLimit) async {
+    await _ensureInitialized();
+    return await _platformDb.updateTokenLimit(date, tokenLimit);
+  }
+
   Future<List<TokenUsage>> getTokenUsageHistory({int days = 30}) async {
     await _ensureInitialized();
     return await _platformDb.getTokenUsageHistory(days: days);

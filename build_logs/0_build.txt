@@ -1,0 +1,395 @@
+﻿2026-02-11T00:53:33.9863577Z Current runner version: '2.331.0'
+2026-02-11T00:53:33.9890487Z ##[group]Runner Image Provisioner
+2026-02-11T00:53:33.9891397Z Hosted Compute Agent
+2026-02-11T00:53:33.9891873Z Version: 20260123.484
+2026-02-11T00:53:33.9892426Z Commit: 6bd6555ca37d84114959e1c76d2c01448ff61c5d
+2026-02-11T00:53:33.9893036Z Build Date: 2026-01-23T19:41:17Z
+2026-02-11T00:53:33.9893644Z Worker ID: {3ece436a-9911-4489-ae9d-8261f88596f4}
+2026-02-11T00:53:33.9894241Z Azure Region: westcentralus
+2026-02-11T00:53:33.9894791Z ##[endgroup]
+2026-02-11T00:53:33.9896099Z ##[group]Operating System
+2026-02-11T00:53:33.9896616Z Ubuntu
+2026-02-11T00:53:33.9897072Z 24.04.3
+2026-02-11T00:53:33.9897601Z LTS
+2026-02-11T00:53:33.9898042Z ##[endgroup]
+2026-02-11T00:53:33.9898445Z ##[group]Runner Image
+2026-02-11T00:53:33.9899002Z Image: ubuntu-24.04
+2026-02-11T00:53:33.9899436Z Version: 20260201.15.1
+2026-02-11T00:53:33.9900570Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260201.15/images/ubuntu/Ubuntu2404-Readme.md
+2026-02-11T00:53:33.9901836Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260201.15
+2026-02-11T00:53:33.9902642Z ##[endgroup]
+2026-02-11T00:53:33.9903616Z ##[group]GITHUB_TOKEN Permissions
+2026-02-11T00:53:33.9905810Z Contents: read
+2026-02-11T00:53:33.9906398Z Metadata: read
+2026-02-11T00:53:33.9906909Z Packages: read
+2026-02-11T00:53:33.9907591Z ##[endgroup]
+2026-02-11T00:53:33.9910203Z Secret source: Actions
+2026-02-11T00:53:33.9910838Z Prepare workflow directory
+2026-02-11T00:53:34.0242065Z Prepare all required actions
+2026-02-11T00:53:34.0281661Z Getting action download info
+2026-02-11T00:53:34.4823544Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-02-11T00:53:34.5785854Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2026-02-11T00:53:35.4364075Z Download action repository 'subosito/flutter-action@v2' (SHA:fd55f4c5af5b953cc57a2be44cb082c8f6635e8e)
+2026-02-11T00:53:36.0269214Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-02-11T00:53:36.2679593Z Getting action download info
+2026-02-11T00:53:36.4269361Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-02-11T00:53:36.6045659Z Complete job name: build
+2026-02-11T00:53:36.6862150Z ##[group]Run actions/checkout@v4
+2026-02-11T00:53:36.6863369Z with:
+2026-02-11T00:53:36.6864063Z   repository: 3zonestudio-pixel/yes-sir
+2026-02-11T00:53:36.6865362Z   token: ***
+2026-02-11T00:53:36.6865982Z   ssh-strict: true
+2026-02-11T00:53:36.6866639Z   ssh-user: git
+2026-02-11T00:53:36.6867489Z   persist-credentials: true
+2026-02-11T00:53:36.6868227Z   clean: true
+2026-02-11T00:53:36.6868922Z   sparse-checkout-cone-mode: true
+2026-02-11T00:53:36.6869706Z   fetch-depth: 1
+2026-02-11T00:53:36.6870339Z   fetch-tags: false
+2026-02-11T00:53:36.6870974Z   show-progress: true
+2026-02-11T00:53:36.6871649Z   lfs: false
+2026-02-11T00:53:36.6872280Z   submodules: false
+2026-02-11T00:53:36.6872940Z   set-safe-directory: true
+2026-02-11T00:53:36.6873901Z ##[endgroup]
+2026-02-11T00:53:36.8050983Z Syncing repository: 3zonestudio-pixel/yes-sir
+2026-02-11T00:53:36.8053513Z ##[group]Getting Git version info
+2026-02-11T00:53:36.8054542Z Working directory is '/home/runner/work/yes-sir/yes-sir'
+2026-02-11T00:53:36.8056220Z [command]/usr/bin/git version
+2026-02-11T00:53:36.8107529Z git version 2.52.0
+2026-02-11T00:53:36.8135173Z ##[endgroup]
+2026-02-11T00:53:36.8163550Z Temporarily overriding HOME='/home/runner/work/_temp/131729a1-3d77-4fb4-9394-aec48a789e29' before making global git config changes
+2026-02-11T00:53:36.8167468Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-11T00:53:36.8170515Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/yes-sir/yes-sir
+2026-02-11T00:53:36.8208405Z Deleting the contents of '/home/runner/work/yes-sir/yes-sir'
+2026-02-11T00:53:36.8212668Z ##[group]Initializing the repository
+2026-02-11T00:53:36.8217008Z [command]/usr/bin/git init /home/runner/work/yes-sir/yes-sir
+2026-02-11T00:53:36.8305081Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-02-11T00:53:36.8307515Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-02-11T00:53:36.8310020Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-02-11T00:53:36.8311372Z hint: call:
+2026-02-11T00:53:36.8311959Z hint:
+2026-02-11T00:53:36.8312801Z hint: 	git config --global init.defaultBranch <name>
+2026-02-11T00:53:36.8313997Z hint:
+2026-02-11T00:53:36.8314875Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-02-11T00:53:36.8316322Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-02-11T00:53:36.8317650Z hint:
+2026-02-11T00:53:36.8318280Z hint: 	git branch -m <name>
+2026-02-11T00:53:36.8318962Z hint:
+2026-02-11T00:53:36.8319914Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-02-11T00:53:36.8321652Z Initialized empty Git repository in /home/runner/work/yes-sir/yes-sir/.git/
+2026-02-11T00:53:36.8324779Z [command]/usr/bin/git remote add origin https://github.com/3zonestudio-pixel/yes-sir
+2026-02-11T00:53:36.8356393Z ##[endgroup]
+2026-02-11T00:53:36.8357939Z ##[group]Disabling automatic garbage collection
+2026-02-11T00:53:36.8360492Z [command]/usr/bin/git config --local gc.auto 0
+2026-02-11T00:53:36.8391740Z ##[endgroup]
+2026-02-11T00:53:36.8393296Z ##[group]Setting up auth
+2026-02-11T00:53:36.8400935Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-11T00:53:36.8433434Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-11T00:53:36.8746408Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-11T00:53:36.8776453Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-11T00:53:36.8969528Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-11T00:53:36.9004695Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-11T00:53:36.9200522Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-02-11T00:53:36.9233084Z ##[endgroup]
+2026-02-11T00:53:36.9234311Z ##[group]Fetching the repository
+2026-02-11T00:53:36.9242523Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +fba2a5465ecc08e30be8d6e893366500f3f027cb:refs/remotes/origin/main
+2026-02-11T00:53:37.5925385Z From https://github.com/3zonestudio-pixel/yes-sir
+2026-02-11T00:53:37.5927001Z  * [new ref]         fba2a5465ecc08e30be8d6e893366500f3f027cb -> origin/main
+2026-02-11T00:53:37.5955042Z ##[endgroup]
+2026-02-11T00:53:37.5955735Z ##[group]Determining the checkout info
+2026-02-11T00:53:37.5956960Z ##[endgroup]
+2026-02-11T00:53:37.5964569Z [command]/usr/bin/git sparse-checkout disable
+2026-02-11T00:53:37.6003735Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-02-11T00:53:37.6029853Z ##[group]Checking out the ref
+2026-02-11T00:53:37.6035134Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-02-11T00:53:37.6181391Z Switched to a new branch 'main'
+2026-02-11T00:53:37.6182087Z branch 'main' set up to track 'origin/main'.
+2026-02-11T00:53:37.6188034Z ##[endgroup]
+2026-02-11T00:53:37.6224805Z [command]/usr/bin/git log -1 --format=%H
+2026-02-11T00:53:37.6244993Z fba2a5465ecc08e30be8d6e893366500f3f027cb
+2026-02-11T00:53:37.6485186Z ##[group]Run actions/setup-java@v4
+2026-02-11T00:53:37.6485548Z with:
+2026-02-11T00:53:37.6485936Z   distribution: temurin
+2026-02-11T00:53:37.6486192Z   java-version: 17
+2026-02-11T00:53:37.6486437Z   java-package: jdk
+2026-02-11T00:53:37.6486674Z   check-latest: false
+2026-02-11T00:53:37.6486932Z   server-id: github
+2026-02-11T00:53:37.6487169Z   server-username: GITHUB_ACTOR
+2026-02-11T00:53:37.6487605Z   server-password: GITHUB_TOKEN
+2026-02-11T00:53:37.6487877Z   overwrite-settings: true
+2026-02-11T00:53:37.6488151Z   job-status: success
+2026-02-11T00:53:37.6488610Z   token: ***
+2026-02-11T00:53:37.6488842Z ##[endgroup]
+2026-02-11T00:53:37.8493315Z ##[group]Installed distributions
+2026-02-11T00:53:37.8556030Z Resolved Java 17.0.18+8 from tool-cache
+2026-02-11T00:53:37.8556695Z Setting Java 17.0.18+8 as the default
+2026-02-11T00:53:37.8569463Z Creating toolchains.xml for JDK version 17 from temurin
+2026-02-11T00:53:37.8642003Z Writing to /home/runner/.m2/toolchains.xml
+2026-02-11T00:53:37.8643294Z 
+2026-02-11T00:53:37.8643954Z Java configuration:
+2026-02-11T00:53:37.8644971Z   Distribution: temurin
+2026-02-11T00:53:37.8645454Z   Version: 17.0.18+8
+2026-02-11T00:53:37.8646072Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.8646556Z 
+2026-02-11T00:53:37.8647183Z ##[endgroup]
+2026-02-11T00:53:37.8665758Z Creating settings.xml with server-id: github
+2026-02-11T00:53:37.8666452Z Writing to /home/runner/.m2/settings.xml
+2026-02-11T00:53:37.8883883Z ##[group]Run subosito/flutter-action@v2
+2026-02-11T00:53:37.8884234Z with:
+2026-02-11T00:53:37.8884476Z   flutter-version: 3.24.0
+2026-02-11T00:53:37.8884747Z   channel: stable
+2026-02-11T00:53:37.8884979Z   architecture: X64
+2026-02-11T00:53:37.8885209Z   cache: false
+2026-02-11T00:53:37.8885444Z   pub-cache-path: default
+2026-02-11T00:53:37.8885699Z   dry-run: false
+2026-02-11T00:53:37.8886006Z   git-source: https://github.com/flutter/flutter.git
+2026-02-11T00:53:37.8886315Z env:
+2026-02-11T00:53:37.8886648Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.8887147Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.8887672Z ##[endgroup]
+2026-02-11T00:53:37.8988893Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2026-02-11T00:53:37.8989447Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2026-02-11T00:53:37.9018415Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-11T00:53:37.9018876Z env:
+2026-02-11T00:53:37.9019217Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.9019725Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.9020109Z ##[endgroup]
+2026-02-11T00:53:37.9154098Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2026-02-11T00:53:37.9154567Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2026-02-11T00:53:37.9154894Z [36;1m  -n '3.24.0' \[0m
+2026-02-11T00:53:37.9155138Z [36;1m  -f '' \[0m
+2026-02-11T00:53:37.9155379Z [36;1m  -a 'X64' \[0m
+2026-02-11T00:53:37.9155602Z [36;1m  -k '' \[0m
+2026-02-11T00:53:37.9155856Z [36;1m  -c '' \[0m
+2026-02-11T00:53:37.9156069Z [36;1m  -l '' \[0m
+2026-02-11T00:53:37.9156309Z [36;1m  -d 'default' \[0m
+2026-02-11T00:53:37.9156695Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2026-02-11T00:53:37.9157026Z [36;1m  stable[0m
+2026-02-11T00:53:37.9180230Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-11T00:53:37.9180616Z env:
+2026-02-11T00:53:37.9180946Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.9181440Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:37.9181827Z ##[endgroup]
+2026-02-11T00:53:38.1328150Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2026-02-11T00:53:38.1328559Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2026-02-11T00:53:38.1328861Z [36;1m  -n '3.24.0' \[0m
+2026-02-11T00:53:38.1329121Z [36;1m  -a 'x64' \[0m
+2026-02-11T00:53:38.1329463Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.24.0-x64' \[0m
+2026-02-11T00:53:38.1329995Z [36;1m  -d '/home/runner/.pub-cache' \[0m
+2026-02-11T00:53:38.1330283Z [36;1m  stable[0m
+2026-02-11T00:53:38.1354417Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-11T00:53:38.1354789Z env:
+2026-02-11T00:53:38.1355122Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:38.1355636Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:53:38.1356049Z ##[endgroup]
+2026-02-11T00:53:38.3753267Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-02-11T00:53:38.3754046Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-02-11T00:53:38.3754580Z 
+2026-02-11T00:53:38.6147826Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-02-11T00:53:39.6144937Z   4  639M    4 25.7M    0     0   107M      0  0:00:05 --:--:--  0:00:05  107M
+2026-02-11T00:53:40.4197199Z  57  639M   57  368M    0     0   297M      0  0:00:02  0:00:01  0:00:01  297M
+2026-02-11T00:53:40.4198081Z 100  639M  100  639M    0     0   312M      0  0:00:02  0:00:02 --:--:--  312M
+2026-02-11T00:54:06.7026025Z ##[group]Run flutter pub get
+2026-02-11T00:54:06.7026347Z [36;1mflutter pub get[0m
+2026-02-11T00:54:06.7050011Z shell: /usr/bin/bash -e {0}
+2026-02-11T00:54:06.7050278Z env:
+2026-02-11T00:54:06.7050573Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:06.7051011Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:06.7051433Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-11T00:54:06.7051743Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-11T00:54:06.7051993Z ##[endgroup]
+2026-02-11T00:54:06.8820667Z 
+2026-02-11T00:54:06.8835143Z   ╔════════════════════════════════════════════════════════════════════════════╗
+2026-02-11T00:54:06.8836022Z   ║                 Welcome to Flutter! - https://flutter.dev                  ║
+2026-02-11T00:54:06.8836808Z   ║                                                                            ║
+2026-02-11T00:54:06.8837790Z   ║ The Flutter tool uses Google Analytics to anonymously report feature usage ║
+2026-02-11T00:54:06.8838534Z   ║ statistics and basic crash reports. This data is used to help improve      ║
+2026-02-11T00:54:06.8839065Z   ║ Flutter tools over time.                                                   ║
+2026-02-11T00:54:06.8839494Z   ║                                                                            ║
+2026-02-11T00:54:06.8839944Z   ║ Flutter tool analytics are not sent on the very first run. To disable      ║
+2026-02-11T00:54:06.8840496Z   ║ reporting, type 'flutter config --no-analytics'. To display the current    ║
+2026-02-11T00:54:06.8841223Z   ║ setting, type 'flutter config'. If you opt out of analytics, an opt-out    ║
+2026-02-11T00:54:06.8841779Z   ║ event will be sent, and then no further information will be sent by the    ║
+2026-02-11T00:54:06.8842265Z   ║ Flutter tool.                                                              ║
+2026-02-11T00:54:06.8842668Z   ║                                                                            ║
+2026-02-11T00:54:06.8843111Z   ║ By downloading the Flutter SDK, you agree to the Google Terms of Service.  ║
+2026-02-11T00:54:06.8843632Z   ║ The Google Privacy Policy describes how data is handled in this service.   ║
+2026-02-11T00:54:06.8844069Z   ║                                                                            ║
+2026-02-11T00:54:06.8844541Z   ║ Moreover, Flutter includes the Dart SDK, which may send usage metrics and  ║
+2026-02-11T00:54:06.8845028Z   ║ crash reports to Google.                                                   ║
+2026-02-11T00:54:06.8845477Z   ║                                                                            ║
+2026-02-11T00:54:06.8845888Z   ║ Read about data we send with crash reports:                                ║
+2026-02-11T00:54:06.8846415Z   ║ https://flutter.dev/to/crash-reporting                                     ║
+2026-02-11T00:54:06.8847134Z   ║                                                                            ║
+2026-02-11T00:54:06.8847806Z   ║ See Google's privacy policy:                                               ║
+2026-02-11T00:54:06.8848298Z   ║ https://policies.google.com/privacy                                        ║
+2026-02-11T00:54:06.8848722Z   ║                                                                            ║
+2026-02-11T00:54:06.8849182Z   ║ To disable animations in this tool, use                                    ║
+2026-02-11T00:54:06.8849664Z   ║ 'flutter config --no-cli-animations'.                                      ║
+2026-02-11T00:54:06.8850175Z   ╚════════════════════════════════════════════════════════════════════════════╝
+2026-02-11T00:54:06.8850415Z 
+2026-02-11T00:54:12.0483891Z Resolving dependencies...
+2026-02-11T00:54:13.1502220Z Downloading packages...
+2026-02-11T00:54:17.6961434Z + archive 4.0.7
+2026-02-11T00:54:17.6961800Z   async 2.11.0 (2.13.0 available)
+2026-02-11T00:54:17.6962246Z   boolean_selector 2.1.1 (2.1.2 available)
+2026-02-11T00:54:17.6963037Z   characters 1.3.0 (1.4.1 available)
+2026-02-11T00:54:17.6963373Z + checked_yaml 2.0.3 (2.0.4 available)
+2026-02-11T00:54:17.6963672Z + cli_util 0.4.2
+2026-02-11T00:54:17.6963911Z   clock 1.1.1 (1.1.2 available)
+2026-02-11T00:54:17.6964221Z   collection 1.18.0 (1.19.1 available)
+2026-02-11T00:54:17.6964530Z   fake_async 1.3.1 (1.3.3 available)
+2026-02-11T00:54:17.6964841Z   ffi 2.1.3 (2.1.5 available)
+2026-02-11T00:54:17.6965159Z   fl_chart 0.69.2 (1.1.1 available)
+2026-02-11T00:54:17.6965478Z + flutter_launcher_icons 0.14.4
+2026-02-11T00:54:17.6965802Z   flutter_lints 4.0.0 (6.0.0 available)
+2026-02-11T00:54:17.6966229Z   flutter_local_notifications 19.5.0 (20.0.0 available)
+2026-02-11T00:54:17.6966798Z   flutter_local_notifications_linux 6.0.0 (7.0.0 available)
+2026-02-11T00:54:17.6967662Z   flutter_local_notifications_platform_interface 9.1.0 (10.0.0 available)
+2026-02-11T00:54:17.6968472Z   flutter_local_notifications_windows 1.0.3 (2.0.0 available)
+2026-02-11T00:54:17.6968930Z   google_fonts 6.3.0 (8.0.1 available)
+2026-02-11T00:54:17.6969299Z   http_parser 4.0.2 (4.1.2 available)
+2026-02-11T00:54:17.6969666Z + image 4.7.2
+2026-02-11T00:54:17.6970447Z + in_app_purchase 3.2.3
+2026-02-11T00:54:17.6970879Z + in_app_purchase_android 0.4.0 (0.4.0+8 available)
+2026-02-11T00:54:17.6971461Z + in_app_purchase_platform_interface 1.4.0
+2026-02-11T00:54:17.6971983Z + in_app_purchase_storekit 0.4.0 (0.4.7 available)
+2026-02-11T00:54:17.6972460Z   intl 0.19.0 (0.20.2 available)
+2026-02-11T00:54:17.6972811Z + json_annotation 4.9.0 (4.10.0 available)
+2026-02-11T00:54:17.6973178Z   leak_tracker 10.0.5 (11.0.2 available)
+2026-02-11T00:54:17.6973626Z   leak_tracker_flutter_testing 3.0.5 (3.0.10 available)
+2026-02-11T00:54:17.6974077Z   leak_tracker_testing 3.0.1 (3.0.2 available)
+2026-02-11T00:54:17.6974533Z   lints 4.0.0 (6.1.0 available)
+2026-02-11T00:54:17.6974861Z   matcher 0.12.16+1 (0.12.18 available)
+2026-02-11T00:54:17.6975308Z   material_color_utilities 0.11.1 (0.13.0 available)
+2026-02-11T00:54:17.6975671Z   meta 1.15.0 (1.18.1 available)
+2026-02-11T00:54:17.6976012Z   path 1.9.0 (1.9.1 available)
+2026-02-11T00:54:17.6976402Z   path_provider_android 2.2.15 (2.2.22 available)
+2026-02-11T00:54:17.6976850Z   path_provider_foundation 2.4.1 (2.6.0 available)
+2026-02-11T00:54:17.6977261Z   petitparser 6.0.2 (7.0.1 available)
+2026-02-11T00:54:17.6977785Z + posix 6.0.3
+2026-02-11T00:54:17.6978089Z   shared_preferences 2.5.3 (2.5.4 available)
+2026-02-11T00:54:17.6978494Z   shared_preferences_android 2.4.7 (2.4.20 available)
+2026-02-11T00:54:17.6978971Z   shared_preferences_foundation 2.5.4 (2.5.6 available)
+2026-02-11T00:54:17.6979407Z   source_span 1.10.0 (1.10.2 available)
+2026-02-11T00:54:17.6979779Z   sqflite 2.4.1 (2.4.2 available)
+2026-02-11T00:54:17.6980163Z   sqflite_android 2.4.0 (2.4.2+2 available)
+2026-02-11T00:54:17.6980499Z   sqflite_common 2.5.4+6 (2.5.6 available)
+2026-02-11T00:54:17.6981212Z   sqflite_darwin 2.4.1+1 (2.4.2 available)
+2026-02-11T00:54:17.6981518Z   stack_trace 1.11.1 (1.12.1 available)
+2026-02-11T00:54:17.6981872Z   stream_channel 2.1.2 (2.1.4 available)
+2026-02-11T00:54:17.6982203Z   string_scanner 1.2.0 (1.4.1 available)
+2026-02-11T00:54:17.6982538Z   synchronized 3.3.0+3 (3.4.0 available)
+2026-02-11T00:54:17.6982890Z   table_calendar 3.1.3 (3.2.0 available)
+2026-02-11T00:54:17.6983244Z   term_glyph 1.2.1 (1.2.2 available)
+2026-02-11T00:54:17.6983597Z   test_api 0.7.2 (0.7.9 available)
+2026-02-11T00:54:17.6983956Z   timezone 0.10.1 (0.11.0 available)
+2026-02-11T00:54:17.6984390Z + url_launcher 6.3.1 (6.3.2 available)
+2026-02-11T00:54:17.6984821Z + url_launcher_android 6.3.14 (6.3.28 available)
+2026-02-11T00:54:17.6985326Z + url_launcher_ios 6.3.3 (6.4.0 available)
+2026-02-11T00:54:17.6985772Z + url_launcher_linux 3.2.1 (3.2.2 available)
+2026-02-11T00:54:17.6986185Z + url_launcher_macos 3.2.2 (3.2.5 available)
+2026-02-11T00:54:17.6986589Z + url_launcher_platform_interface 2.3.2
+2026-02-11T00:54:17.6986999Z + url_launcher_web 2.3.3 (2.4.2 available)
+2026-02-11T00:54:17.6987703Z + url_launcher_windows 3.1.4 (3.1.5 available)
+2026-02-11T00:54:17.6988372Z   vector_math 2.1.4 (2.2.0 available)
+2026-02-11T00:54:17.6988778Z   vm_service 14.2.4 (15.0.2 available)
+2026-02-11T00:54:17.6989149Z   xml 6.5.0 (6.6.1 available)
+2026-02-11T00:54:17.6989607Z + yaml 3.1.3
+2026-02-11T00:54:17.6989978Z Changed 20 dependencies!
+2026-02-11T00:54:17.7002192Z 57 packages have newer versions incompatible with dependency constraints.
+2026-02-11T00:54:17.7002915Z Try `flutter pub outdated` for more information.
+2026-02-11T00:54:18.1251398Z ##[group]Run dart run flutter_launcher_icons
+2026-02-11T00:54:18.1251801Z [36;1mdart run flutter_launcher_icons[0m
+2026-02-11T00:54:18.1273145Z shell: /usr/bin/bash -e {0}
+2026-02-11T00:54:18.1273377Z env:
+2026-02-11T00:54:18.1273661Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:18.1274093Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:18.1274531Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-11T00:54:18.1274832Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-11T00:54:18.1275055Z ##[endgroup]
+2026-02-11T00:54:19.7751391Z   ════════════════════════════════════════════
+2026-02-11T00:54:19.7752134Z      FLUTTER LAUNCHER ICONS (v0.14.4)                               
+2026-02-11T00:54:19.7752819Z   ════════════════════════════════════════════
+2026-02-11T00:54:19.7753256Z   
+2026-02-11T00:54:19.8482501Z • Creating default icons Android
+2026-02-11T00:54:19.8492381Z • Creating adaptive icons Android
+2026-02-11T00:54:19.9406717Z • Overwriting the default Android launcher icon with a new icon
+2026-02-11T00:54:20.1817535Z • No colors.xml file found in your Android project
+2026-02-11T00:54:20.1818349Z • Creating colors.xml file and adding it to your Android project
+2026-02-11T00:54:20.2642391Z • Creating mipmap xml file Android
+2026-02-11T00:54:20.2666620Z No platform provided
+2026-02-11T00:54:20.2668504Z 
+2026-02-11T00:54:20.2669240Z ✓ Successfully generated launcher icons
+2026-02-11T00:54:20.2896006Z ##[group]Run flutter analyze --no-fatal-infos
+2026-02-11T00:54:20.2896338Z [36;1mflutter analyze --no-fatal-infos[0m
+2026-02-11T00:54:20.2917778Z shell: /usr/bin/bash -e {0}
+2026-02-11T00:54:20.2918031Z env:
+2026-02-11T00:54:20.2918309Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:20.2918738Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-11T00:54:20.2919149Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-11T00:54:20.2919448Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-11T00:54:20.2919671Z ##[endgroup]
+2026-02-11T00:54:36.2792012Z Analyzing yes-sir...                                            
+2026-02-11T00:54:36.2798543Z 
+2026-02-11T00:54:36.2844000Z    info • Don't use 'BuildContext's across async gaps • lib/screens/commander_ai_screen.dart:100:37 • use_build_context_synchronously
+2026-02-11T00:54:36.2846547Z    info • Use 'const' with the constructor to improve performance • lib/screens/commander_ai_screen.dart:533:27 • prefer_const_constructors
+2026-02-11T00:54:36.2848518Z    info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/screens/commander_ai_screen.dart:534:27 • prefer_const_literals_to_create_immutables
+2026-02-11T00:54:36.2850324Z    info • Use 'const' with the constructor to improve performance • lib/screens/commander_ai_screen.dart:608:31 • prefer_const_constructors
+2026-02-11T00:54:36.2851841Z    info • Use 'const' with the constructor to improve performance • lib/screens/home_screen.dart:187:36 • prefer_const_constructors
+2026-02-11T00:54:36.2855030Z    info • Unnecessary use of 'toList' in a spread • lib/screens/home_screen.dart:251:80 • unnecessary_to_list_in_spreads
+2026-02-11T00:54:36.2856911Z    info • Unnecessary use of 'toList' in a spread • lib/screens/home_screen.dart:259:90 • unnecessary_to_list_in_spreads
+2026-02-11T00:54:36.2863724Z    info • Use 'const' with the constructor to improve performance • lib/screens/home_screen.dart:302:31 • prefer_const_constructors
+2026-02-11T00:54:36.2865329Z    info • Use 'const' with the constructor to improve performance • lib/screens/home_screen.dart:530:27 • prefer_const_constructors
+2026-02-11T00:54:36.2866965Z    info • Use 'const' with the constructor to improve performance • lib/screens/mission_map_screen.dart:103:33 • prefer_const_constructors
+2026-02-11T00:54:36.2868542Z    info • Use 'const' with the constructor to improve performance • lib/screens/mission_map_screen.dart:104:25 • prefer_const_constructors
+2026-02-11T00:54:36.2870310Z    info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/screens/mission_map_screen.dart:105:25 • prefer_const_literals_to_create_immutables
+2026-02-11T00:54:36.2872056Z    info • Use 'const' with the constructor to improve performance • lib/screens/mission_map_screen.dart:115:31 • prefer_const_constructors
+2026-02-11T00:54:36.2873689Z    info • Use 'const' with the constructor to improve performance • lib/screens/mission_map_screen.dart:140:30 • prefer_const_constructors
+2026-02-11T00:54:36.2875277Z    info • Use 'const' with the constructor to improve performance • lib/screens/mission_map_screen.dart:141:31 • prefer_const_constructors
+2026-02-11T00:54:36.2876870Z    info • Use 'const' with the constructor to improve performance • lib/screens/missions_screen.dart:201:29 • prefer_const_constructors
+2026-02-11T00:54:36.2878473Z    info • Unnecessary use of string interpolation • lib/screens/missions_screen.dart:262:27 • unnecessary_string_interpolations
+2026-02-11T00:54:36.2880081Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:487:13 • use_build_context_synchronously
+2026-02-11T00:54:36.2881586Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:493:13 • use_build_context_synchronously
+2026-02-11T00:54:36.2883825Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:494:27 • use_build_context_synchronously
+2026-02-11T00:54:36.2885537Z    info • Use 'const' with the constructor to improve performance • lib/screens/missions_screen.dart:567:35 • prefer_const_constructors
+2026-02-11T00:54:36.2887095Z    info • Use 'const' with the constructor to improve performance • lib/screens/missions_screen.dart:578:35 • prefer_const_constructors
+2026-02-11T00:54:36.2888912Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:698:27 • use_build_context_synchronously
+2026-02-11T00:54:36.2890803Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:699:41 • use_build_context_synchronously
+2026-02-11T00:54:36.2892426Z    info • Use 'const' with the constructor to improve performance • lib/screens/pin_lock_screen.dart:199:23 • prefer_const_constructors
+2026-02-11T00:54:36.2894245Z    info • Use 'const' with the constructor to improve performance • lib/screens/settings_screen.dart:682:11 • prefer_const_constructors
+2026-02-11T00:54:36.2895100Z    info • Use 'const' with the constructor to improve performance • lib/screens/settings_screen.dart:684:20 • prefer_const_constructors
+2026-02-11T00:54:36.2896009Z    info • Use 'const' with the constructor to improve performance • lib/screens/settings_screen.dart:700:38 • prefer_const_constructors
+2026-02-11T00:54:36.2896834Z    info • Use 'const' with the constructor to improve performance • lib/screens/settings_screen.dart:712:38 • prefer_const_constructors
+2026-02-11T00:54:36.2898054Z    info • Use 'const' with the constructor to improve performance • lib/screens/settings_screen.dart:772:28 • prefer_const_constructors
+2026-02-11T00:54:36.2899047Z    info • Use 'const' with the constructor to improve performance • lib/screens/splash_screen.dart:109:42 • prefer_const_constructors
+2026-02-11T00:54:36.2900017Z    info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/screens/splash_screen.dart:111:47 • prefer_const_literals_to_create_immutables
+2026-02-11T00:54:36.2900946Z    info • Use 'const' with the constructor to improve performance • lib/screens/splash_screen.dart:112:39 • prefer_const_constructors
+2026-02-11T00:54:36.2901770Z    info • Use 'const' with the constructor to improve performance • lib/screens/splash_screen.dart:118:39 • prefer_const_constructors
+2026-02-11T00:54:36.2902613Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:442:31 • curly_braces_in_flow_control_structures
+2026-02-11T00:54:36.2903464Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:448:27 • curly_braces_in_flow_control_structures
+2026-02-11T00:54:36.2904282Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:454:29 • curly_braces_in_flow_control_structures
+2026-02-11T00:54:36.2905156Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:460:26 • curly_braces_in_flow_control_structures
+2026-02-11T00:54:36.2905849Z warning • Unused import: 'dart:io' • lib/services/purchase_service.dart:2:8 • unused_import
+2026-02-11T00:54:36.2906623Z   error • The method 'updateTokenLimit' isn't defined for the type 'DatabaseHelper' • lib/services/token_manager.dart:51:37 • undefined_method
+2026-02-11T00:54:36.2907810Z   error • The method 'updateTokenLimit' isn't defined for the type 'DatabaseHelper' • lib/services/token_manager.dart:62:37 • undefined_method
+2026-02-11T00:54:36.2909007Z   error • The named parameter 'purchaseService' is required, but there's no corresponding argument • test/widget_test.dart:12:29 • missing_required_argument
+2026-02-11T00:54:36.2909505Z 
+2026-02-11T00:54:36.3051215Z 42 issues found. (ran in 15.3s)
+2026-02-11T00:54:36.3133419Z ##[error]Process completed with exit code 1.
+2026-02-11T00:54:36.3433350Z Post job cleanup.
+2026-02-11T00:54:36.3514749Z Post job cleanup.
+2026-02-11T00:54:36.5388616Z Post job cleanup.
+2026-02-11T00:54:36.6381355Z [command]/usr/bin/git version
+2026-02-11T00:54:36.6418562Z git version 2.52.0
+2026-02-11T00:54:36.6460808Z Temporarily overriding HOME='/home/runner/work/_temp/6fd28366-1883-41d6-9912-f4a1b34bedf9' before making global git config changes
+2026-02-11T00:54:36.6461936Z Adding repository directory to the temporary git global config as a safe directory
+2026-02-11T00:54:36.6478742Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/yes-sir/yes-sir
+2026-02-11T00:54:36.6571592Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-02-11T00:54:36.6611021Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-02-11T00:54:36.9825634Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-02-11T00:54:36.9854987Z http.https://github.com/.extraheader
+2026-02-11T00:54:36.9869479Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-02-11T00:54:37.0276897Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-02-11T00:54:37.0498889Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-02-11T00:54:37.0532618Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-02-11T00:54:37.0868454Z Cleaning up orphan processes

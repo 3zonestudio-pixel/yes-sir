@@ -223,6 +223,12 @@ class PlatformDatabase {
         where: 'date = ?', whereArgs: [date]);
   }
 
+  Future<void> updateTokenLimit(String date, int tokenLimit) async {
+    final db = await _db;
+    await db.update('token_usage', {'tokenLimit': tokenLimit},
+        where: 'date = ?', whereArgs: [date]);
+  }
+
   Future<List<TokenUsage>> getTokenUsageHistory({int days = 30}) async {
     final db = await _db;
     final result =

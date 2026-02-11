@@ -256,6 +256,19 @@ class PlatformDatabase {
     }
   }
 
+  Future<void> updateTokenLimit(String date, int tokenLimit) async {
+    if (_tokenUsage.containsKey(date)) {
+      final usage = _tokenUsage[date]!;
+      _tokenUsage[date] = TokenUsage(
+        date: usage.date,
+        tokensUsed: usage.tokensUsed,
+        tokenLimit: tokenLimit,
+        isPremium: usage.isPremium,
+      );
+      await _saveTokens();
+    }
+  }
+
   Future<List<TokenUsage>> getTokenUsageHistory({int days = 30}) async {
     final sorted = _tokenUsage.values.toList();
     sorted.sort((a, b) => b.date.compareTo(a.date));
