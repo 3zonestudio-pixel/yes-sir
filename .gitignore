@@ -45,6 +45,7 @@ build_logs/
 build_logs.zip
 
 # Keystore and signing
-*.jks
 *.keystore
 android/key.properties
+# Keep the release keystore in repo
+!android/app/yes-sir-release.jks

@@ -27,25 +27,12 @@ jobs:
         flutter-version: '3.24.0'
         channel: 'stable'
 
-    - name: Setup release keystore
+    - name: Setup signing config
       run: |
-        if [ -n "$KEYSTORE_BASE64" ]; then
-          echo "$KEYSTORE_BASE64" | base64 -d > android/app/yes-sir-release.jks
-        else
-          keytool -genkey -v \
-            -keystore android/app/yes-sir-release.jks \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -alias yes-sir \
-            -storepass YesSir2025Release \
-            -keypass YesSir2025Release \
-            -dname "CN=3Zone Studio, OU=Mobile, O=3Zone Studio, L=Unknown, S=Unknown, C=US"
-        fi
         echo "storePassword=YesSir2025Release" > android/key.properties
         echo "keyPassword=YesSir2025Release" >> android/key.properties
         echo "keyAlias=yes-sir" >> android/key.properties
         echo "storeFile=yes-sir-release.jks" >> android/key.properties
-      env:
-        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
 
     - name: Get dependencies
       run: flutter pub get
@@ -73,9 +60,3 @@ jobs:
       with:
         name: yes-sir-aab
         path: build/app/outputs/bundle/release/app-release.aab
-
-    - name: Upload Keystore (save this!)
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-keystore
-        path: android/app/yes-sir-release.jks
