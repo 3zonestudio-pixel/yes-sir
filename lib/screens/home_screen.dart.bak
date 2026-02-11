@@ -4,8 +4,8 @@ import '../l10n/app_localizations.dart';
 import '../models/mission.dart';
 import '../providers/mission_provider.dart';
 import '../services/database_helper.dart';
-import '../services/notification_service.dart';
 
+import '../theme/military_theme.dart';
 import 'commander_ai_screen.dart';
 import 'missions_screen.dart';
 import 'mission_map_screen.dart';
@@ -32,8 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final missions = await DatabaseHelper.instance.getTopLevelMissions();
     if (mounted) {
       context.read<MissionProvider>().setMissions(missions);
-      // Check for due-soon tasks and notify
-      await NotificationService.instance.checkAndNotifyDueTasks(missions);
     }
   }
 
@@ -68,13 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBottomNav(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: MilitaryTheme.cardBackground,
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -2)),
+          BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, -2)),
         ],
       ),
       child: SafeArea(
@@ -84,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(0, Icons.home_rounded, Icons.home_outlined, l.get('navHome')),
-              _buildNavItem(1, Icons.task_alt_rounded, Icons.task_alt_outlined, l.get('navTasks')),
+              _buildNavItem(1, Icons.rocket_launch_rounded, Icons.rocket_launch_outlined, l.get('navTasks')),
               _buildNavItem(2, Icons.calendar_month_rounded, Icons.calendar_month_outlined, l.get('navCalendar')),
               _buildNavItem(3, Icons.smart_toy_rounded, Icons.smart_toy_outlined, l.get('navAI')),
               _buildNavItem(4, Icons.bar_chart_rounded, Icons.bar_chart_outlined, l.get('navReports')),
@@ -97,10 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildNavItem(int index, IconData activeIcon, IconData icon, String label) {
     final selected = _currentIndex == index;
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final muted = theme.textTheme.bodySmall?.color ?? Colors.grey;
-
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
       behavior: HitTestBehavior.opaque,
@@ -108,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(horizontal: selected ? 16 : 12, vertical: 8),
         decoration: BoxDecoration(
-          color: selected ? primary.withOpacity(0.1) : Colors.transparent,
+          color: selected ? MilitaryTheme.accentGreen.withOpacity(0.12) : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
@@ -116,14 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Icon(
               selected ? activeIcon : icon,
-              color: selected ? primary : muted,
+              color: selected ? MilitaryTheme.goldAccent : MilitaryTheme.textMuted,
               size: 22,
             ),
             const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
-                color: selected ? primary : muted,
+                color: selected ? MilitaryTheme.goldAccent : MilitaryTheme.textMuted,
                 fontSize: 10,
                 fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
               ),
@@ -135,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// ===== SIMPLIFIED DASHBOARD TAB =====
+// ===== DASHBOARD TAB (NEW HOME PAGE) =====
 class _DashboardTab extends StatelessWidget {
   final String Function(AppLocalizations) getGreeting;
   final VoidCallback onNavigateToMissions;
@@ -153,7 +145,6 @@ class _DashboardTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final provider = context.watch<MissionProvider>();
-    final theme = Theme.of(context);
 
     final todayMissions = provider.allMissions.where((m) {
       if (m.dueDate == null) return false;
@@ -172,14 +163,15 @@ class _DashboardTab extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: onRefresh,
-      color: theme.colorScheme.primary,
+      color: MilitaryTheme.accentGreen,
       child: CustomScrollView(
         slivers: [
-          // Simple AppBar
+          // AppBar with greeting
           SliverAppBar(
             floating: true,
+            backgroundColor: MilitaryTheme.darkBackground,
             automaticallyImplyLeading: false,
-            expandedHeight: 90,
+            expandedHeight: 100,
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 50, 20, 10),
@@ -193,16 +185,17 @@ class _DashboardTab extends StatelessWidget {
                           Text(
                             '${getGreeting(l)} 🫡',
                             style: TextStyle(
-                              color: theme.textTheme.bodyMedium?.color,
+                              color: MilitaryTheme.textSecondary,
                               fontSize: 14,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             l.get('commander'),
-                            style: TextStyle(
-                              color: theme.textTheme.bodyLarge?.color,
-                              fontSize: 24,
+                            style: const TextStyle(
+                              color: MilitaryTheme.textPrimary,
+                              fontSize: 26,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -210,15 +203,17 @@ class _DashboardTab extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                      },
                       child: Container(
-                        width: 42,
-                        height: 42,
+                        width: 44,
+                        height: 44,
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(12),
+                          color: MilitaryTheme.surfaceDark,
+                          borderRadius: BorderRadius.circular(14),
                         ),
-                        child: Icon(Icons.settings_rounded, color: theme.textTheme.bodyMedium?.color, size: 22),
+                        child: const Icon(Icons.settings_rounded, color: MilitaryTheme.textSecondary, size: 22),
                       ),
                     ),
                   ],
@@ -235,27 +230,33 @@ class _DashboardTab extends StatelessWidget {
                 children: [
                   const SizedBox(height: 12),
 
-                  // Simple progress card
-                  _buildProgressCard(context, todayMissions.length, completedToday),
+                  // Progress overview card
+                  _buildProgressCard(context, todayMissions, completedToday),
 
                   const SizedBox(height: 20),
 
-                  // Today's tasks header
-                  _buildSectionHeader(context, l.get('todayTasks'), Icons.today_rounded, onNavigateToMissions),
+                  // Quick actions
+                  _buildQuickActions(context, l),
+
+                  const SizedBox(height: 24),
+
+                  // Today's tasks
+                  _buildSectionHeader(l.get('todayTasks'), Icons.today_rounded, () => onNavigateToMissions()),
 
                   const SizedBox(height: 10),
 
                   if (todayMissions.isEmpty)
-                    _buildEmptyState(context, l)
+                    _buildEmptyToday(context, l)
                   else
-                    ...todayMissions.map((m) => _buildTaskTile(context, m)),
+                    ...todayMissions.map((m) => _buildMissionTile(context, m)).toList(),
 
                   const SizedBox(height: 24),
 
+                  // Upcoming missions (next 7 days)
                   if (pendingMissions.isNotEmpty) ...[
-                    _buildSectionHeader(context, l.get('upcomingTasks'), Icons.upcoming_rounded, onNavigateToMissions),
+                    _buildSectionHeader(l.get('upcomingTasks'), Icons.upcoming_rounded, () => onNavigateToMissions()),
                     const SizedBox(height: 10),
-                    ...pendingMissions.take(5).map((m) => _buildTaskTile(context, m)),
+                    ...pendingMissions.take(5).map((m) => _buildMissionTile(context, m)).toList(),
                   ],
 
                   const SizedBox(height: 100),
@@ -268,93 +269,181 @@ class _DashboardTab extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCard(BuildContext context, int total, int completed) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final progress = total > 0 ? completed / total : 0.0;
+  Widget _buildProgressCard(BuildContext context, List<Mission> todayMissions, int completedToday) {
+    final total = todayMissions.length;
+    final progress = total > 0 ? completedToday / total : 0.0;
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: primary.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: primary.withOpacity(0.12)),
+        gradient: LinearGradient(
+          colors: [
+            MilitaryTheme.militaryGreen.withOpacity(0.25),
+            MilitaryTheme.accentGreen.withOpacity(0.08),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: MilitaryTheme.accentGreen.withOpacity(0.15)),
       ),
       child: Row(
         children: [
+          // Circular progress
           SizedBox(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             child: Stack(
               children: [
                 CircularProgressIndicator(
                   value: progress,
-                  strokeWidth: 5,
-                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation(primary),
+                  strokeWidth: 6,
+                  backgroundColor: MilitaryTheme.surfaceLight,
+                  valueColor: AlwaysStoppedAnimation(MilitaryTheme.accentGreen),
                   strokeCap: StrokeCap.round,
                 ),
                 Center(
-                  child: Text(
-                    '$completed/$total',
-                    style: TextStyle(
-                      color: primary,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '$completedToday',
+                        style: const TextStyle(
+                          color: MilitaryTheme.accentGreen,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '/$total',
+                        style: const TextStyle(
+                          color: MilitaryTheme.textMuted,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 20),
           Expanded(
-            child: Builder(builder: (context) {
-              final l = AppLocalizations.of(context);
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l.get('todayProgress'),
-                    style: TextStyle(
-                      color: theme.textTheme.bodyLarge?.color,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    total == 0
-                        ? l.get('noTasksScheduled')
-                        : completed == total
-                            ? l.get('allTasksDone')
-                            : '${total - completed} ${l.get('tasksRemaining')}',
-                    style: TextStyle(
-                      color: theme.textTheme.bodyMedium?.color,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              );
-            }),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Builder(
+                  builder: (context) {
+                    final l = AppLocalizations.of(context);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l.get('todayProgress'),
+                          style: const TextStyle(
+                            color: MilitaryTheme.textPrimary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          total == 0
+                              ? l.get('noTasksScheduled')
+                              : completedToday == total
+                                  ? l.get('allTasksDone')
+                                  : '${total - completedToday} ${l.get('tasksRemaining')}',
+                          style: const TextStyle(
+                            color: MilitaryTheme.textSecondary,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, IconData icon, VoidCallback onViewAll) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-
+  Widget _buildQuickActions(BuildContext context, AppLocalizations l) {
     return Row(
       children: [
-        Icon(icon, color: primary, size: 20),
+        Expanded(
+          child: _buildActionButton(
+            icon: Icons.add_task_rounded,
+            label: l.get('newTask'),
+            color: MilitaryTheme.accentGreen,
+            onTap: onNavigateToMissions,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _buildActionButton(
+            icon: Icons.smart_toy_rounded,
+            label: l.get('aiAdvisor'),
+            color: MilitaryTheme.goldAccent,
+            onTap: onNavigateToAI,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _buildActionButton(
+            icon: Icons.summarize_rounded,
+            label: l.get('dailyReport'),
+            color: MilitaryTheme.infoBlue,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const ReportsScreen()));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withOpacity(0.15)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 26),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, IconData icon, VoidCallback onViewAll) {
+    return Row(
+      children: [
+        Icon(icon, color: MilitaryTheme.goldAccent, size: 20),
         const SizedBox(width: 8),
         Text(
           title,
-          style: TextStyle(
-            color: theme.textTheme.bodyLarge?.color,
+          style: const TextStyle(
+            color: MilitaryTheme.textPrimary,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -362,24 +451,23 @@ class _DashboardTab extends StatelessWidget {
         const Spacer(),
         GestureDetector(
           onTap: onViewAll,
-          child: Builder(builder: (context) {
-            final l = AppLocalizations.of(context);
-            return Text(
-              '${l.get('viewAll')} →',
-              style: TextStyle(color: primary, fontSize: 13, fontWeight: FontWeight.w500),
-            );
-          }),
+          child: Builder(
+            builder: (context) {
+              final l = AppLocalizations.of(context);
+              return Text(
+                '${l.get('viewAll')} →',
+                style: const TextStyle(color: MilitaryTheme.accentGreen, fontSize: 13, fontWeight: FontWeight.w500),
+              );
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildTaskTile(BuildContext context, Mission mission) {
+  Widget _buildMissionTile(BuildContext context, Mission mission) {
     final isCompleted = mission.status == MissionStatus.completed;
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
-    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+    final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
 
     return GestureDetector(
       onTap: () async {
@@ -397,21 +485,27 @@ class _DashboardTab extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          color: MilitaryTheme.cardBackground,
+          borderRadius: BorderRadius.circular(14),
+          border: Border(
+            left: BorderSide(color: priorityColor, width: 3),
+          ),
         ),
         child: Row(
           children: [
             Container(
-              width: 24,
-              height: 24,
+              width: 26,
+              height: 26,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isCompleted ? primary.withOpacity(0.15) : Colors.transparent,
-                border: Border.all(color: isCompleted ? primary : mutedColor, width: 2),
+                color: isCompleted ? MilitaryTheme.accentGreen.withOpacity(0.15) : Colors.transparent,
+                border: Border.all(
+                  color: isCompleted ? MilitaryTheme.accentGreen : MilitaryTheme.textMuted,
+                  width: 2,
+                ),
               ),
               child: isCompleted
-                  ? Icon(Icons.check_rounded, color: primary, size: 14)
+                  ? const Icon(Icons.check_rounded, color: MilitaryTheme.accentGreen, size: 16)
                   : null,
             ),
             const SizedBox(width: 12),
@@ -422,7 +516,7 @@ class _DashboardTab extends StatelessWidget {
                   Text(
                     mission.title,
                     style: TextStyle(
-                      color: isCompleted ? mutedColor : textColor,
+                      color: isCompleted ? MilitaryTheme.textMuted : MilitaryTheme.textPrimary,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       decoration: isCompleted ? TextDecoration.lineThrough : null,
@@ -433,11 +527,11 @@ class _DashboardTab extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 3),
                       child: Row(
                         children: [
-                          Icon(Icons.access_time_rounded, size: 12, color: mutedColor),
+                          Icon(Icons.access_time_rounded, size: 12, color: MilitaryTheme.textMuted),
                           const SizedBox(width: 4),
                           Text(
-                            _formatDateTime(mission.dueDate!),
-                            style: TextStyle(color: mutedColor, fontSize: 11),
+                            _formatTime(mission.dueDate!),
+                            style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 11),
                           ),
                         ],
                       ),
@@ -446,47 +540,41 @@ class _DashboardTab extends StatelessWidget {
               ),
             ),
             if (mission.isStarred)
-              Icon(Icons.star_rounded, color: theme.colorScheme.secondary, size: 18),
+              const Icon(Icons.star_rounded, color: MilitaryTheme.goldAccent, size: 18),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, AppLocalizations l) {
-    final theme = Theme.of(context);
+  Widget _buildEmptyToday(BuildContext context, AppLocalizations l) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: MilitaryTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          Icon(Icons.wb_sunny_rounded, color: theme.colorScheme.secondary.withOpacity(0.5), size: 40),
+          Icon(Icons.wb_sunny_rounded, color: MilitaryTheme.goldAccent.withOpacity(0.5), size: 40),
           const SizedBox(height: 12),
           Text(
             l.get('noTasksToday'),
-            style: TextStyle(color: theme.textTheme.bodyLarge?.color, fontSize: 15, fontWeight: FontWeight.w500),
+            style: const TextStyle(color: MilitaryTheme.textPrimary, fontSize: 15, fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 4),
           Text(
             l.get('noTasksTodaySub'),
-            style: TextStyle(color: theme.textTheme.bodySmall?.color, fontSize: 13),
+            style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 13),
           ),
         ],
       ),
     );
   }
 
-  String _formatDateTime(DateTime date) {
+  String _formatTime(DateTime date) {
     final hour = date.hour.toString().padLeft(2, '0');
     final min = date.minute.toString().padLeft(2, '0');
-    final day = date.day.toString().padLeft(2, '0');
-    final month = date.month.toString().padLeft(2, '0');
-    if (date.hour == 0 && date.minute == 0) {
-      return '$day/$month';
-    }
-    return '$day/$month $hour:$min';
+    return '$hour:$min';
   }
 }

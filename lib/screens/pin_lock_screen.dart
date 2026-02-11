@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../theme/military_theme.dart';
 import '../l10n/app_localizations.dart';
-import 'splash_screen.dart';
+import 'home_screen.dart';
 
 class PinLockScreen extends StatefulWidget {
   final VoidCallback onSuccess;
@@ -17,6 +16,7 @@ class _PinLockScreenState extends State<PinLockScreen> {
   String _enteredPin = '';
   String _savedPin = '';
   bool _isWrong = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -26,22 +26,36 @@ class _PinLockScreenState extends State<PinLockScreen> {
 
   Future<void> _loadPin() async {
     final prefs = await SharedPreferences.getInstance();
+    final pin = prefs.getString('app_pin');
     setState(() {
-      _savedPin = prefs.getString('app_pin') ?? '';
+      _savedPin = pin ?? '';
+      _isLoading = false;
     });
+    // If no PIN is saved, go directly to home
+    if (pin == null || pin.isEmpty) {
+      _navigateToHome();
+    }
+  }
+
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (_, __, ___) => const HomeScreen(),
+        transitionsBuilder: (_, anim, __, child) =>
+            FadeTransition(opacity: anim, child: child),
+      ),
+    );
   }
 
   void _onDigitPressed(String digit) {
     if (_enteredPin.length >= 4) return;
-
     setState(() {
       _enteredPin += digit;
       _isWrong = false;
     });
-
-    if (_enteredPin.length == 4) {
-      _verifyPin();
-    }
+    if (_enteredPin.length == 4) _verifyPin();
   }
 
   void _onDeletePressed() {
@@ -55,16 +69,7 @@ class _PinLockScreenState extends State<PinLockScreen> {
 
   void _verifyPin() {
     if (_enteredPin == _savedPin) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 400),
-          pageBuilder: (_, __, ___) => const SplashScreen(),
-          transitionsBuilder: (_, anim, __, child) {
-            return FadeTransition(opacity: anim, child: child);
-          },
-        ),
-      );
+      _navigateToHome();
     } else {
       setState(() {
         _isWrong = true;
@@ -76,76 +81,56 @@ class _PinLockScreenState extends State<PinLockScreen> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final error = theme.colorScheme.error;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+    final surfaceColor = theme.colorScheme.surfaceContainerHighest;
 
     return Scaffold(
-      backgroundColor: MilitaryTheme.darkBackground,
       body: SafeArea(
         child: Column(
           children: [
             const Spacer(flex: 2),
-            // Lock icon
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: MilitaryTheme.accentGreen.withOpacity(0.1),
+                color: primary.withOpacity(0.1),
               ),
               child: Icon(
                 Icons.lock_rounded,
-                color: _isWrong ? MilitaryTheme.commandRed : MilitaryTheme.accentGreen,
+                color: _isWrong ? error : primary,
                 size: 48,
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              l.get('enterPIN'),
-              style: const TextStyle(
-                color: MilitaryTheme.textPrimary,
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text(l.get('enterPIN'),
+                style: TextStyle(color: textColor, fontSize: 22, fontWeight: FontWeight.w600)),
             if (_isWrong)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  l.get('wrongPIN'),
-                  style: const TextStyle(
-                    color: MilitaryTheme.commandRed,
-                    fontSize: 14,
-                  ),
-                ),
+                child: Text(l.get('wrongPIN'), style: TextStyle(color: error, fontSize: 14)),
               ),
             const SizedBox(height: 32),
-            // PIN dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                final isFilled = index < _enteredPin.length;
+              children: List.generate(4, (i) {
+                final filled = i < _enteredPin.length;
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 12),
-                  width: 18,
-                  height: 18,
+                  width: 18, height: 18,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _isWrong
-                        ? MilitaryTheme.commandRed
-                        : isFilled
-                            ? MilitaryTheme.accentGreen
-                            : Colors.transparent,
-                    border: Border.all(
-                      color: _isWrong
-                          ? MilitaryTheme.commandRed
-                          : MilitaryTheme.accentGreen.withOpacity(0.5),
-                      width: 2,
-                    ),
+                    color: _isWrong ? error : filled ? primary : Colors.transparent,
+                    border: Border.all(color: _isWrong ? error : primary.withOpacity(0.5), width: 2),
                   ),
                 );
               }),
             ),
             const Spacer(),
-            // Number pad
-            _buildNumberPad(),
+            _buildNumberPad(surfaceColor, textColor, mutedColor),
             const Spacer(),
           ],
         ),
@@ -153,32 +138,32 @@ class _PinLockScreenState extends State<PinLockScreen> {
     );
   }
 
-  Widget _buildNumberPad() {
+  Widget _buildNumberPad(Color surface, Color text, Color muted) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ['1', '2', '3'].map((d) => _buildDigitButton(d)).toList(),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ['4', '5', '6'].map((d) => _buildDigitButton(d)).toList(),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ['7', '8', '9'].map((d) => _buildDigitButton(d)).toList(),
-          ),
-          const SizedBox(height: 16),
+          for (final row in [['1','2','3'], ['4','5','6'], ['7','8','9']])
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: row.map((d) => _digit(d, surface, text)).toList(),
+              ),
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(width: 64),
-              _buildDigitButton('0'),
-              _buildActionButton(Icons.backspace_outlined, _onDeletePressed),
+              _digit('0', surface, text),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: _onDeletePressed,
+                  borderRadius: BorderRadius.circular(32),
+                  child: SizedBox(width: 64, height: 64, child: Icon(Icons.backspace_outlined, color: muted, size: 24)),
+                ),
+              ),
             ],
           ),
         ],
@@ -186,44 +171,17 @@ class _PinLockScreenState extends State<PinLockScreen> {
     );
   }
 
-  Widget _buildDigitButton(String digit) {
+  Widget _digit(String d, Color surface, Color text) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () => _onDigitPressed(digit),
+        onTap: () => _onDigitPressed(d),
         borderRadius: BorderRadius.circular(32),
         child: Container(
-          width: 64,
-          height: 64,
+          width: 64, height: 64,
           alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MilitaryTheme.surfaceDark,
-          ),
-          child: Text(
-            digit,
-            style: const TextStyle(
-              color: MilitaryTheme.textPrimary,
-              fontSize: 26,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(IconData icon, VoidCallback onTap) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(32),
-        child: Container(
-          width: 64,
-          height: 64,
-          alignment: Alignment.center,
-          child: Icon(icon, color: MilitaryTheme.textSecondary, size: 24),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: surface),
+          child: Text(d, style: TextStyle(color: text, fontSize: 26, fontWeight: FontWeight.w500)),
         ),
       ),
     );

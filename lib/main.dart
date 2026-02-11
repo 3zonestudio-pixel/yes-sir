@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/military_theme.dart';
 import 'services/token_manager.dart';
 import 'services/purchase_service.dart';
+import 'services/notification_service.dart';
 import 'providers/mission_provider.dart';
 import 'providers/theme_provider.dart';
 import 'l10n/app_localizations.dart';
@@ -24,10 +25,11 @@ void main() async {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: MilitaryTheme.darkBackground,
-      systemNavigationBarIconBrightness: Brightness.light,
     ));
   }
+
+  // Initialize notification service
+  await NotificationService.instance.initialize();
 
   final tokenManager = TokenManager();
   await tokenManager.initialize();
@@ -43,7 +45,8 @@ void main() async {
 
   // Check if PIN lock is enabled
   final prefs = await SharedPreferences.getInstance();
-  final hasPin = prefs.getString('app_pin') != null;
+  final savedPin = prefs.getString('app_pin');
+  final hasPin = savedPin != null && savedPin.isNotEmpty;
 
   runApp(YesSirApp(
     tokenManager: tokenManager,

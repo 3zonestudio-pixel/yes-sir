@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/military_theme.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -56,8 +55,12 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final secondary = theme.colorScheme.secondary;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+
     return Scaffold(
-      backgroundColor: MilitaryTheme.darkBackground,
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -71,7 +74,6 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Custom logo image
                       Container(
                         width: 140,
                         height: 140,
@@ -79,8 +81,8 @@ class _SplashScreenState extends State<SplashScreen>
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              MilitaryTheme.accentGreen.withOpacity(0.15),
-                              MilitaryTheme.darkGreen.withOpacity(0.08),
+                              primary.withOpacity(0.15),
+                              primary.withOpacity(0.05),
                               Colors.transparent,
                             ],
                           ),
@@ -94,32 +96,20 @@ class _SplashScreenState extends State<SplashScreen>
                               height: 110,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                // Fallback to icon if image not found
                                 return Container(
                                   width: 110,
                                   height: 110,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: MilitaryTheme.surfaceDark,
-                                    border: Border.all(
-                                      color: MilitaryTheme.goldAccent.withOpacity(0.4),
-                                      width: 2,
-                                    ),
+                                    color: theme.colorScheme.surfaceContainerHighest,
+                                    border: Border.all(color: secondary.withOpacity(0.4), width: 2),
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.shield_rounded,
-                                        color: MilitaryTheme.goldAccent,
-                                        size: 44,
-                                      ),
+                                      Icon(Icons.shield_rounded, color: secondary, size: 44),
                                       const SizedBox(height: 2),
-                                      Icon(
-                                        Icons.checklist_rounded,
-                                        color: MilitaryTheme.accentGreen,
-                                        size: 22,
-                                      ),
+                                      Icon(Icons.checklist_rounded, color: primary, size: 22),
                                     ],
                                   ),
                                 );
@@ -128,48 +118,34 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 28),
-
-                      // App name
                       Text(
                         'YES SIR',
                         style: TextStyle(
-                          color: MilitaryTheme.goldAccent,
+                          color: secondary,
                           fontSize: 34,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 6,
-                          shadows: [
-                            Shadow(
-                              color: MilitaryTheme.goldAccent.withOpacity(0.3),
-                              blurRadius: 20,
-                            ),
-                          ],
+                          shadows: [Shadow(color: secondary.withOpacity(0.3), blurRadius: 20)],
                         ),
                       ),
-
                       const SizedBox(height: 10),
-
-                      // Tagline
                       Text(
                         'Your order. Executed.',
                         style: TextStyle(
-                          color: MilitaryTheme.textSecondary.withOpacity(0.7),
+                          color: mutedColor.withOpacity(0.7),
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           letterSpacing: 2,
                         ),
                       ),
-
                       const SizedBox(height: 50),
-
-                      // Loading
                       SizedBox(
                         width: 32,
                         height: 32,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
-                          color: MilitaryTheme.accentGreen.withOpacity(0.5),
+                          color: primary.withOpacity(0.5),
                         ),
                       ),
                     ],

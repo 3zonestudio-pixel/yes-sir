@@ -25,9 +25,47 @@ class NotificationService {
     );
 
     await _plugin.initialize(settings);
+
+    // Request notification permission on Android 13+
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (androidPlugin != null) {
+      await androidPlugin.requestNotificationsPermission();
+    }
   }
 
-  /// Show a mission reminder notification
+  /// Schedule a task reminder notification at a specific time
+  Future<void> scheduleTaskReminder({
+    required String taskId,
+    required String title,
+    required DateTime dueDate,
+    Duration reminderBefore = const Duration(minutes: 30),
+  }) async {
+    if (kIsWeb) return;
+
+    final reminderTime = dueDate.subtract(reminderBefore);
+    final now = DateTime.now();
+
+    // If reminder time is in the past, don't schedule
+    if (reminderTime.isBefore(now)) return;
+
+    // Calculate delay from now
+    final delay = reminderTime.difference(now);
+
+    // Use a hash of taskId as notification id
+    final notifId = taskId.hashCode.abs() % 100000;
+
+    // Schedule using a delayed show
+    Future.delayed(delay, () async {
+      await showMissionReminder(
+        id: notifId,
+        title: '⏰ Task Reminder',
+        body: '"$title" is due soon!',
+      );
+    });
+  }
+
+  /// Show an immediate task reminder notification
   Future<void> showMissionReminder({
     required int id,
     required String title,
@@ -41,7 +79,7 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
-      color: Color(0xFF2D6A4F),
+      color: Color(0xFF42A5F5),
       styleInformation: BigTextStyleInformation(''),
     );
 
@@ -83,7 +121,7 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
-      color: Color(0xFFFFD166),
+      color: Color(0xFFFF9F1C),
       styleInformation: BigTextStyleInformation(''),
     );
 
@@ -97,88 +135,26 @@ class NotificationService {
     );
   }
 
-  /// Show daily briefing notification
-  Future<void> showDailyBriefing({
-    required int completedCount,
-    required int pendingCount,
-    required int overdueCount,
-  }) async {
+  /// Check all tasks and send reminders for due-soon ones
+  Future<void> checkAndNotifyDueTasks(List<dynamic> missions) async {
     if (kIsWeb) return;
+    final now = DateTime.now();
 
-    String body;
-    if (overdueCount > 0) {
-      body = '⚠️ $overdueCount overdue, $pendingCount pending. Let\'s catch up today!';
-    } else if (pendingCount == 0) {
-      body = '🎉 All clear! No pending missions. Great work!';
-    } else {
-      body = '📋 $pendingCount missions waiting. You\'ve completed $completedCount so far!';
+    for (final mission in missions) {
+      if (mission.dueDate == null) continue;
+      if (mission.status.index == 2) continue; // completed
+
+      final diff = mission.dueDate!.difference(now);
+
+      // Notify if due within 1 hour
+      if (diff.inMinutes > 0 && diff.inMinutes <= 60) {
+        await showDueSoonReminder(
+          id: mission.id.hashCode.abs() % 100000,
+          missionTitle: mission.title,
+          timeRemaining: diff,
+        );
+      }
     }
-
-    const androidDetails = AndroidNotificationDetails(
-      'daily_briefing',
-      'Daily Briefing',
-      channelDescription: 'Daily morning briefing about your missions',
-      importance: Importance.defaultImportance,
-      priority: Priority.defaultPriority,
-      icon: '@mipmap/ic_launcher',
-      color: Color(0xFF52B788),
-    );
-
-    const details = NotificationDetails(android: androidDetails);
-
-    await _plugin.show(
-      9999,
-      '☀️ Good morning!',
-      body,
-      details,
-    );
-  }
-
-  /// Show daily report notification
-  Future<void> showDailyReport({
-    required int completedCount,
-    required int pendingCount,
-  }) async {
-    if (kIsWeb) return;
-    const androidDetails = AndroidNotificationDetails(
-      'daily_reports',
-      'Daily Reports',
-      channelDescription: 'Daily mission progress reports',
-      importance: Importance.defaultImportance,
-      priority: Priority.defaultPriority,
-      icon: '@mipmap/ic_launcher',
-      color: Color(0xFFFFD166),
-    );
-
-    const details = NotificationDetails(android: androidDetails);
-
-    await _plugin.show(
-      9998,
-      '📊 Daily Report',
-      '$completedCount completed, $pendingCount pending. ${completedCount > 0 ? "Great progress! 💪" : "Tomorrow is a new day! ✨"}',
-      details,
-    );
-  }
-
-  /// Show achievement/streak notification
-  Future<void> showAchievement({
-    required String title,
-    required String message,
-  }) async {
-    if (kIsWeb) return;
-    const androidDetails = AndroidNotificationDetails(
-      'achievements',
-      'Achievements',
-      channelDescription: 'Celebrate your achievements',
-      importance: Importance.defaultImportance,
-      priority: Priority.defaultPriority,
-      icon: '@mipmap/ic_launcher',
-      color: Color(0xFFFFD166),
-    );
-
-    const details = NotificationDetails(android: androidDetails);
-
-    await _plugin.show(9997, '🏆 $title', message, details);
   }
 
   Future<void> cancelNotification(int id) async {

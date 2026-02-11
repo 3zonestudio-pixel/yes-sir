@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/database_helper.dart';
 import '../services/token_manager.dart';
-import '../theme/military_theme.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -58,11 +57,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final tokenManager = context.watch<TokenManager>();
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _loadStats,
-        color: MilitaryTheme.accentGreen,
+        color: theme.colorScheme.primary,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -84,35 +84,24 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildHeader(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+
     return Row(
       children: [
         Container(
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: MilitaryTheme.accentGreen.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(Icons.analytics_rounded, color: MilitaryTheme.accentGreen, size: 22),
+          decoration: BoxDecoration(color: primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+          child: Icon(Icons.analytics_rounded, color: primary, size: 22),
         ),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              l.get('reports'),
-              style: const TextStyle(
-                color: MilitaryTheme.textPrimary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              l.get('productivityOverview'),
-              style: const TextStyle(
-                color: MilitaryTheme.textMuted,
-                fontSize: 12,
-              ),
-            ),
+            Text(l.get('reports'), style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(l.get('productivityOverview'), style: TextStyle(color: mutedColor, fontSize: 12)),
           ],
         ),
       ],
@@ -120,6 +109,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildOverviewCards(AppLocalizations l) {
+    final theme = Theme.of(context);
     final total = _stats['total'] ?? 0;
     final completed = _stats['completed'] ?? 0;
     final pending = _stats['pending'] ?? 0;
@@ -129,45 +119,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
       children: [
         Row(
           children: [
-            Expanded(
-              child: _buildStatCard(
-                l.get('total'),
-                total.toString(),
-                Icons.assignment_rounded,
-                MilitaryTheme.infoBlue,
-              ),
-            ),
+            Expanded(child: _buildStatCard(l.get('total'), total.toString(), Icons.assignment_rounded, theme.colorScheme.tertiary)),
             const SizedBox(width: 10),
-            Expanded(
-              child: _buildStatCard(
-                l.get('completed'),
-                completed.toString(),
-                Icons.check_circle_rounded,
-                MilitaryTheme.accentGreen,
-              ),
-            ),
+            Expanded(child: _buildStatCard(l.get('completed'), completed.toString(), Icons.check_circle_rounded, Colors.green)),
           ],
         ),
         const SizedBox(height: 10),
         Row(
           children: [
-            Expanded(
-              child: _buildStatCard(
-                l.get('active'),
-                inProgress.toString(),
-                Icons.play_circle_rounded,
-                MilitaryTheme.warningOrange,
-              ),
-            ),
+            Expanded(child: _buildStatCard(l.get('active'), inProgress.toString(), Icons.play_circle_rounded, Colors.orange)),
             const SizedBox(width: 10),
-            Expanded(
-              child: _buildStatCard(
-                l.get('pending'),
-                pending.toString(),
-                Icons.schedule_rounded,
-                MilitaryTheme.statusPending,
-              ),
-            ),
+            Expanded(child: _buildStatCard(l.get('pending'), pending.toString(), Icons.schedule_rounded, Colors.blueGrey)),
           ],
         ),
       ],
@@ -175,18 +137,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+    final theme = Theme.of(context);
+    final surface = theme.colorScheme.surface;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MilitaryTheme.cardBackground,
+        color: surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8, offset: const Offset(0, 3))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,71 +154,51 @@ class _ReportsScreenState extends State<ReportsScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: BoxDecoration(color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
                 child: Icon(icon, color: color, size: 18),
               ),
               const Spacer(),
-              Text(
-                label,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(label, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            value,
-            style: TextStyle(
-              color: color,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text(value, style: TextStyle(color: color, fontSize: 28, fontWeight: FontWeight.bold)),
         ],
       ),
     );
   }
 
   Widget _buildMissionPieChart(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final surface = theme.colorScheme.surface;
+    final primary = theme.colorScheme.primary;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+
     final completed = (_stats['completed'] ?? 0).toDouble();
     final pending = (_stats['pending'] ?? 0).toDouble();
     final inProgress = (_stats['inProgress'] ?? 0).toDouble();
     final total = completed + pending + inProgress;
 
+    const completedColor = Colors.green;
+    const activeColor = Colors.orange;
+    const pendingColor = Colors.blueGrey;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: MilitaryTheme.cardBackground,
+        color: surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8, offset: const Offset(0, 3))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.pie_chart_rounded, color: MilitaryTheme.accentGreen, size: 20),
+              Icon(Icons.pie_chart_rounded, color: primary, size: 20),
               const SizedBox(width: 8),
-              Text(
-                l.get('taskDistribution'),
-                style: const TextStyle(
-                  color: MilitaryTheme.textPrimary,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(l.get('taskDistribution'), style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 20),
@@ -269,13 +208,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     padding: const EdgeInsets.all(24),
                     child: Column(
                       children: [
-                        Icon(Icons.pie_chart_outline_rounded,
-                            color: MilitaryTheme.textMuted.withOpacity(0.3), size: 48),
+                        Icon(Icons.pie_chart_outline_rounded, color: mutedColor.withOpacity(0.3), size: 48),
                         const SizedBox(height: 8),
-                        Text(
-                          l.get('noDataYet'),
-                          style: const TextStyle(color: MilitaryTheme.textMuted),
-                        ),
+                        Text(l.get('noDataYet'), style: TextStyle(color: mutedColor)),
                       ],
                     ),
                   ),
@@ -288,39 +223,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         child: PieChart(
                           PieChartData(
                             sections: [
-                              PieChartSectionData(
-                                value: completed,
-                                color: MilitaryTheme.accentGreen,
-                                title: '${(completed / total * 100).toStringAsFixed(0)}%',
-                                titleStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                radius: 50,
-                              ),
-                              PieChartSectionData(
-                                value: inProgress,
-                                color: MilitaryTheme.warningOrange,
-                                title: '${(inProgress / total * 100).toStringAsFixed(0)}%',
-                                titleStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                radius: 50,
-                              ),
-                              PieChartSectionData(
-                                value: pending,
-                                color: MilitaryTheme.statusPending,
-                                title: '${(pending / total * 100).toStringAsFixed(0)}%',
-                                titleStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                radius: 50,
-                              ),
+                              PieChartSectionData(value: completed, color: completedColor, title: '${(completed / total * 100).toStringAsFixed(0)}%', titleStyle: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold), radius: 50),
+                              PieChartSectionData(value: inProgress, color: activeColor, title: '${(inProgress / total * 100).toStringAsFixed(0)}%', titleStyle: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold), radius: 50),
+                              PieChartSectionData(value: pending, color: pendingColor, title: '${(pending / total * 100).toStringAsFixed(0)}%', titleStyle: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold), radius: 50),
                             ],
                             sectionsSpace: 3,
                             centerSpaceRadius: 35,
@@ -332,11 +237,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildLegendItem(l.get('completed'), MilitaryTheme.accentGreen),
+                          _buildLegendItem(l.get('completed'), completedColor),
                           const SizedBox(height: 10),
-                          _buildLegendItem(l.get('active'), MilitaryTheme.warningOrange),
+                          _buildLegendItem(l.get('active'), activeColor),
                           const SizedBox(height: 10),
-                          _buildLegendItem(l.get('pending'), MilitaryTheme.statusPending),
+                          _buildLegendItem(l.get('pending'), pendingColor),
                         ],
                       ),
                     ],
@@ -348,76 +253,47 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildLegendItem(String label, Color color) {
+    final secondaryText = Theme.of(context).textTheme.bodyMedium?.color ?? Colors.grey;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
+        Container(width: 12, height: 12, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4))),
         const SizedBox(width: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            color: MilitaryTheme.textSecondary,
-            fontSize: 13,
-          ),
-        ),
+        Text(label, style: TextStyle(color: secondaryText, fontSize: 13)),
       ],
     );
   }
 
   Widget _buildTokenUsageCard(TokenManager tokenManager, AppLocalizations l) {
+    final theme = Theme.of(context);
+    final surface = theme.colorScheme.surface;
+    final secondary = theme.colorScheme.secondary;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final secondaryText = theme.textTheme.bodyMedium?.color ?? Colors.grey;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+    final fillBg = theme.colorScheme.surfaceContainerHighest;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: MilitaryTheme.cardBackground,
+        color: surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8, offset: const Offset(0, 3))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.bolt_rounded, color: MilitaryTheme.goldAccent, size: 20),
+              Icon(Icons.bolt_rounded, color: secondary, size: 20),
               const SizedBox(width: 8),
-              Text(
-                l.get('aiTokenUsage'),
-                style: const TextStyle(
-                  color: MilitaryTheme.textPrimary,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(l.get('aiTokenUsage'), style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w600)),
               const Spacer(),
               if (tokenManager.isPremium)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [MilitaryTheme.goldDark, MilitaryTheme.goldAccent],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    l.get('premium'),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  decoration: BoxDecoration(color: secondary, borderRadius: BorderRadius.circular(10)),
+                  child: Text(l.get('premium'), style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
                 ),
             ],
           ),
@@ -425,18 +301,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                l.get('today'),
-                style: const TextStyle(color: MilitaryTheme.textSecondary, fontSize: 13),
-              ),
-              Text(
-                '${tokenManager.tokensUsed} / ${tokenManager.tokenLimit}',
-                style: const TextStyle(
-                  color: MilitaryTheme.textPrimary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text(l.get('today'), style: TextStyle(color: secondaryText, fontSize: 13)),
+              Text('${tokenManager.tokensUsed} / ${tokenManager.tokenLimit}', style: TextStyle(color: textColor, fontSize: 13, fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 10),
@@ -445,13 +311,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
             child: LinearProgressIndicator(
               value: tokenManager.usagePercent.clamp(0.0, 1.0),
               minHeight: 10,
-              backgroundColor: MilitaryTheme.surfaceDark,
+              backgroundColor: fillBg,
               valueColor: AlwaysStoppedAnimation(
                 tokenManager.usagePercent > 0.8
-                    ? MilitaryTheme.commandRed
+                    ? theme.colorScheme.error
                     : tokenManager.usagePercent > 0.5
-                        ? MilitaryTheme.warningOrange
-                        : MilitaryTheme.accentGreen,
+                        ? Colors.orange
+                        : Colors.green,
               ),
             ),
           ),
@@ -459,17 +325,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                l.get('thisWeekTotal'),
-                style: const TextStyle(color: MilitaryTheme.textMuted, fontSize: 12),
-              ),
-              Text(
-                '$_totalTokensUsedWeek ${l.get('tokensUsed')}',
-                style: const TextStyle(
-                  color: MilitaryTheme.textSecondary,
-                  fontSize: 12,
-                ),
-              ),
+              Text(l.get('thisWeekTotal'), style: TextStyle(color: mutedColor, fontSize: 12)),
+              Text('$_totalTokensUsedWeek ${l.get('tokensUsed')}', style: TextStyle(color: secondaryText, fontSize: 12)),
             ],
           ),
         ],
@@ -478,38 +335,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildStreakCard(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final secondary = theme.colorScheme.secondary;
+    final secondaryText = theme.textTheme.bodyMedium?.color ?? Colors.grey;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            MilitaryTheme.goldAccent.withOpacity(0.08),
-            MilitaryTheme.goldAccent.withOpacity(0.03),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: secondary.withOpacity(0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: MilitaryTheme.goldAccent.withOpacity(0.15)),
+        border: Border.all(color: secondary.withOpacity(0.15)),
       ),
       child: Row(
         children: [
           Container(
             width: 56,
             height: 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: MilitaryTheme.goldAccent.withOpacity(0.1),
-            ),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: secondary.withOpacity(0.1)),
             child: Center(
-              child: Text(
-                '$_streak',
-                style: const TextStyle(
-                  color: MilitaryTheme.goldAccent,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Text('$_streak', style: TextStyle(color: secondary, fontSize: 24, fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(width: 16),
@@ -517,34 +361,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l.get('dayStreak'),
-                  style: const TextStyle(
-                    color: MilitaryTheme.goldAccent,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(l.get('dayStreak'), style: TextStyle(color: secondary, fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(
-                  _streak > 0
-                      ? '$_streak ${l.get('daysConsecutive')}'
-                      : l.get('startStreak'),
-                  style: const TextStyle(
-                    color: MilitaryTheme.textSecondary,
-                    fontSize: 13,
-                  ),
+                  _streak > 0 ? '$_streak ${l.get('daysConsecutive')}' : l.get('startStreak'),
+                  style: TextStyle(color: secondaryText, fontSize: 13),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.local_fire_department_rounded, color: MilitaryTheme.warningOrange, size: 30),
+          const Icon(Icons.local_fire_department_rounded, color: Colors.orange, size: 30),
         ],
       ),
     );
   }
 
   Widget _buildMotivationalCard(AppLocalizations l) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final secondaryText = theme.textTheme.bodyMedium?.color ?? Colors.grey;
     final completed = _stats['completed'] ?? 0;
     final total = _stats['total'] ?? 1;
     final rate = total > 0 ? (completed / total * 100) : 0;
@@ -569,35 +404,18 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            MilitaryTheme.accentGreen.withOpacity(0.08),
-            MilitaryTheme.accentGreen.withOpacity(0.02),
-          ],
-        ),
+        color: primary.withOpacity(0.06),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: MilitaryTheme.accentGreen.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: MilitaryTheme.accentGreen, size: 24),
+            decoration: BoxDecoration(color: primary.withOpacity(0.12), borderRadius: BorderRadius.circular(12)),
+            child: Icon(icon, color: primary, size: 24),
           ),
           const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              message,
-              style: const TextStyle(
-                color: MilitaryTheme.textSecondary,
-                fontSize: 14,
-                height: 1.4,
-              ),
-            ),
-          ),
+          Expanded(child: Text(message, style: TextStyle(color: secondaryText, fontSize: 14, height: 1.4))),
         ],
       ),
     );

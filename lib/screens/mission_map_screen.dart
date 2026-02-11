@@ -51,18 +51,20 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
   }
 
   Widget _buildCalendar(MissionProvider provider) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final secondary = theme.colorScheme.secondary;
+    final surface = theme.colorScheme.surface;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final secondaryText = theme.textTheme.bodyMedium?.color ?? Colors.grey;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: MilitaryTheme.cardBackground,
+        color: surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 2))],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -88,69 +90,34 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
             return provider.getMissionsForDate(day);
           },
           calendarStyle: CalendarStyle(
-            defaultTextStyle: const TextStyle(color: MilitaryTheme.textPrimary),
-            weekendTextStyle: const TextStyle(color: MilitaryTheme.textSecondary),
-            outsideTextStyle: const TextStyle(color: MilitaryTheme.textMuted),
+            defaultTextStyle: TextStyle(color: textColor),
+            weekendTextStyle: TextStyle(color: secondaryText),
+            outsideTextStyle: TextStyle(color: mutedColor),
             todayDecoration: BoxDecoration(
-              color: MilitaryTheme.accentGreen.withOpacity(0.15),
+              color: primary.withOpacity(0.15),
               shape: BoxShape.circle,
-              border: Border.all(color: MilitaryTheme.accentGreen, width: 1.5),
+              border: Border.all(color: primary, width: 1.5),
             ),
-            todayTextStyle: const TextStyle(
-              color: MilitaryTheme.accentGreen,
-              fontWeight: FontWeight.bold,
-            ),
-            selectedDecoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [MilitaryTheme.militaryGreen, MilitaryTheme.accentGreen],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-            ),
-            selectedTextStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            markerDecoration: BoxDecoration(
-              color: MilitaryTheme.goldAccent,
-              shape: BoxShape.circle,
-            ),
+            todayTextStyle: TextStyle(color: primary, fontWeight: FontWeight.bold),
+            selectedDecoration: BoxDecoration(color: primary, shape: BoxShape.circle),
+            selectedTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            markerDecoration: BoxDecoration(color: secondary, shape: BoxShape.circle),
             markerSize: 6,
             markersMaxCount: 3,
             cellMargin: const EdgeInsets.all(4),
           ),
           headerStyle: HeaderStyle(
             formatButtonVisible: true,
-            formatButtonDecoration: BoxDecoration(
-              color: MilitaryTheme.accentGreen.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            formatButtonTextStyle: const TextStyle(
-              color: MilitaryTheme.accentGreen,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+            formatButtonDecoration: BoxDecoration(color: primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+            formatButtonTextStyle: TextStyle(color: primary, fontSize: 12, fontWeight: FontWeight.w600),
             titleCentered: true,
-            titleTextStyle: const TextStyle(
-              color: MilitaryTheme.textPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-            leftChevronIcon: Icon(Icons.chevron_left_rounded, color: MilitaryTheme.accentGreen),
-            rightChevronIcon: Icon(Icons.chevron_right_rounded, color: MilitaryTheme.accentGreen),
+            titleTextStyle: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w600),
+            leftChevronIcon: Icon(Icons.chevron_left_rounded, color: primary),
+            rightChevronIcon: Icon(Icons.chevron_right_rounded, color: primary),
           ),
-          daysOfWeekStyle: const DaysOfWeekStyle(
-            weekdayStyle: TextStyle(
-              color: MilitaryTheme.textMuted,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-            weekendStyle: TextStyle(
-              color: MilitaryTheme.textMuted,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: mutedColor, fontSize: 12, fontWeight: FontWeight.w600),
+            weekendStyle: TextStyle(color: mutedColor, fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ),
       ),
@@ -158,6 +125,9 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
   }
 
   Widget _buildDayHeader() {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
     final now = DateTime.now();
     final isToday = isSameDay(_selectedDay, now);
 
@@ -167,49 +137,29 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: MilitaryTheme.accentGreen.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              isToday ? Icons.today_rounded : Icons.calendar_today_rounded,
-              color: MilitaryTheme.accentGreen,
-              size: 18,
-            ),
+            decoration: BoxDecoration(color: primary.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+            child: Icon(isToday ? Icons.today_rounded : Icons.calendar_today_rounded, color: primary, size: 18),
           ),
           const SizedBox(width: 10),
           Builder(
             builder: (context) {
               final l = AppLocalizations.of(context);
               return Text(
-                isToday
-                    ? l.get('todayTasks')
-                    : '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
-                style: const TextStyle(
-                  color: MilitaryTheme.textPrimary,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                isToday ? l.get('todayTasks') : '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}',
+                style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w600),
               );
             },
           ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: MilitaryTheme.accentGreen.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(color: primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
             child: Builder(
               builder: (context) {
                 final l = AppLocalizations.of(context);
                 return Text(
                   '${_selectedDayMissions.length} ${_selectedDayMissions.length != 1 ? l.get('tasks') : l.get('task')}',
-                  style: const TextStyle(
-                    color: MilitaryTheme.accentGreen,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: primary, fontSize: 12, fontWeight: FontWeight.w600),
                 );
               },
             ),
@@ -240,13 +190,17 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
   }
 
   Widget _buildMissionTimelineCard(Mission mission, int index) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final surface = theme.colorScheme.surface;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
     final isCompleted = mission.status == MissionStatus.completed;
     final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
 
     return IntrinsicHeight(
       child: Row(
         children: [
-          // Timeline
           SizedBox(
             width: 30,
             child: Column(
@@ -256,19 +210,10 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
                   height: 14,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isCompleted
-                        ? MilitaryTheme.accentGreen
-                        : priorityColor.withOpacity(0.2),
-                    border: Border.all(
-                      color: isCompleted
-                          ? MilitaryTheme.accentGreen
-                          : priorityColor,
-                      width: 2,
-                    ),
+                    color: isCompleted ? primary : priorityColor.withOpacity(0.2),
+                    border: Border.all(color: isCompleted ? primary : priorityColor, width: 2),
                   ),
-                  child: isCompleted
-                      ? const Icon(Icons.check, color: Colors.white, size: 8)
-                      : null,
+                  child: isCompleted ? const Icon(Icons.check, color: Colors.white, size: 8) : null,
                 ),
                 Expanded(
                   child: Container(
@@ -277,10 +222,7 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          priorityColor.withOpacity(0.3),
-                          priorityColor.withOpacity(0.05),
-                        ],
+                        colors: [priorityColor.withOpacity(0.3), priorityColor.withOpacity(0.05)],
                       ),
                     ),
                   ),
@@ -288,22 +230,14 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
               ],
             ),
           ),
-
-          // Mission card
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(bottom: 12, left: 8),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: MilitaryTheme.cardBackground,
+                color: surface,
                 borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.12),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 6, offset: const Offset(0, 2))],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,21 +248,14 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
                         child: Text(
                           mission.title,
                           style: TextStyle(
-                            color: isCompleted
-                                ? MilitaryTheme.textMuted
-                                : MilitaryTheme.textPrimary,
+                            color: isCompleted ? mutedColor : textColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            decoration: isCompleted
-                                ? TextDecoration.lineThrough
-                                : null,
+                            decoration: isCompleted ? TextDecoration.lineThrough : null,
                           ),
                         ),
                       ),
-                      PriorityBadge(
-                        priorityIndex: mission.priority.index,
-                        compact: true,
-                      ),
+                      PriorityBadge(priorityIndex: mission.priority.index, compact: true),
                     ],
                   ),
                   const SizedBox(height: 8),

@@ -236,6 +236,25 @@ class AppLocalizations {
     'confirm': 'Confirm',
     'ok': 'OK',
     'smartAI': 'Smart AI',
+    // New strings
+    'storeNotAvailable': 'Store not available. Please try again later.',
+    'purchaseFailed': 'Purchase could not be completed. Please try again.',
+    'setTime': 'Set time',
+    'editTask': 'Edit Task',
+    'reminderSet': 'Reminder set!',
+    'dueTime': 'Due time',
+    'saveChanges': 'Save Changes',
+    'taskUpdated': 'Task updated!',
+    'pickTime': 'Pick Time',
+    'notificationPermission': 'Enable notifications for task reminders',
+    'reminderBefore': 'Reminder before due',
+    'min15': '15 min',
+    'min30': '30 min',
+    'hour1': '1 hour',
+    'hour3': '3 hours',
+    'noReminder': 'No reminder',
+    'taskReminder': 'Task Reminder',
+    'taskDueSoon': 'is due soon!',
   };
 
   // ===== ARABIC =====
