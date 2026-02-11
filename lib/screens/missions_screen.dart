@@ -294,6 +294,10 @@ class _MissionsScreenState extends State<MissionsScreen> {
         color = Colors.green;
         text = AppLocalizations.of(context).get('done');
         break;
+      case MissionStatus.failed:
+        color = theme.colorScheme.error;
+        text = AppLocalizations.of(context).get('failed');
+        break;
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
