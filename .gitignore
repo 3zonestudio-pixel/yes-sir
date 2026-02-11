@@ -43,5 +43,3 @@ app.*.map.json
 /android/app/release
 build_logs/
 build_logs.zip
-*.png
-!assets/
