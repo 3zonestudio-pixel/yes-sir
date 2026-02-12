@@ -51,6 +51,7 @@ android/key.properties
 # Build outputs
 yes-sir-aab-signed/
 yes-sir-apk-signed/
+build_log*.zip
 
 # Source image files
 1770765143*.png
