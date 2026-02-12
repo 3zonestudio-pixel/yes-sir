@@ -46,7 +46,6 @@ build_logs.zip
 
 # Keystore and signing
 *.keystore
-*.jks
 android/key.properties
 
 # Build outputs

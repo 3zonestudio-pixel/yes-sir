@@ -27,15 +27,19 @@ jobs:
         flutter-version: '3.24.0'
         channel: 'stable'
 
-    - name: Generate keystore
+    - name: Generate keystore (if not exists)
       run: |
-        keytool -genkey -v \
-          -keystore android/app/yes-sir-release.jks \
-          -keyalg RSA -keysize 2048 -validity 10000 \
-          -alias yes-sir \
-          -dname "CN=Yes Sir App, OU=Mobile, O=YesSir, L=Internet, S=Cloud, C=US" \
-          -storepass YesSir2025Release \
-          -keypass YesSir2025Release
+        if [ ! -f android/app/yes-sir-release.jks ]; then
+          keytool -genkey -v \
+            -keystore android/app/yes-sir-release.jks \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias yes-sir \
+            -dname "CN=Yes Sir App, OU=Mobile, O=YesSir, L=Internet, S=Cloud, C=US" \
+            -storepass YesSir2025Release \
+            -keypass YesSir2025Release
+        else
+          echo "Keystore already exists, skipping generation."
+        fi
 
     - name: Setup signing config
       run: |
