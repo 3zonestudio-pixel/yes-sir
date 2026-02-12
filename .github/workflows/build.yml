@@ -27,6 +27,16 @@ jobs:
         flutter-version: '3.24.0'
         channel: 'stable'
 
+    - name: Generate keystore
+      run: |
+        keytool -genkey -v \
+          -keystore android/app/yes-sir-release.jks \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -alias yes-sir \
+          -dname "CN=Yes Sir App, OU=Mobile, O=YesSir, L=Internet, S=Cloud, C=US" \
+          -storepass YesSir2025Release \
+          -keypass YesSir2025Release
+
     - name: Setup signing config
       run: |
         echo "storePassword=YesSir2025Release" > android/key.properties
@@ -60,3 +70,15 @@ jobs:
       with:
         name: yes-sir-aab
         path: build/app/outputs/bundle/release/app-release.aab
+
+    - name: Export keystore (save this for future uploads!)
+      run: |
+        base64 android/app/yes-sir-release.jks > keystore-base64.txt
+        echo "⚠️ IMPORTANT: Download the keystore artifact and store it safely!"
+        echo "You will need the same keystore for all future Play Store updates."
+
+    - name: Upload Keystore Backup
+      uses: actions/upload-artifact@v4
+      with:
+        name: yes-sir-keystore-backup
+        path: keystore-base64.txt

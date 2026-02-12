@@ -46,6 +46,16 @@ build_logs.zip
 
 # Keystore and signing
 *.keystore
+*.jks
 android/key.properties
+
+# Build outputs
+yes-sir-aab-signed/
+yes-sir-apk-signed/
+
+# Source image files
+1770765143*.png
+1770844048*.png
+*.doc
 # Keep the release keystore in repo
 !android/app/yes-sir-release.jks

@@ -151,7 +151,16 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               color: primary.withOpacity(0.12),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(Icons.smart_toy_rounded, color: primary, size: 22),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                'assets/images/ai_avatar.png',
+                width: 22,
+                height: 22,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Icon(Icons.auto_awesome_rounded, color: primary, size: 22),
+              ),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -200,7 +209,16 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
                 shape: BoxShape.circle,
                 color: primary.withOpacity(0.1),
               ),
-              child: Icon(Icons.smart_toy_rounded, color: primary, size: 48),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.asset(
+                  'assets/images/ai_avatar.png',
+                  width: 48,
+                  height: 48,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Icon(Icons.auto_awesome_rounded, color: primary, size: 48),
+                ),
+              ),
             ),
             const SizedBox(height: 24),
             Text(l.get('yourAIAdvisor'), style: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.bold)),
@@ -297,7 +315,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  isCommander ? Icons.person_rounded : Icons.smart_toy_rounded,
+                  isCommander ? Icons.person_rounded : Icons.auto_awesome_rounded,
                   size: 14,
                   color: isCommander ? primary : secondary,
                 ),
@@ -341,7 +359,7 @@ class _CommanderAIScreenState extends State<CommanderAIScreen>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.smart_toy_rounded, size: 14, color: secondary),
+            Icon(Icons.auto_awesome_rounded, size: 14, color: secondary),
             const SizedBox(width: 10),
             SizedBox(width: 40, child: _TypingDots()),
             const SizedBox(width: 4),

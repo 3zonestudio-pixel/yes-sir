@@ -4,9 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'theme/military_theme.dart';
+import 'theme/cute_theme.dart';
 import 'services/token_manager.dart';
-import 'services/purchase_service.dart';
 import 'services/notification_service.dart';
 import 'providers/mission_provider.dart';
 import 'providers/theme_provider.dart';
@@ -34,9 +33,6 @@ void main() async {
   final tokenManager = TokenManager();
   await tokenManager.initialize();
 
-  final purchaseService = PurchaseService(tokenManager: tokenManager);
-  await purchaseService.initialize();
-
   final localeProvider = LocaleProvider();
   await localeProvider.initialize();
 
@@ -50,7 +46,6 @@ void main() async {
 
   runApp(YesSirApp(
     tokenManager: tokenManager,
-    purchaseService: purchaseService,
     localeProvider: localeProvider,
     themeProvider: themeProvider,
     requirePin: hasPin,
@@ -59,7 +54,6 @@ void main() async {
 
 class YesSirApp extends StatelessWidget {
   final TokenManager tokenManager;
-  final PurchaseService purchaseService;
   final LocaleProvider localeProvider;
   final ThemeProvider themeProvider;
   final bool requirePin;
@@ -67,7 +61,6 @@ class YesSirApp extends StatelessWidget {
   const YesSirApp({
     super.key,
     required this.tokenManager,
-    required this.purchaseService,
     required this.localeProvider,
     required this.themeProvider,
     this.requirePin = false,
@@ -78,7 +71,6 @@ class YesSirApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: tokenManager),
-        ChangeNotifierProvider.value(value: purchaseService),
         ChangeNotifierProvider(create: (_) => MissionProvider()),
         ChangeNotifierProvider.value(value: localeProvider),
         ChangeNotifierProvider.value(value: themeProvider),
@@ -88,8 +80,8 @@ class YesSirApp extends StatelessWidget {
           return MaterialApp(
             title: 'Yes Sir',
             debugShowCheckedModeBanner: false,
-            theme: MilitaryTheme.lightTheme,
-            darkTheme: MilitaryTheme.darkTheme,
+            theme: CuteTheme.lightTheme,
+            darkTheme: CuteTheme.darkTheme,
             themeMode: theme.themeMode,
             locale: locale.locale,
             supportedLocales: AppLocalizations.supportedLocales

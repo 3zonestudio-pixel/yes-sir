@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/token_manager.dart';
 import '../services/database_helper.dart';
-import '../services/purchase_service.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/theme_provider.dart';
 
@@ -40,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
           _buildSectionTitle(l.get('profile'), Icons.person_rounded, primary, textColor),
           const SizedBox(height: 10),
           _buildCardSection(context, [
-            _buildInfoTile(context, l.get('plan'), tokenManager.isPremium ? l.get('premium') : l.get('free'), tokenManager.isPremium ? Icons.star_rounded : Icons.shield_rounded, tokenManager.isPremium ? secondary : mutedColor),
+          _buildInfoTile(context, l.get('plan'), tokenManager.isPremium ? l.get('premium') : l.get('free'), tokenManager.isPremium ? Icons.star_rounded : Icons.favorite_rounded, tokenManager.isPremium ? secondary : mutedColor),
             _buildDivider(context),
             _buildInfoTile(context, l.get('dailyTokens'), '${tokenManager.tokenLimit}', Icons.bolt_rounded, primary),
           ]),
@@ -67,13 +67,22 @@ class SettingsScreen extends StatelessWidget {
           _buildSectionTitle(l.get('about'), Icons.info_outline_rounded, primary, textColor),
           const SizedBox(height: 10),
           _buildCardSection(context, [
-            _buildInfoTile(context, l.get('appName'), 'Yes Sir', Icons.shield_rounded, secondary),
+            _buildInfoTile(context, l.get('appName'), 'Yes Sir', Icons.favorite_rounded, secondary),
             _buildDivider(context),
-            _buildInfoTile(context, l.get('version'), '1.0.0', Icons.code_rounded, mutedColor),
+            _buildInfoTile(context, l.get('version'), '1.1.0', Icons.code_rounded, mutedColor),
             _buildDivider(context),
-            _buildInfoTile(context, l.get('aiEngine'), l.get('smartAI'), Icons.smart_toy_rounded, primary),
+            _buildInfoTile(context, l.get('aiEngine'), l.get('smartAI'), Icons.auto_awesome_rounded, primary),
             _buildDivider(context),
             _buildInfoTile(context, l.get('storage'), l.get('localStorage'), Icons.lock_rounded, Colors.blue),
+          ]),
+          const SizedBox(height: 24),
+
+          _buildSectionTitle('Legal', Icons.gavel_rounded, primary, textColor),
+          const SizedBox(height: 10),
+          _buildCardSection(context, [
+            _buildLinkTile(context, 'Privacy Policy', Icons.privacy_tip_rounded, 'https://yessir-app.pages.dev/privacy.html'),
+            _buildDivider(context),
+            _buildLinkTile(context, 'Terms of Service', Icons.description_rounded, 'https://yessir-app.pages.dev/terms.html'),
           ]),
           const SizedBox(height: 24),
 
@@ -437,8 +446,27 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildLinkTile(BuildContext context, String title, IconData icon, String url) {
+    final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
+    return InkWell(
+      onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: primary.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Icon(icon, color: primary, size: 18)),
+            const SizedBox(width: 14),
+            Expanded(child: Text(title, style: TextStyle(color: textColor, fontSize: 14))),
+            Icon(Icons.open_in_new_rounded, color: primary, size: 18),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildPremiumCard(BuildContext context, TokenManager tokenManager, AppLocalizations l) {
-    final purchaseService = context.watch<PurchaseService>();
     final theme = Theme.of(context);
     final secondary = theme.colorScheme.secondary;
     final primary = theme.colorScheme.primary;
@@ -453,42 +481,33 @@ class SettingsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.star_rounded, color: secondary, size: 36),
+          Icon(Icons.auto_awesome_rounded, color: secondary, size: 36),
           const SizedBox(height: 12),
           Text(l.get('upgradePremium'), style: TextStyle(color: secondary, fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Text(l.get('premiumDesc'), style: TextStyle(color: mutedColor, fontSize: 13, height: 1.4), textAlign: TextAlign.center),
-          const SizedBox(height: 6),
-          Text('\$1.00 / month', style: TextStyle(color: primary, fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: purchaseService.isPurchasing
-                  ? null
-                  : () async {
-                      if (!purchaseService.isAvailable) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.get('storeNotAvailable')), backgroundColor: theme.colorScheme.error, behavior: SnackBarBehavior.floating));
-                        }
-                        return;
-                      }
-                      final success = await purchaseService.buyPremium();
-                      if (!success && context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.get('purchaseFailed')), backgroundColor: theme.colorScheme.error, behavior: SnackBarBehavior.floating));
-                      }
-                    },
-              icon: purchaseService.isPurchasing
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                  : const Icon(Icons.rocket_launch_rounded, size: 20),
-              label: Text(purchaseService.isPurchasing ? 'Processing...' : l.get('upgradeNow')),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: secondary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-              ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              color: primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: primary.withOpacity(0.3)),
             ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.schedule_rounded, color: primary, size: 18),
+                const SizedBox(width: 8),
+                Text('Coming Soon!', style: TextStyle(color: primary, fontSize: 16, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Premium features are being prepared with love. Stay tuned! \u{1F496}',
+            style: TextStyle(color: mutedColor, fontSize: 12, height: 1.4),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -496,7 +515,6 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildPremiumActiveCard(BuildContext context, TokenManager tokenManager, AppLocalizations l) {
-    final purchaseService = context.watch<PurchaseService>();
     final theme = Theme.of(context);
     final secondary = theme.colorScheme.secondary;
     final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
@@ -520,32 +538,6 @@ class SettingsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(l.get('premiumUnlocked'), style: TextStyle(color: mutedColor, fontSize: 12)),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  title: Text(l.get('cancelPremium'), style: const TextStyle(fontSize: 18)),
-                  content: const Text('Are you sure you want to cancel your premium subscription?'),
-                  actions: [
-                    TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.get('cancel'))),
-                    TextButton(
-                      onPressed: () async {
-                        await purchaseService.cancelSubscription();
-                        if (ctx.mounted) Navigator.pop(ctx);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.get('premiumDowngraded')), behavior: SnackBarBehavior.floating));
-                        }
-                      },
-                      child: Text(l.get('cancelPremium'), style: TextStyle(color: theme.colorScheme.error)),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: Text(l.get('cancelPremium'), style: TextStyle(color: mutedColor, fontSize: 12)),
-          ),
         ],
       ),
     );

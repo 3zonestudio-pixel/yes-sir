@@ -5,7 +5,7 @@ import '../models/mission.dart';
 import '../providers/mission_provider.dart';
 import '../services/database_helper.dart';
 import '../services/notification_service.dart';
-import '../theme/military_theme.dart';
+import '../theme/cute_theme.dart';
 
 class MissionsScreen extends StatefulWidget {
   const MissionsScreen({super.key});
@@ -164,7 +164,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
 
   Widget _buildMissionCard(Mission mission) {
     final isCompleted = mission.status == MissionStatus.completed;
-    final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
+    final priorityColor = CuteTheme.getPriorityColor(mission.priority.index);
     final theme = Theme.of(context);
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
     final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
@@ -432,7 +432,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                     Row(
                       children: MissionPriority.values.map((priority) {
                         final selected = selectedPriority == priority;
-                        final color = MilitaryTheme.getPriorityColor(priority.index);
+                        final color = CuteTheme.getPriorityColor(priority.index);
                         final labels = [l.get('low'), l.get('med'), l.get('high'), l.get('critical')];
                         return Expanded(
                           child: GestureDetector(

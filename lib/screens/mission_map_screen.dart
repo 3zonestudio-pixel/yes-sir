@@ -4,7 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../models/mission.dart';
 import '../providers/mission_provider.dart';
 import '../services/database_helper.dart';
-import '../theme/military_theme.dart';
+import '../theme/cute_theme.dart';
 import '../widgets/military_widgets.dart';
 import '../l10n/app_localizations.dart';
 
@@ -196,7 +196,7 @@ class _MissionMapScreenState extends State<MissionMapScreen> {
     final textColor = theme.textTheme.bodyLarge?.color ?? Colors.black;
     final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
     final isCompleted = mission.status == MissionStatus.completed;
-    final priorityColor = MilitaryTheme.getPriorityColor(mission.priority.index);
+    final priorityColor = CuteTheme.getPriorityColor(mission.priority.index);
 
     return IntrinsicHeight(
       child: Row(

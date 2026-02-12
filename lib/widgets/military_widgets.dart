@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/military_theme.dart';
+import '../theme/cute_theme.dart';
 
 class TokenCounter extends StatelessWidget {
   final int tokensRemaining;
@@ -110,7 +110,7 @@ class PriorityBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labels = ['Low', 'Med', 'High', 'Crit'];
-    final color = MilitaryTheme.getPriorityColor(priorityIndex);
+    final color = CuteTheme.getPriorityColor(priorityIndex);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: compact ? 6 : 10, vertical: compact ? 3 : 5),
@@ -118,7 +118,7 @@ class PriorityBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(MilitaryTheme.getPriorityIcon(priorityIndex), color: color, size: compact ? 10 : 14),
+          Icon(CuteTheme.getPriorityIcon(priorityIndex), color: color, size: compact ? 10 : 14),
           if (!compact) ...[
             const SizedBox(width: 4),
             Text(labels[priorityIndex], style: TextStyle(color: color, fontSize: compact ? 9 : 11, fontWeight: FontWeight.w600)),
@@ -138,7 +138,7 @@ class StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final labels = ['Pending', 'In Progress', 'Completed', 'Failed'];
     final icons = [Icons.schedule_rounded, Icons.play_circle_outline_rounded, Icons.check_circle_rounded, Icons.cancel_rounded];
-    final color = MilitaryTheme.getStatusColor(statusIndex);
+    final color = CuteTheme.getStatusColor(statusIndex);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

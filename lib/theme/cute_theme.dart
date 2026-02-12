@@ -1,84 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MilitaryTheme {
-  // ===== COLORS - Modern Blue palette =====
-  static const Color darkBackground = Color(0xFF0F1118);
-  static const Color cardBackground = Color(0xFF181C27);
-  static const Color surfaceDark = Color(0xFF1F2535);
-  static const Color surfaceLight = Color(0xFF283045);
+class CuteTheme {
+  // ===== COLORS - Pastel Kawaii palette =====
+  // Dark theme colors
+  static const Color darkBackground = Color(0xFF1A1625);
+  static const Color cardBackground = Color(0xFF252038);
+  static const Color surfaceDark = Color(0xFF2D2645);
+  static const Color surfaceLight = Color(0xFF382F55);
 
-  static const Color militaryGreen = Color(0xFF1565C0);
-  static const Color accentGreen = Color(0xFF42A5F5);
-  static const Color brightGreen = Color(0xFF64B5F6);
-  static const Color darkGreen = Color(0xFF0D47A1);
-  static const Color softGreen = Color(0xFF90CAF9);
+  // Primary & Accent
+  static const Color primaryPink = Color(0xFFFF8FAB);
+  static const Color accentLavender = Color(0xFFC3A6FF);
+  static const Color brightMint = Color(0xFF7FDBCA);
+  static const Color deepPink = Color(0xFFFF6B9D);
+  static const Color softPink = Color(0xFFFFB5C2);
 
-  static const Color goldAccent = Color(0xFF5C9CE6);
-  static const Color goldLight = Color(0xFF82B1FF);
-  static const Color goldDark = Color(0xFF1976D2);
+  static const Color peachAccent = Color(0xFFFFB5A7);
+  static const Color peachLight = Color(0xFFFFD6CC);
+  static const Color lavenderDark = Color(0xFFA78BFA);
 
-  static const Color commandRed = Color(0xFFEF476F);
-  static const Color warningOrange = Color(0xFFFF9F1C);
-  static const Color infoBlue = Color(0xFF4CC9F0);
-  static const Color softPurple = Color(0xFF7E57C2);
+  static const Color coralRed = Color(0xFFFF6B6B);
+  static const Color warningPeach = Color(0xFFFFA07A);
+  static const Color infoCyan = Color(0xFF7DD3FC);
+  static const Color softPurple = Color(0xFFB19CD9);
 
-  static const Color textPrimary = Color(0xFFEDF2F4);
-  static const Color textSecondary = Color(0xFFB0B8C1);
-  static const Color textMuted = Color(0xFF6C757D);
+  static const Color textPrimary = Color(0xFFF8F0FF);
+  static const Color textSecondary = Color(0xFFCBBFE0);
+  static const Color textMuted = Color(0xFF8B7FAA);
 
-  // Priority Colors
-  static const Color priorityCritical = Color(0xFFEF476F);
-  static const Color priorityHigh = Color(0xFFFF9F1C);
-  static const Color priorityMedium = Color(0xFF42A5F5);
-  static const Color priorityLow = Color(0xFF66BB6A);
+  // Priority Colors - Cute variants
+  static const Color priorityCritical = Color(0xFFFF6B6B);
+  static const Color priorityHigh = Color(0xFFFFA07A);
+  static const Color priorityMedium = Color(0xFFB19CD9);
+  static const Color priorityLow = Color(0xFF77DD77);
 
   // Status Colors
-  static const Color statusPending = Color(0xFF8D99AE);
-  static const Color statusInProgress = Color(0xFF42A5F5);
-  static const Color statusCompleted = Color(0xFF66BB6A);
-  static const Color statusFailed = Color(0xFFEF476F);
+  static const Color statusPending = Color(0xFFCBBFE0);
+  static const Color statusInProgress = Color(0xFFC3A6FF);
+  static const Color statusCompleted = Color(0xFF7FDBCA);
+  static const Color statusFailed = Color(0xFFFF8FAB);
 
-  // ===== THEME DATA =====
+  // ===== DARK THEME =====
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: darkBackground,
       colorScheme: const ColorScheme.dark(
-        primary: accentGreen,
-        secondary: goldAccent,
+        primary: primaryPink,
+        secondary: accentLavender,
+        tertiary: brightMint,
         surface: cardBackground,
-        error: commandRed,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
+        error: coralRed,
+        onPrimary: Color(0xFF1A1625),
+        onSecondary: Color(0xFF1A1625),
         onSurface: textPrimary,
         onError: Colors.white,
       ),
-      textTheme: GoogleFonts.poppinsTextTheme(
+      textTheme: GoogleFonts.nunitoTextTheme(
         const TextTheme(
-          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: textPrimary, letterSpacing: 1),
+          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: textPrimary, letterSpacing: 0.5),
           displayMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textPrimary),
-          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: accentGreen, letterSpacing: 1),
+          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: primaryPink, letterSpacing: 0.5),
           headlineMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary),
           titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary),
           titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: textPrimary),
           bodyLarge: TextStyle(fontSize: 16, color: textPrimary),
           bodyMedium: TextStyle(fontSize: 14, color: textSecondary),
           bodySmall: TextStyle(fontSize: 12, color: textMuted),
-          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: accentGreen, letterSpacing: 0.5),
+          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: primaryPink, letterSpacing: 0.3),
         ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: darkBackground,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
+        titleTextStyle: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary),
         iconTheme: const IconThemeData(color: textPrimary),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: cardBackground,
-        selectedItemColor: accentGreen,
+        selectedItemColor: primaryPink,
         unselectedItemColor: textMuted,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
@@ -89,49 +92,49 @@ class MilitaryTheme {
         color: cardBackground,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: accentGreen,
+        backgroundColor: primaryPink,
         foregroundColor: Colors.white,
-        elevation: 2,
+        elevation: 4,
         shape: CircleBorder(),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surfaceDark,
         hintStyle: const TextStyle(color: textMuted, fontSize: 14),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: accentGreen, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: primaryPink, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: accentGreen,
+          backgroundColor: primaryPink,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 0,
-          textStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600),
+          textStyle: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w700),
         ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: surfaceDark,
-        selectedColor: accentGreen.withOpacity(0.2),
-        labelStyle: GoogleFonts.poppins(color: textPrimary, fontWeight: FontWeight.w500, fontSize: 12),
+        selectedColor: primaryPink.withOpacity(0.2),
+        labelStyle: GoogleFonts.nunito(color: textPrimary, fontWeight: FontWeight.w600, fontSize: 12),
         side: BorderSide.none,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       ),
       dividerTheme: const DividerThemeData(color: surfaceLight, thickness: 0.5),
       dialogTheme: DialogTheme(
         backgroundColor: cardBackground,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         elevation: 8,
       ),
     );
@@ -161,54 +164,54 @@ class MilitaryTheme {
 
   static IconData getPriorityIcon(int priorityIndex) {
     switch (priorityIndex) {
-      case 0: return Icons.keyboard_arrow_down_rounded;
-      case 1: return Icons.remove_rounded;
-      case 2: return Icons.keyboard_arrow_up_rounded;
-      case 3: return Icons.priority_high_rounded;
-      default: return Icons.remove_rounded;
+      case 0: return Icons.favorite_border_rounded;
+      case 1: return Icons.favorite_rounded;
+      case 2: return Icons.local_fire_department_rounded;
+      case 3: return Icons.whatshot_rounded;
+      default: return Icons.favorite_rounded;
     }
   }
 
-  static BoxDecoration get militaryCardDecoration {
+  static BoxDecoration get cuteCardDecoration {
     return BoxDecoration(
       color: cardBackground,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 10, offset: const Offset(0, 4)),
+        BoxShadow(color: primaryPink.withOpacity(0.08), blurRadius: 12, offset: const Offset(0, 4)),
       ],
     );
   }
 
-  static BoxDecoration get goldenAccentCard {
+  static BoxDecoration get lavenderAccentCard {
     return BoxDecoration(
       color: cardBackground,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: goldAccent.withOpacity(0.2), width: 1),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: accentLavender.withOpacity(0.2), width: 1),
       boxShadow: [
-        BoxShadow(color: goldAccent.withOpacity(0.05), blurRadius: 16, offset: const Offset(0, 4)),
+        BoxShadow(color: accentLavender.withOpacity(0.06), blurRadius: 16, offset: const Offset(0, 4)),
       ],
     );
   }
 
-  static BoxDecoration get softGreenCard {
+  static BoxDecoration get softPinkCard {
     return BoxDecoration(
       gradient: LinearGradient(
-        colors: [accentGreen.withOpacity(0.12), accentGreen.withOpacity(0.04)],
+        colors: [primaryPink.withOpacity(0.12), primaryPink.withOpacity(0.04)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
     );
   }
 
   // ===== LIGHT THEME =====
-  static const Color lightBackground = Color(0xFFF0F4FA);
+  static const Color lightBackground = Color(0xFFFFF5F7);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightSurface = Color(0xFFE8EDF5);
-  static const Color lightSurfaceAlt = Color(0xFFD6E0F0);
-  static const Color lightTextPrimary = Color(0xFF1A1D26);
-  static const Color lightTextSecondary = Color(0xFF4A5568);
-  static const Color lightTextMuted = Color(0xFF9CA3AF);
+  static const Color lightSurface = Color(0xFFFCEEF2);
+  static const Color lightSurfaceAlt = Color(0xFFF3E4F0);
+  static const Color lightTextPrimary = Color(0xFF4A3756);
+  static const Color lightTextSecondary = Color(0xFF7B6B8A);
+  static const Color lightTextMuted = Color(0xFFB0A0C0);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -216,39 +219,40 @@ class MilitaryTheme {
       brightness: Brightness.light,
       scaffoldBackgroundColor: lightBackground,
       colorScheme: const ColorScheme.light(
-        primary: militaryGreen,
-        secondary: goldDark,
+        primary: deepPink,
+        secondary: lavenderDark,
+        tertiary: brightMint,
         surface: lightCard,
-        error: commandRed,
+        error: coralRed,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: lightTextPrimary,
         onError: Colors.white,
       ),
-      textTheme: GoogleFonts.poppinsTextTheme(
+      textTheme: GoogleFonts.nunitoTextTheme(
         const TextTheme(
-          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: lightTextPrimary, letterSpacing: 1),
+          displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: lightTextPrimary, letterSpacing: 0.5),
           displayMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: lightTextPrimary),
-          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: militaryGreen, letterSpacing: 1),
+          headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: deepPink, letterSpacing: 0.5),
           headlineMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: lightTextPrimary),
           titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: lightTextPrimary),
           titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: lightTextPrimary),
           bodyLarge: TextStyle(fontSize: 16, color: lightTextPrimary),
           bodyMedium: TextStyle(fontSize: 14, color: lightTextSecondary),
           bodySmall: TextStyle(fontSize: 12, color: lightTextMuted),
-          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: militaryGreen, letterSpacing: 0.5),
+          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: deepPink, letterSpacing: 0.3),
         ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: lightBackground,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700, color: lightTextPrimary),
+        titleTextStyle: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w700, color: lightTextPrimary),
         iconTheme: const IconThemeData(color: lightTextPrimary),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: lightCard,
-        selectedItemColor: militaryGreen,
+        selectedItemColor: deepPink,
         unselectedItemColor: lightTextMuted,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
@@ -258,13 +262,13 @@ class MilitaryTheme {
       cardTheme: CardTheme(
         color: lightCard,
         elevation: 2,
-        shadowColor: Colors.black12,
+        shadowColor: const Color(0x15FF6B9D),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: militaryGreen,
+        backgroundColor: deepPink,
         foregroundColor: Colors.white,
         elevation: 4,
         shape: CircleBorder(),
@@ -273,36 +277,37 @@ class MilitaryTheme {
         filled: true,
         fillColor: lightSurface,
         hintStyle: const TextStyle(color: lightTextMuted, fontSize: 14),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: militaryGreen, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: deepPink, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: militaryGreen,
+          backgroundColor: deepPink,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 2,
-          textStyle: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600),
+          shadowColor: const Color(0x30FF6B9D),
+          textStyle: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w700),
         ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: lightSurface,
-        selectedColor: militaryGreen.withOpacity(0.15),
-        labelStyle: GoogleFonts.poppins(color: lightTextPrimary, fontWeight: FontWeight.w500, fontSize: 12),
+        selectedColor: deepPink.withOpacity(0.15),
+        labelStyle: GoogleFonts.nunito(color: lightTextPrimary, fontWeight: FontWeight.w600, fontSize: 12),
         side: BorderSide.none,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       ),
       dividerTheme: const DividerThemeData(color: lightSurfaceAlt, thickness: 0.5),
       dialogTheme: DialogTheme(
         backgroundColor: lightCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         elevation: 8,
       ),
     );

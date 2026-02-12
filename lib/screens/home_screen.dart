@@ -191,7 +191,7 @@ class _DashboardTab extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '${getGreeting(l)} 🫡',
+                            '${getGreeting(l)} 💕',
                             style: TextStyle(
                               color: theme.textTheme.bodyMedium?.color,
                               fontSize: 14,
