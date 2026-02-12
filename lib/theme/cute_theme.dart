@@ -2,32 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CuteTheme {
-  // ===== COLORS - Pastel Kawaii palette =====
+  // ===== COLORS - Fresh Green palette matching app logo =====
   // Dark theme colors
-  static const Color darkBackground = Color(0xFF1A1625);
-  static const Color cardBackground = Color(0xFF252038);
-  static const Color surfaceDark = Color(0xFF2D2645);
-  static const Color surfaceLight = Color(0xFF382F55);
+  static const Color darkBackground = Color(0xFF0F1F1A);
+  static const Color cardBackground = Color(0xFF1A332B);
+  static const Color surfaceDark = Color(0xFF213D33);
+  static const Color surfaceLight = Color(0xFF2A4A3E);
 
   // Primary & Accent
-  static const Color primaryPink = Color(0xFFFF8FAB);
-  static const Color accentLavender = Color(0xFFC3A6FF);
-  static const Color brightMint = Color(0xFF7FDBCA);
-  static const Color deepPink = Color(0xFFFF6B9D);
-  static const Color softPink = Color(0xFFFFB5C2);
+  static const Color primaryPink = Color(0xFF5CC9A7);   // Light mint
+  static const Color accentLavender = Color(0xFF2D8C6F); // Rich green
+  static const Color brightMint = Color(0xFF7FDBCA);     // Bright mint
+  static const Color deepPink = Color(0xFF337060);        // Logo green
+  static const Color softPink = Color(0xFF8BBFA0);        // Soft sage
 
-  static const Color peachAccent = Color(0xFFFFB5A7);
-  static const Color peachLight = Color(0xFFFFD6CC);
-  static const Color lavenderDark = Color(0xFFA78BFA);
+  static const Color peachAccent = Color(0xFF6ECF9F);
+  static const Color peachLight = Color(0xFFA8E6CF);
+  static const Color lavenderDark = Color(0xFF2D8C6F);
 
-  static const Color coralRed = Color(0xFFFF6B6B);
+  static const Color coralRed = Color(0xFFE85D5D);
   static const Color warningPeach = Color(0xFFFFA07A);
   static const Color infoCyan = Color(0xFF7DD3FC);
-  static const Color softPurple = Color(0xFFB19CD9);
+  static const Color softPurple = Color(0xFF8BBFA0);
 
-  static const Color textPrimary = Color(0xFFF8F0FF);
-  static const Color textSecondary = Color(0xFFCBBFE0);
-  static const Color textMuted = Color(0xFF8B7FAA);
+  static const Color textPrimary = Color(0xFFF0FFF8);
+  static const Color textSecondary = Color(0xFFBFDDD0);
+  static const Color textMuted = Color(0xFF7FAA98);
 
   // Priority Colors - Cute variants
   static const Color priorityCritical = Color(0xFFFF6B6B);
@@ -205,13 +205,13 @@ class CuteTheme {
   }
 
   // ===== LIGHT THEME =====
-  static const Color lightBackground = Color(0xFFFFF5F7);
+  static const Color lightBackground = Color(0xFFF0FAF5);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightSurface = Color(0xFFFCEEF2);
-  static const Color lightSurfaceAlt = Color(0xFFF3E4F0);
-  static const Color lightTextPrimary = Color(0xFF4A3756);
-  static const Color lightTextSecondary = Color(0xFF7B6B8A);
-  static const Color lightTextMuted = Color(0xFFB0A0C0);
+  static const Color lightSurface = Color(0xFFE3F5ED);
+  static const Color lightSurfaceAlt = Color(0xFFD0EEE0);
+  static const Color lightTextPrimary = Color(0xFF1B3D30);
+  static const Color lightTextSecondary = Color(0xFF4A7A65);
+  static const Color lightTextMuted = Color(0xFF8BBFA0);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -262,7 +262,7 @@ class CuteTheme {
       cardTheme: CardTheme(
         color: lightCard,
         elevation: 2,
-        shadowColor: const Color(0x15FF6B9D),
+        shadowColor: const Color(0x15337060),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -292,7 +292,7 @@ class CuteTheme {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 2,
-          shadowColor: const Color(0x30FF6B9D),
+          shadowColor: const Color(0x30337060),
           textStyle: GoogleFonts.nunito(fontSize: 15, fontWeight: FontWeight.w700),
         ),
       ),

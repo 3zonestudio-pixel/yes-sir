@@ -1,4 +1,4 @@
-/* Yes Sir - Cute Pastel Website Theme */
+/* Yes Sir - Fresh Green Website Theme */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
 * {
@@ -9,8 +9,8 @@
 
 body {
     font-family: 'Nunito', sans-serif;
-    background: linear-gradient(135deg, #FFF0F5 0%, #F0E6FF 50%, #E8F8F5 100%);
-    color: #4A3756;
+    background: linear-gradient(135deg, #F0FAF5 0%, #E3F5ED 50%, #E8F8F5 100%);
+    color: #1B3D30;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,7 @@ body {
 nav {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 107, 157, 0.15);
+    border-bottom: 1px solid rgba(45, 140, 111, 0.15);
     padding: 16px 0;
     position: sticky;
     top: 0;
@@ -39,7 +39,7 @@ nav {
 .logo {
     font-size: 22px;
     font-weight: 800;
-    color: #FF6B9D;
+    color: #2D8C6F;
     text-decoration: none;
 }
 
@@ -50,7 +50,7 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #7B6B8A;
+    color: #4A7A66;
     font-weight: 600;
     font-size: 15px;
     transition: color 0.2s;
@@ -58,7 +58,7 @@ nav {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #FF6B9D;
+    color: #2D8C6F;
 }
 
 /* Main content */
@@ -75,12 +75,12 @@ main {
 .content h1 {
     font-size: 36px;
     font-weight: 800;
-    color: #FF6B9D;
+    color: #2D8C6F;
     margin-bottom: 8px;
 }
 
 .effective-date {
-    color: #B0A0C0;
+    color: #8BBFA0;
     font-size: 14px;
     margin-bottom: 40px;
 }
@@ -92,16 +92,16 @@ main {
 .content h2 {
     font-size: 22px;
     font-weight: 700;
-    color: #4A3756;
+    color: #1B3D30;
     margin-bottom: 16px;
     padding-bottom: 8px;
-    border-bottom: 2px solid rgba(255, 107, 157, 0.15);
+    border-bottom: 2px solid rgba(45, 140, 111, 0.15);
 }
 
 .content h3 {
     font-size: 17px;
     font-weight: 700;
-    color: #A78BFA;
+    color: #5CC9A7;
     margin-top: 20px;
     margin-bottom: 10px;
 }
@@ -109,7 +109,7 @@ main {
 .content p {
     font-size: 15px;
     line-height: 1.8;
-    color: #5A4A6A;
+    color: #3A6B55;
     margin-bottom: 12px;
 }
 
@@ -121,12 +121,12 @@ main {
 .content li {
     font-size: 15px;
     line-height: 1.8;
-    color: #5A4A6A;
+    color: #3A6B55;
     margin-bottom: 6px;
 }
 
 .content strong {
-    color: #4A3756;
+    color: #1B3D30;
 }
 
 /* Hero Section */
@@ -143,20 +143,20 @@ main {
 .hero h1 {
     font-size: 56px;
     font-weight: 800;
-    color: #FF6B9D;
+    color: #2D8C6F;
     margin-bottom: 12px;
 }
 
 .subtitle {
     font-size: 22px;
-    color: #A78BFA;
+    color: #5CC9A7;
     font-weight: 600;
     margin-bottom: 20px;
 }
 
 .description {
     font-size: 17px;
-    color: #7B6B8A;
+    color: #4A7A66;
     max-width: 600px;
     margin: 0 auto 48px;
     line-height: 1.7;
@@ -176,13 +176,13 @@ main {
     border-radius: 20px;
     padding: 28px 20px;
     text-align: center;
-    border: 1px solid rgba(255, 107, 157, 0.1);
+    border: 1px solid rgba(45, 140, 111, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .feature-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(255, 107, 157, 0.12);
+    box-shadow: 0 12px 32px rgba(45, 140, 111, 0.12);
 }
 
 .feature-icon {
@@ -194,13 +194,13 @@ main {
 .feature-card h3 {
     font-size: 17px;
     font-weight: 700;
-    color: #4A3756;
+    color: #1B3D30;
     margin-bottom: 8px;
 }
 
 .feature-card p {
     font-size: 14px;
-    color: #7B6B8A;
+    color: #4A7A66;
     line-height: 1.5;
 }
 
@@ -214,7 +214,7 @@ main {
 
 .btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, #FF6B9D, #A78BFA);
+    background: linear-gradient(135deg, #2D8C6F, #5CC9A7);
     color: white;
     text-decoration: none;
     padding: 14px 36px;
@@ -226,7 +226,7 @@ main {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+    box-shadow: 0 8px 24px rgba(45, 140, 111, 0.3);
 }
 
 /* Info Section */
@@ -239,13 +239,13 @@ main {
 .info-section h2 {
     font-size: 24px;
     font-weight: 700;
-    color: #4A3756;
+    color: #1B3D30;
     margin-bottom: 12px;
 }
 
 .info-section p {
     font-size: 15px;
-    color: #7B6B8A;
+    color: #4A7A66;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -255,7 +255,7 @@ footer {
     text-align: center;
     padding: 32px 24px;
     background: rgba(255, 255, 255, 0.6);
-    border-top: 1px solid rgba(255, 107, 157, 0.1);
+    border-top: 1px solid rgba(45, 140, 111, 0.1);
 }
 
 .footer-links {
@@ -267,18 +267,18 @@ footer {
 
 .footer-links a {
     text-decoration: none;
-    color: #A78BFA;
+    color: #5CC9A7;
     font-weight: 600;
     font-size: 14px;
 }
 
 .footer-links a:hover {
-    color: #FF6B9D;
+    color: #2D8C6F;
 }
 
 footer p {
     font-size: 13px;
-    color: #B0A0C0;
+    color: #8BBFA0;
 }
 
 /* Responsive */

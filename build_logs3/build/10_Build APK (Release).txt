@@ -1,0 +1,22 @@
+﻿2026-02-12T03:10:04.4291286Z ##[group]Run flutter build apk --release
+2026-02-12T03:10:04.4291630Z [36;1mflutter build apk --release[0m
+2026-02-12T03:10:04.4322716Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:10:04.4322950Z env:
+2026-02-12T03:10:04.4323246Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:10:04.4323735Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:10:04.4324185Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:10:04.4324515Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:10:04.4324758Z ##[endgroup]
+2026-02-12T03:10:05.0622990Z 
+2026-02-12T03:12:57.3605030Z Running Gradle task 'assembleRelease'...                        
+2026-02-12T03:12:57.3606287Z Checking the license for package Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/licenses
+2026-02-12T03:12:57.3607987Z License for package Android SDK Build-Tools 33.0.1 accepted.
+2026-02-12T03:12:57.3609233Z Preparing "Install Android SDK Build-Tools 33.0.1 v.33.0.1".
+2026-02-12T03:12:58.3486733Z "Install Android SDK Build-Tools 33.0.1 v.33.0.1" ready.
+2026-02-12T03:12:58.3488211Z Installing Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/build-tools/33.0.1
+2026-02-12T03:12:58.3489172Z "Install Android SDK Build-Tools 33.0.1 v.33.0.1" complete.
+2026-02-12T03:12:58.6487450Z "Install Android SDK Build-Tools 33.0.1 v.33.0.1" finished.
+2026-02-12T03:14:18.3516959Z Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 13272 bytes (99.2% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2026-02-12T03:14:46.2501880Z Caught exception: Already watching path: /home/runner/work/yes-sir/yes-sir/android
+2026-02-12T03:15:18.7666337Z Running Gradle task 'assembleRelease'...                          313.7s
+2026-02-12T03:15:19.0416593Z ✓ Built build/app/outputs/flutter-apk/app-release.apk (26.3MB)

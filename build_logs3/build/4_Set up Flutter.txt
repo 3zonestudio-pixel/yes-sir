@@ -1,0 +1,55 @@
+﻿2026-02-12T03:09:09.0024053Z ##[group]Run subosito/flutter-action@v2
+2026-02-12T03:09:09.0025043Z with:
+2026-02-12T03:09:09.0025941Z   flutter-version: 3.24.0
+2026-02-12T03:09:09.0026737Z   channel: stable
+2026-02-12T03:09:09.0027446Z   architecture: X64
+2026-02-12T03:09:09.0028146Z   cache: false
+2026-02-12T03:09:09.0028859Z   pub-cache-path: default
+2026-02-12T03:09:09.0029639Z   dry-run: false
+2026-02-12T03:09:09.0030496Z   git-source: https://github.com/flutter/flutter.git
+2026-02-12T03:09:09.0031536Z env:
+2026-02-12T03:09:09.0032503Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0034141Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0035527Z ##[endgroup]
+2026-02-12T03:09:09.0152445Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2026-02-12T03:09:09.0153694Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2026-02-12T03:09:09.0194725Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-12T03:09:09.0196069Z env:
+2026-02-12T03:09:09.0197103Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0198719Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0199993Z ##[endgroup]
+2026-02-12T03:09:09.0366981Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2026-02-12T03:09:09.0368375Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2026-02-12T03:09:09.0369341Z [36;1m  -n '3.24.0' \[0m
+2026-02-12T03:09:09.0370110Z [36;1m  -f '' \[0m
+2026-02-12T03:09:09.0370819Z [36;1m  -a 'X64' \[0m
+2026-02-12T03:09:09.0371552Z [36;1m  -k '' \[0m
+2026-02-12T03:09:09.0372259Z [36;1m  -c '' \[0m
+2026-02-12T03:09:09.0372960Z [36;1m  -l '' \[0m
+2026-02-12T03:09:09.0373669Z [36;1m  -d 'default' \[0m
+2026-02-12T03:09:09.0374651Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2026-02-12T03:09:09.0375905Z [36;1m  stable[0m
+2026-02-12T03:09:09.0407917Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-12T03:09:09.0409015Z env:
+2026-02-12T03:09:09.0410006Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0411610Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.0412914Z ##[endgroup]
+2026-02-12T03:09:09.2046539Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2026-02-12T03:09:09.2047592Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2026-02-12T03:09:09.2048509Z [36;1m  -n '3.24.0' \[0m
+2026-02-12T03:09:09.2049274Z [36;1m  -a 'x64' \[0m
+2026-02-12T03:09:09.2050236Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.24.0-x64' \[0m
+2026-02-12T03:09:09.2051581Z [36;1m  -d '/home/runner/.pub-cache' \[0m
+2026-02-12T03:09:09.2052498Z [36;1m  stable[0m
+2026-02-12T03:09:09.2087818Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-02-12T03:09:09.2088912Z env:
+2026-02-12T03:09:09.2089876Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.2091466Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:09.2092750Z ##[endgroup]
+2026-02-12T03:09:09.3595522Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-02-12T03:09:09.3599068Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-02-12T03:09:09.3600585Z 
+2026-02-12T03:09:09.7519864Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-02-12T03:09:10.7515969Z  15  639M   15  102M    0     0   259M      0  0:00:02 --:--:--  0:00:02  259M
+2026-02-12T03:09:11.2873288Z  70  639M   70  453M    0     0   325M      0  0:00:01  0:00:01 --:--:--  325M
+2026-02-12T03:09:11.2874378Z 100  639M  100  639M    0     0   331M      0  0:00:01  0:00:01 --:--:--  331M

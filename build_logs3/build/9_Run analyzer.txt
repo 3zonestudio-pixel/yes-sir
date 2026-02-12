@@ -1,0 +1,27 @@
+﻿2026-02-12T03:09:49.8842165Z ##[group]Run flutter analyze --no-fatal-infos --no-fatal-warnings
+2026-02-12T03:09:49.8842992Z [36;1mflutter analyze --no-fatal-infos --no-fatal-warnings[0m
+2026-02-12T03:09:49.8882270Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:09:49.8882513Z env:
+2026-02-12T03:09:49.8882799Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:49.8883283Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:09:49.8883917Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:09:49.8884478Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:09:49.8884886Z ##[endgroup]
+2026-02-12T03:10:04.4013775Z Analyzing yes-sir...                                            
+2026-02-12T03:10:04.4019688Z 
+2026-02-12T03:10:04.4052609Z    info • Don't use 'BuildContext's across async gaps • lib/screens/commander_ai_screen.dart:99:37 • use_build_context_synchronously
+2026-02-12T03:10:04.4054606Z    info • Use 'const' with the constructor to improve performance • lib/screens/commander_ai_screen.dart:173:64 • prefer_const_constructors
+2026-02-12T03:10:04.4060212Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:356:27 • use_build_context_synchronously
+2026-02-12T03:10:04.4066843Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:536:31 • use_build_context_synchronously
+2026-02-12T03:10:04.4068668Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:541:45 • use_build_context_synchronously
+2026-02-12T03:10:04.4070357Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:542:52 • use_build_context_synchronously
+2026-02-12T03:10:04.4072233Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:553:31 • use_build_context_synchronously
+2026-02-12T03:10:04.4074050Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:558:45 • use_build_context_synchronously
+2026-02-12T03:10:04.4076133Z warning • The value of the field '_isLoading' isn't used • lib/screens/pin_lock_screen.dart:19:8 • unused_field
+2026-02-12T03:10:04.4077717Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:443:31 • curly_braces_in_flow_control_structures
+2026-02-12T03:10:04.4080651Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:449:27 • curly_braces_in_flow_control_structures
+2026-02-12T03:10:04.4082335Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:455:29 • curly_braces_in_flow_control_structures
+2026-02-12T03:10:04.4084397Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:461:26 • curly_braces_in_flow_control_structures
+2026-02-12T03:10:04.4086201Z    info • The private field _isPurchasing could be 'final' • lib/services/purchase_service.dart:10:8 • prefer_final_fields
+2026-02-12T03:10:04.4087003Z 
+2026-02-12T03:10:04.4199050Z 14 issues found. (ran in 13.7s)

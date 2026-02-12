@@ -1,0 +1,14 @@
+﻿2026-02-12T03:15:19.0559331Z ##[group]Run flutter build appbundle --release
+2026-02-12T03:15:19.0559700Z [36;1mflutter build appbundle --release[0m
+2026-02-12T03:15:19.0625135Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:15:19.0625528Z env:
+2026-02-12T03:15:19.0625816Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:15:19.0626282Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:15:19.0626736Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:15:19.0627062Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:15:19.0627288Z ##[endgroup]
+2026-02-12T03:15:19.7405517Z 
+2026-02-12T03:15:23.8522392Z Running Gradle task 'bundleRelease'...                          
+2026-02-12T03:15:23.8528284Z Caught exception: Already watching path: /opt/hostedtoolcache/flutter/stable-3.24.0-x64/packages/flutter_tools/gradle
+2026-02-12T03:15:27.5697988Z Running Gradle task 'bundleRelease'...                              7.8s
+2026-02-12T03:15:27.5736817Z ✓ Built build/app/outputs/bundle/release/app-release.aab (26.4MB)

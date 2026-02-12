@@ -1,0 +1,21 @@
+﻿2026-02-12T03:06:19.2413933Z ##[group]Run dart run flutter_launcher_icons
+2026-02-12T03:06:19.2414292Z [36;1mdart run flutter_launcher_icons[0m
+2026-02-12T03:06:19.2445746Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:06:19.2445989Z env:
+2026-02-12T03:06:19.2446570Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:19.2447114Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:19.2447622Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:06:19.2447997Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:06:19.2448265Z ##[endgroup]
+2026-02-12T03:06:21.0045052Z   ════════════════════════════════════════════
+2026-02-12T03:06:21.0045729Z      FLUTTER LAUNCHER ICONS (v0.14.4)                               
+2026-02-12T03:06:21.0046478Z   ════════════════════════════════════════════
+2026-02-12T03:06:21.0046884Z   
+2026-02-12T03:06:21.0890670Z • Creating default icons Android
+2026-02-12T03:06:21.0900577Z • Creating adaptive icons Android
+2026-02-12T03:06:21.3139946Z • Updating colors.xml with color for adaptive icon background
+2026-02-12T03:06:21.3765052Z • Overwriting the default Android launcher icon with a new icon
+2026-02-12T03:06:21.5376607Z • Creating mipmap xml file Android
+2026-02-12T03:06:21.5402389Z No platform provided
+2026-02-12T03:06:21.5405112Z 
+2026-02-12T03:06:21.5405650Z ✓ Successfully generated launcher icons

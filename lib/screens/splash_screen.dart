@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
             end: Alignment.bottomRight,
             colors: isDark
                 ? [const Color(0xFF1A1625), const Color(0xFF2D2645), const Color(0xFF1A1625)]
-                : [const Color(0xFFFFF0F5), const Color(0xFFF0E6FF), const Color(0xFFE8F8F5)],
+                : [const Color(0xFFF0FAF5), const Color(0xFFE3F5ED), const Color(0xFFE8F8F5)],
           ),
         ),
         child: Center(
@@ -139,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ),
                               Positioned(top: 10, right: 20, child: Opacity(opacity: _bounce.value, child: Text('✨', style: TextStyle(fontSize: 20 * _bounce.value)))),
-                              Positioned(bottom: 15, left: 15, child: Opacity(opacity: _bounce.value, child: Text('💖', style: TextStyle(fontSize: 16 * _bounce.value)))),
+                              Positioned(bottom: 15, left: 15, child: Opacity(opacity: _bounce.value, child: Text('🌿', style: TextStyle(fontSize: 16 * _bounce.value)))),
                               Positioned(top: 25, left: 10, child: Opacity(opacity: _bounce.value, child: Text('⭐', style: TextStyle(fontSize: 14 * _bounce.value)))),
                             ],
                           ),

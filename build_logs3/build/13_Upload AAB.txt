@@ -1,0 +1,28 @@
+﻿2026-02-12T03:15:28.9546015Z ##[group]Run actions/upload-artifact@v4
+2026-02-12T03:15:28.9546343Z with:
+2026-02-12T03:15:28.9546515Z   name: yes-sir-aab
+2026-02-12T03:15:28.9546781Z   path: build/app/outputs/bundle/release/app-release.aab
+2026-02-12T03:15:28.9547090Z   if-no-files-found: warn
+2026-02-12T03:15:28.9547304Z   compression-level: 6
+2026-02-12T03:15:28.9547492Z   overwrite: false
+2026-02-12T03:15:28.9547684Z   include-hidden-files: false
+2026-02-12T03:15:28.9547893Z env:
+2026-02-12T03:15:28.9548158Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:15:28.9548647Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:15:28.9549079Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:15:28.9549403Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:15:28.9549647Z ##[endgroup]
+2026-02-12T03:15:29.1657483Z With the provided path, there will be 1 file uploaded
+2026-02-12T03:15:29.1662808Z Artifact name is valid!
+2026-02-12T03:15:29.1664003Z Root directory input is valid!
+2026-02-12T03:15:29.2528159Z Beginning upload of artifact content to blob storage
+2026-02-12T03:15:29.7272365Z Uploaded bytes 8388608
+2026-02-12T03:15:29.9359827Z Uploaded bytes 16777216
+2026-02-12T03:15:30.2309399Z Uploaded bytes 25165824
+2026-02-12T03:15:30.3090847Z Uploaded bytes 26108290
+2026-02-12T03:15:30.3231688Z Finished uploading artifact content to blob storage!
+2026-02-12T03:15:30.3235035Z SHA256 digest of uploaded artifact zip is 61887e453875a56673df07b6ca2e68e67d2a87996065ba360e4e37081d987207
+2026-02-12T03:15:30.3236940Z Finalizing artifact upload
+2026-02-12T03:15:30.4071623Z Artifact yes-sir-aab.zip successfully finalized. Artifact ID 5476511455
+2026-02-12T03:15:30.4072762Z Artifact yes-sir-aab has been successfully uploaded! Final size is 26108290 bytes. Artifact ID is 5476511455
+2026-02-12T03:15:30.4080027Z Artifact download URL: https://github.com/3zonestudio-pixel/yes-sir/actions/runs/21932041478/artifacts/5476511455

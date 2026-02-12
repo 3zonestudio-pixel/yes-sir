@@ -1,0 +1,104 @@
+﻿2026-02-12T03:06:06.5335890Z ##[group]Run flutter pub get
+2026-02-12T03:06:06.5336172Z [36;1mflutter pub get[0m
+2026-02-12T03:06:06.5364680Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:06:06.5364903Z env:
+2026-02-12T03:06:06.5365180Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:06.5365663Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:06.5366304Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:06:06.5366633Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:06:06.5366865Z ##[endgroup]
+2026-02-12T03:06:06.8522876Z 
+2026-02-12T03:06:06.8536240Z   ╔════════════════════════════════════════════════════════════════════════════╗
+2026-02-12T03:06:06.8537710Z   ║                 Welcome to Flutter! - https://flutter.dev                  ║
+2026-02-12T03:06:06.8538522Z   ║                                                                            ║
+2026-02-12T03:06:06.8539530Z   ║ The Flutter tool uses Google Analytics to anonymously report feature usage ║
+2026-02-12T03:06:06.8540955Z   ║ statistics and basic crash reports. This data is used to help improve      ║
+2026-02-12T03:06:06.8541861Z   ║ Flutter tools over time.                                                   ║
+2026-02-12T03:06:06.8542443Z   ║                                                                            ║
+2026-02-12T03:06:06.8542961Z   ║ Flutter tool analytics are not sent on the very first run. To disable      ║
+2026-02-12T03:06:06.8543564Z   ║ reporting, type 'flutter config --no-analytics'. To display the current    ║
+2026-02-12T03:06:06.8544135Z   ║ setting, type 'flutter config'. If you opt out of analytics, an opt-out    ║
+2026-02-12T03:06:06.8544691Z   ║ event will be sent, and then no further information will be sent by the    ║
+2026-02-12T03:06:06.8545185Z   ║ Flutter tool.                                                              ║
+2026-02-12T03:06:06.8545601Z   ║                                                                            ║
+2026-02-12T03:06:06.8546469Z   ║ By downloading the Flutter SDK, you agree to the Google Terms of Service.  ║
+2026-02-12T03:06:06.8547436Z   ║ The Google Privacy Policy describes how data is handled in this service.   ║
+2026-02-12T03:06:06.8548241Z   ║                                                                            ║
+2026-02-12T03:06:06.8549025Z   ║ Moreover, Flutter includes the Dart SDK, which may send usage metrics and  ║
+2026-02-12T03:06:06.8549925Z   ║ crash reports to Google.                                                   ║
+2026-02-12T03:06:06.8550657Z   ║                                                                            ║
+2026-02-12T03:06:06.8551117Z   ║ Read about data we send with crash reports:                                ║
+2026-02-12T03:06:06.8551667Z   ║ https://flutter.dev/to/crash-reporting                                     ║
+2026-02-12T03:06:06.8552106Z   ║                                                                            ║
+2026-02-12T03:06:06.8552525Z   ║ See Google's privacy policy:                                               ║
+2026-02-12T03:06:06.8553044Z   ║ https://policies.google.com/privacy                                        ║
+2026-02-12T03:06:06.8553507Z   ║                                                                            ║
+2026-02-12T03:06:06.8553930Z   ║ To disable animations in this tool, use                                    ║
+2026-02-12T03:06:06.8554457Z   ║ 'flutter config --no-cli-animations'.                                      ║
+2026-02-12T03:06:06.8554954Z   ╚════════════════════════════════════════════════════════════════════════════╝
+2026-02-12T03:06:06.8555177Z 
+2026-02-12T03:06:12.6527231Z Resolving dependencies...
+2026-02-12T03:06:13.6335091Z Downloading packages...
+2026-02-12T03:06:18.7763521Z   async 2.11.0 (2.13.0 available)
+2026-02-12T03:06:18.7764084Z   boolean_selector 2.1.1 (2.1.2 available)
+2026-02-12T03:06:18.7764554Z   characters 1.3.0 (1.4.1 available)
+2026-02-12T03:06:18.7765011Z   checked_yaml 2.0.3 (2.0.4 available)
+2026-02-12T03:06:18.7765854Z   clock 1.1.1 (1.1.2 available)
+2026-02-12T03:06:18.7766224Z   collection 1.18.0 (1.19.1 available)
+2026-02-12T03:06:18.7766699Z   fake_async 1.3.1 (1.3.3 available)
+2026-02-12T03:06:18.7767119Z   ffi 2.1.3 (2.2.0 available)
+2026-02-12T03:06:18.7767540Z   fl_chart 0.69.2 (1.1.1 available)
+2026-02-12T03:06:18.7768006Z   flutter_lints 4.0.0 (6.0.0 available)
+2026-02-12T03:06:18.7768877Z   flutter_local_notifications 19.5.0 (20.0.0 available)
+2026-02-12T03:06:18.7769599Z   flutter_local_notifications_linux 6.0.0 (7.0.0 available)
+2026-02-12T03:06:18.7770639Z   flutter_local_notifications_platform_interface 9.1.0 (10.0.0 available)
+2026-02-12T03:06:18.7771548Z   flutter_local_notifications_windows 1.0.3 (2.0.1 available)
+2026-02-12T03:06:18.7772163Z   google_fonts 6.3.0 (8.0.1 available)
+2026-02-12T03:06:18.7772688Z   http_parser 4.0.2 (4.1.2 available)
+2026-02-12T03:06:18.7773153Z   intl 0.19.0 (0.20.2 available)
+2026-02-12T03:06:18.7773618Z   json_annotation 4.9.0 (4.10.0 available)
+2026-02-12T03:06:18.7774157Z   leak_tracker 10.0.5 (11.0.2 available)
+2026-02-12T03:06:18.7774730Z   leak_tracker_flutter_testing 3.0.5 (3.0.10 available)
+2026-02-12T03:06:18.7775350Z   leak_tracker_testing 3.0.1 (3.0.2 available)
+2026-02-12T03:06:18.7775781Z   lints 4.0.0 (6.1.0 available)
+2026-02-12T03:06:18.7776185Z   matcher 0.12.16+1 (0.12.18 available)
+2026-02-12T03:06:18.7776645Z   material_color_utilities 0.11.1 (0.13.0 available)
+2026-02-12T03:06:18.7777109Z   meta 1.15.0 (1.18.1 available)
+2026-02-12T03:06:18.7777483Z   path 1.9.0 (1.9.1 available)
+2026-02-12T03:06:18.7777884Z   path_provider_android 2.2.15 (2.2.22 available)
+2026-02-12T03:06:18.7778384Z   path_provider_foundation 2.4.1 (2.6.0 available)
+2026-02-12T03:06:18.7778847Z   petitparser 6.0.2 (7.0.1 available)
+2026-02-12T03:06:18.7779271Z   shared_preferences 2.5.3 (2.5.4 available)
+2026-02-12T03:06:18.7779753Z   shared_preferences_android 2.4.7 (2.4.20 available)
+2026-02-12T03:06:18.7780487Z   shared_preferences_foundation 2.5.4 (2.5.6 available)
+2026-02-12T03:06:18.7780908Z   source_span 1.10.0 (1.10.2 available)
+2026-02-12T03:06:18.7781141Z   sqflite 2.4.1 (2.4.2 available)
+2026-02-12T03:06:18.7781382Z   sqflite_android 2.4.0 (2.4.2+2 available)
+2026-02-12T03:06:18.7781639Z   sqflite_common 2.5.4+6 (2.5.6 available)
+2026-02-12T03:06:18.7781908Z   sqflite_darwin 2.4.1+1 (2.4.2 available)
+2026-02-12T03:06:18.7782154Z   stack_trace 1.11.1 (1.12.1 available)
+2026-02-12T03:06:18.7782393Z   stream_channel 2.1.2 (2.1.4 available)
+2026-02-12T03:06:18.7782626Z   string_scanner 1.2.0 (1.4.1 available)
+2026-02-12T03:06:18.7782866Z   synchronized 3.3.0+3 (3.4.0 available)
+2026-02-12T03:06:18.7783109Z   table_calendar 3.1.3 (3.2.0 available)
+2026-02-12T03:06:18.7783334Z   term_glyph 1.2.1 (1.2.2 available)
+2026-02-12T03:06:18.7783563Z   test_api 0.7.2 (0.7.9 available)
+2026-02-12T03:06:18.7783778Z   timezone 0.10.1 (0.11.0 available)
+2026-02-12T03:06:18.7784003Z   url_launcher 6.3.1 (6.3.2 available)
+2026-02-12T03:06:18.7784250Z   url_launcher_android 6.3.14 (6.3.28 available)
+2026-02-12T03:06:18.7784528Z   url_launcher_ios 6.3.3 (6.4.0 available)
+2026-02-12T03:06:18.7784973Z   url_launcher_linux 3.2.1 (3.2.2 available)
+2026-02-12T03:06:18.7785423Z   url_launcher_macos 3.2.2 (3.2.5 available)
+2026-02-12T03:06:18.7785865Z   url_launcher_web 2.3.3 (2.4.2 available)
+2026-02-12T03:06:18.7786322Z   url_launcher_windows 3.1.4 (3.1.5 available)
+2026-02-12T03:06:18.7786777Z   vector_math 2.1.4 (2.2.0 available)
+2026-02-12T03:06:18.7787172Z   vm_service 14.2.4 (15.0.2 available)
+2026-02-12T03:06:18.7787561Z   xml 6.5.0 (6.6.1 available)
+2026-02-12T03:06:18.7787967Z These packages are no longer being depended on:
+2026-02-12T03:06:18.7788436Z - in_app_purchase 3.2.3
+2026-02-12T03:06:18.7788663Z - in_app_purchase_android 0.4.0
+2026-02-12T03:06:18.7788905Z - in_app_purchase_platform_interface 1.4.0
+2026-02-12T03:06:18.7789164Z - in_app_purchase_storekit 0.4.0
+2026-02-12T03:06:18.7789390Z Changed 4 dependencies!
+2026-02-12T03:06:18.7804737Z 55 packages have newer versions incompatible with dependency constraints.
+2026-02-12T03:06:18.7805630Z Try `flutter pub outdated` for more information.

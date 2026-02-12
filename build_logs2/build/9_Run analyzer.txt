@@ -1,0 +1,44 @@
+﻿2026-02-12T03:06:21.5644850Z ##[group]Run flutter analyze --no-fatal-infos --no-fatal-warnings
+2026-02-12T03:06:21.5645331Z [36;1mflutter analyze --no-fatal-infos --no-fatal-warnings[0m
+2026-02-12T03:06:21.5678010Z shell: /usr/bin/bash -e {0}
+2026-02-12T03:06:21.5678240Z env:
+2026-02-12T03:06:21.5678525Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:21.5679007Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.18-8/x64
+2026-02-12T03:06:21.5679440Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.24.0-x64
+2026-02-12T03:06:21.5679766Z   PUB_CACHE: /home/runner/.pub-cache
+2026-02-12T03:06:21.5679999Z ##[endgroup]
+2026-02-12T03:06:36.7120074Z Analyzing yes-sir...                                            
+2026-02-12T03:06:36.7126761Z 
+2026-02-12T03:06:36.7162492Z    info • Don't use 'BuildContext's across async gaps • lib/screens/commander_ai_screen.dart:99:37 • use_build_context_synchronously
+2026-02-12T03:06:36.7164417Z    info • Use 'const' with the constructor to improve performance • lib/screens/commander_ai_screen.dart:173:64 • prefer_const_constructors
+2026-02-12T03:06:36.7166780Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:356:27 • use_build_context_synchronously
+2026-02-12T03:06:36.7169063Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:536:31 • use_build_context_synchronously
+2026-02-12T03:06:36.7171250Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:541:45 • use_build_context_synchronously
+2026-02-12T03:06:36.7172983Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:542:52 • use_build_context_synchronously
+2026-02-12T03:06:36.7174987Z    info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/missions_screen.dart:553:31 • use_build_context_synchronously
+2026-02-12T03:06:36.7176959Z    info • Don't use 'BuildContext's across async gaps • lib/screens/missions_screen.dart:558:45 • use_build_context_synchronously
+2026-02-12T03:06:36.7178623Z warning • The value of the field '_isLoading' isn't used • lib/screens/pin_lock_screen.dart:19:8 • unused_field
+2026-02-12T03:06:36.7180468Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:443:31 • curly_braces_in_flow_control_structures
+2026-02-12T03:06:36.7182270Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:449:27 • curly_braces_in_flow_control_structures
+2026-02-12T03:06:36.7184041Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:455:29 • curly_braces_in_flow_control_structures
+2026-02-12T03:06:36.7186329Z    info • Statements in a for should be enclosed in a block • lib/services/ai_service.dart:461:26 • curly_braces_in_flow_control_structures
+2026-02-12T03:06:36.7188325Z    info • The imported package 'in_app_purchase' isn't a dependency of the importing package • lib/services/purchase_service.dart:3:8 • depend_on_referenced_packages
+2026-02-12T03:06:36.7190567Z   error • Target of URI doesn't exist: 'package:in_app_purchase/in_app_purchase.dart' • lib/services/purchase_service.dart:3:8 • uri_does_not_exist
+2026-02-12T03:06:36.7192271Z   error • Undefined class 'InAppPurchase' • lib/services/purchase_service.dart:11:9 • undefined_class
+2026-02-12T03:06:36.7193666Z   error • Undefined name 'InAppPurchase' • lib/services/purchase_service.dart:11:30 • undefined_identifier
+2026-02-12T03:06:36.7195385Z   error • The name 'ProductDetails' isn't a type, so it can't be used as a type argument • lib/services/purchase_service.dart:16:8 • non_type_as_type_argument
+2026-02-12T03:06:36.7197348Z   error • The name 'PurchaseDetails' isn't a type, so it can't be used as a type argument • lib/services/purchase_service.dart:17:27 • non_type_as_type_argument
+2026-02-12T03:06:36.7199377Z   error • The name 'ProductDetails' isn't a type, so it can't be used as a type argument • lib/services/purchase_service.dart:21:8 • non_type_as_type_argument
+2026-02-12T03:06:36.7201669Z   error • Undefined class 'ProductDetails' • lib/services/purchase_service.dart:22:3 • undefined_class
+2026-02-12T03:06:36.7203358Z   error • The method 'PurchaseParam' isn't defined for the type 'PurchaseService' • lib/services/purchase_service.dart:85:29 • undefined_method
+2026-02-12T03:06:36.7205338Z   error • The name 'PurchaseDetails' isn't a type, so it can't be used as a type argument • lib/services/purchase_service.dart:103:32 • non_type_as_type_argument
+2026-02-12T03:06:36.7207068Z   error • Undefined name 'PurchaseStatus' • lib/services/purchase_service.dart:106:14 • undefined_identifier
+2026-02-12T03:06:36.7208531Z   error • Undefined name 'PurchaseStatus' • lib/services/purchase_service.dart:107:14 • undefined_identifier
+2026-02-12T03:06:36.7210051Z   error • Undefined name 'PurchaseStatus' • lib/services/purchase_service.dart:110:14 • undefined_identifier
+2026-02-12T03:06:36.7211760Z   error • Undefined name 'PurchaseStatus' • lib/services/purchase_service.dart:115:14 • undefined_identifier
+2026-02-12T03:06:36.7213252Z   error • Undefined name 'PurchaseStatus' • lib/services/purchase_service.dart:120:14 • undefined_identifier
+2026-02-12T03:06:36.7214716Z   error • Undefined class 'PurchaseDetails' • lib/services/purchase_service.dart:133:34 • undefined_class
+2026-02-12T03:06:36.7216233Z   error • The named parameter 'purchaseService' isn't defined • test/widget_test.dart:16:7 • undefined_named_parameter
+2026-02-12T03:06:36.7217063Z 
+2026-02-12T03:06:36.7338862Z 30 issues found. (ran in 14.3s)
+2026-02-12T03:06:36.7405065Z ##[error]Process completed with exit code 1.
